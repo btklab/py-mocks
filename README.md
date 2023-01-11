@@ -5,7 +5,7 @@ A mock-up cli script set of [Welcome to Python.org](https://www.python.org/) tha
 - For use in UTF-8 Japanese environments on windows.
 - For my personal work and hobby use.
 - Note that the code is spaghetti (due to my technical inexperience).
-- Insufficient tests and error handling
+- Insufficient tests and error handlings.
 
 script list:
 
@@ -14,7 +14,7 @@ script list:
 cat README.md | grep '^#### ' | grep -o '`[^`]+`' | sort | flat -ofs ", " | Set-Clipboard
 ```
 
-- `pycalc.py`, `pymatcalc.py`
+- `pycalc.py`, `pymatcalc.py`, `pyplot-pandas.py`, `pyplot-x-rs.py`, `pyplot.py`
 
 
 コード群にまとまりはないが、事務職（非技術職）な筆者の毎日の仕事（おもに文字列処理）を、より素早くさばくための道具としてのコマンドセットを想定している（毎日使用する関数は10個に満たないが）。
@@ -256,7 +256,7 @@ cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species
 cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species'];df.query('sl > 5.0 and sw < 2.5')"
 ```
 
-## Math
+### Math
 
 #### `pymatcalc.py` - Cli matrix calculator by connecting with pipes
 
@@ -410,3 +410,621 @@ C 20.0 13.0
 D 48.0 31.0
 D 104.0 67.0
 ```
+
+### Graph and chart
+
+#### `pyplot.py` - Plot chart using matplotlib
+
+棒グラフなどのチャートをプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。Wrapper of `matplotlib`. 
+
+- Usage
+    - man: `python pyplot.py [-h|--help]`
+    - `python pyplot.py [-h] [-d { ,,, }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]`
+- Examples
+    - `cat iris.csv | python pyplot.py -d ","`
+    - `cat iris.csv | python pyplot.py -d "," --index`
+    - `cat date.csv | python pyplot.py -d "," --datetime --minterval 2 --rot 90 --dformat "%Y-%m`n(%a)"`
+    - `cat iris.csv | python pyplot.py -d "," --sorta 1,2`
+    - `cat iris.csv | python pyplot.py -d "," --pair --hue 5`
+    - `cat iris.csv | python pyplot.py -d "," --pair --hue 5 --seaborn`
+    - `cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3`
+    - `cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3 --hue 5`
+    - `cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3 --lm`
+- Dependency
+    - require: `argparse`, `numpy`, `pandas`, `matplotlib.dates`
+
+
+Usage:
+
+```powershell
+python pyplot.py --help
+
+usage: pyplot.py [-h] [-d { ,,, }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]
+    [--fontsize FONTSIZE] [--fontsizet FONTSIZET] [--anzu] [--natsume] [--natsumeo] [--nofont] [--self SELF] [--delf DELF]
+    [--sorta SORTA] [--sortd SORTD] [--noheader] [--notskipobject] [--index] [--datetime] [--dformat DFORMAT]
+    [--yinterval YINTERVAL] [--minterval MINTERVAL] [--dinterval DINTERVAL] [--winterval WINTERVAL]
+    [--datetimelocate {year,month,day,hour,minute,auto,monday,tuesday,wednesday,thursday,friday,saturday,sunday}]
+    [--datetimeinterval DATETIMEINTERVAL] [--mtype MTYPE] [--scatter] [--line] [--step] [--bar] [--barh] [--hist] [--box]
+    [--kde] [--area] [--pie] [--hexbin] [--joint] [--pair]
+    [--style {bmh,classic,dark_background,fast,fivethirtyeight,ggplot,grayscale,seaborn-bright,seaborn-colorblind,seaborn-dark-palette,seaborn-dark,seaborn-darkgrid,seaborn-deep,seaborn-muted,seaborn-notebook,seaborn-paper,seaborn-pastel,seaborn-poster,seaborn-talk,seaborn-ticks,seaborn-white,seaborn-whitegrid,seaborn,Solarize_Light2,tableau-colorblind10,_classic_test}]
+    [--lm] [--hue HUE] [--offlegend]
+    [--legendloc {best,upper right,upper left,lower left,lower right,right,center left,center right,lower center,upper center,center}]
+    [--legendloc2 LEGENDLOC2] [--adjust ADJUST] [--title TITLE] [--offtitle] [--spines {zero,center}] [--reverse]
+    [--xlab XLAB] [--ylab YLAB] [--xlim XLIM] [--ylim YLIM] [--ymin YMIN] [--ymax YMAX] [--grid] [--gridx] [--gridy]
+    [--logx] [--logy] [--logxy] [--rot ROT] [--linewidth LINEWIDTH] [--hline HLINE] [--hlinewidth HLINEWIDTH]
+    [--hlinecolor HLINECOLOR] [--hline0] [--vline VLINE] [--vlinecolor VLINECOLOR] [--vlinewidth VLINEWIDTH]
+    [--hspan HSPAN] [--hspancolor HSPANCOLOR] [--hspanalpha HSPANALPHA] [--vspan VSPAN] [--vspancolor VSPANCOLOR]
+    [--vspanalpha VSPANALPHA] [--today] [--now] [--seaborn] [--monochrome] [--mycolormap] [--debug] [--y2] [--y2lim Y2LIM]
+    [--logy2] [--y2lab Y2LAB] [--y2color Y2COLOR] [--grep GREP] [--gcolor GCOLOR] [--gcolor2 GCOLOR2] [--xrs XRS] [--xkcd]
+```
+
+Examples:
+
+```powershell
+# 区切りは -d "<separator>"で変更可能。
+# デフォルトで半角スペース区切り入力を期待
+cat iris.csv | python pyplot.py -d ","
+```
+
+```powershell
+# --indexで、1列目をpandas dataframeのindexとみなす
+cat iris.csv | python pyplot.py -d "," --index
+```
+
+```powershell
+# --datetimeで、1列目をpandas dataframeのdatetime型indexとみなす
+cat date.csv | python pyplot.py -d "," --datetime --minterval 2 --rot 90 --dformat "%Y-%m`n(%a)"
+```
+
+```powershell
+# --pairでペアプロット（行列散布図）を描画
+cat iris.csv | python pyplot.py -d "," --pair --hue 5
+cat iris.csv | python pyplot.py -d "," --pair --hue 5 --seaborn
+```
+
+```powershell
+# --scatterで散布図を描画。デフォルトで1,2列目を使用
+cat iris.csv | python pyplot.py -d "," --scatter
+cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3
+# --hue <column-number>で任意列を用いて層別に色分け
+cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3 --hue 5
+```
+
+```powershell
+# 散布図に最小二乗法を適用し回帰直線をプロット。同時に線形回帰式及びR^2値を凡例に表示
+cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3 --lm
+```
+
+Options:
+
+```powershell
+python pyplot.py --help
+
+options:
+  -h, --help            show this help message and exit
+  -d { ,,,      }, --delimiter { ,,,    }
+                        line separator(delimiter)
+  -o OUTPUT, --output OUTPUT
+                        output file name
+  -i INPUTFILE, --inputfile INPUTFILE
+                        input file name
+  --dpi DPI             output dpi
+  --x X                 x columns in scatter plot
+  --y Y                 y columns in scatter plot
+  --size SIZE           w inch, h inch
+  --layout LAYOUT       subplot layout
+  --fontsize FONTSIZE   fontsize
+  --fontsizet FONTSIZET
+                        title fontsize
+  --anzu                font: anzu
+  --natsume             font: natsume
+  --natsumeo            font: natsume osae
+  --nofont              do not set font
+  --self SELF           select fields
+  --delf DELF           delete fields
+  --sorta SORTA         sort by ascending
+  --sortd SORTD         sort by descending
+  --noheader            noheader data
+  --notskipobject       do not skip object dtype
+  --index               set df.columns[0] as index
+  --datetime            set df.columns[0] as datetime
+  --dformat DFORMAT     xaxis datetime formatter
+  --yinterval YINTERVAL
+                        year interval
+  --minterval MINTERVAL
+                        month interval
+  --dinterval DINTERVAL
+                        day interval
+  --winterval WINTERVAL
+                        weekday interval
+  --datetimelocate {year,month,day,hour,minute,auto,monday,tuesday,wednesday,thursday,friday,saturday,sunday}
+                        xaxis datetime locater
+  --datetimeinterval DATETIMEINTERVAL
+                        xaxis date interval
+  --mtype MTYPE         marker type
+  --scatter             graph type: scatter
+  --line                graph type: line
+  --step                graph type: line + step
+  --bar                 graph type: bar plot
+  --barh                graph type: bar plot
+  --hist                graph type: histogram
+  --box                 graph type: box plot
+  --kde                 graph type: Kernel density estimation
+  --area                graph type: area
+  --pie                 graph type: pie chart
+  --hexbin              graph type: hexbin
+  --joint               graph type: Plotting joint and marginal distributions
+  --pair                graph type: pair plot
+  --style {bmh,classic,dark_background,fast,fivethirtyeight,ggplot,grayscale,seaborn-bright,seaborn-colorblind,seaborn-dark-palette,seaborn-dark,seaborn-darkgrid,seaborn-deep,seaborn-muted,seaborn-notebook,seaborn-paper,seaborn-pastel,seaborn-poster,seaborn-talk,seaborn-ticks,seaborn-white,seaborn-whitegrid,seaborn,Solarize_Light2,tableau-colorblind10,_classic_test}
+                        graph style
+  --lm                  set least square methods line in scatter plot
+  --hue HUE             hue label columns
+  --offlegend           legend switch
+  --legendloc {best,upper right,upper left,lower left,lower right,right,center left,center right,lower center,upper center,center}
+                        legend location
+  --legendloc2 LEGENDLOC2
+                        legend location
+  --adjust ADJUST       space adjust. eg: 0.1,0.8
+  --title TITLE         title
+  --offtitle            disable scatter plot title
+  --spines {zero,center}
+                        set spines(ticks location)
+  --reverse             reverse y axis
+  --xlab XLAB           x axis label
+  --ylab YLAB           y axis label
+  --xlim XLIM           x axis limit
+  --ylim YLIM           y axis limit
+  --ymin YMIN           y axis min
+  --ymax YMAX           y axis max
+  --grid                grid
+  --gridx               grid x-axis
+  --gridy               grid y-axis
+  --logx                logx
+  --logy                logy
+  --logxy               logxy
+  --rot ROT             xlab rotate
+  --linewidth LINEWIDTH
+                        line width
+  --hline HLINE         horizon lines
+  --hlinewidth HLINEWIDTH
+                        horizon line width
+  --hlinecolor HLINECOLOR
+                        horizon line colors
+  --hline0              add y zero line
+  --vline VLINE         vertical lines
+  --vlinecolor VLINECOLOR
+                        vertical line colors
+  --vlinewidth VLINEWIDTH
+                        vorizon line width
+  --hspan HSPAN         fill h-range
+  --hspancolor HSPANCOLOR
+                        fillcolor h-range
+  --hspanalpha HSPANALPHA
+                        fillcolor alpha h-range
+  --vspan VSPAN         fill v-range
+  --vspancolor VSPANCOLOR
+                        fillcolor v-range
+  --vspanalpha VSPANALPHA
+                        fillcolor alpha v-range
+  --today               add today vline
+  --now                 add now datetime vline
+  --seaborn             pair plot
+  --monochrome          monochrome line
+  --mycolormap          my color map
+  --debug               output dataframe
+  --y2                  secondary y axis columns
+  --y2lim Y2LIM         y2 axis limit
+  --logy2               logy2
+  --y2lab Y2LAB         y2 axis label
+  --y2color Y2COLOR     y2 axis color
+  --grep GREP           bar, barhのみ、ヒットしたラベルのバーに色付けする
+  --gcolor GCOLOR       ヒットしたバーの色
+  --gcolor2 GCOLOR2     ヒットしなかったバーの色
+  --xrs XRS             add x-Rs hline
+  --xkcd                xkcd
+```
+
+```powershell
+python pyplot.py --help
+
+EXAMPLES:
+    cat iris.csv | python pyplot.py -d ","
+    cat iris.csv | python pyplot.py -d "," --index
+    cat date.csv | python pyplot.py -d "," --datetime --minterval 2 --rot 90 --dformat "%Y-%m`n(%a)"
+    cat iris.csv | python pyplot.py -d "," --sorta 1,2
+    cat iris.csv | python pyplot.py -d "," --pair --hue 5
+    cat iris.csv | python pyplot.py -d "," --pair --hue 5 --seaborn
+    cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3
+    cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3 --hue 5
+      -> 層別（分類別）に色分けした散布図を描画。
+    cat iris.csv | python pyplot.py -d "," --scatter --x 1 --y 3 --lm
+      -> 散布図に最小二乗法を適用し回帰直線をプロット。同時に線形回帰式及びR^2値を凡例に表示
+    cat iris.csv | self 1 | python pyplot.py -d "," --xrs 1
+      -> 1列目のデータを用いてX-Rs線を引く
+
+    ## fill range
+    cat iris.csv | python pyplot.py -d ","  --vspan 60,80 --vspancolor gray
+
+    cat iris.csv | python pyplot.py -d "," --hist --subplots --layout 2,2
+    python pyplot.py -i iris.csv -d ","
+    python pyplot.py -i iris.csv -d "," --spines "zero"
+        -> グラフ交点ticksをy=0にセット。 --spines "center"で交点を中央にセット。
+    python pyplot.py -i iris.csv -d "," --monochrome
+    python pyplot.py -i iris.csv -d ',' --y2 --y2color "tab:red"
+
+    ## 水平線を引く
+    python pyplot.py -i iris.csv -d ',' --hline 1.3
+    python pyplot.py -i iris.csv -d ',' --hline 3.0,2.0 --hlinecolor r,g
+      -> 水平線を引く。カンマ区切りで複数引けるが、その際は
+         hline, hlinecolorの引数の数を一致させる必要がある、
+         vlineも同じ。
+
+    cat datetime.txt | python pyplot.py --datetime
+    cat datetime.txt | python pyplot.py --datetime --datetimelocate sunday --dformat '%H-%M\n(%a)' --rot 45 --grid
+    cat datetime.txt | python pyplot.py --datetime --datetimelocate day --datetimeinterval 5
+
+    ## legend locate
+    cat iris.csv | python pyplot.py --legendloc2 1,1,1 ## 凡例を外に。
+```
+
+#### `pyplot-pandas.py` - Plot chart using matplotlib and pandas
+
+棒グラフなどのチャートをプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。Wrapper of `pandas plot`. 
+
+`pyplot.py`とはチャートのプロットに`matplotlib`を用いる点は同じだが、`pandas plot`を用いる点が異なる。描画できるチャートの種類は`pyplot.py`よりも少ないが、コードの行数も少なくてシンプル。
+
+- Usage
+    - man: `python pyplot-pandas.py [-h|--help]`
+    - `python pyplot-pandas.py [-h] [-d { ,,,  }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--scatter] [--line] [--step] [--where {pre,post,mid}]`
+- Examples
+    - `cat iris.csv | python pyplot-pandas.py -d ","`
+    - `cat iris.csv | python pyplot-pandas.py -d "," --index`
+    - `cat date.txt | python pyplot-pandas.py --datetime`
+- Dependency
+    - require: `argparse`, `numpy`, `pandas`, `matplotlib.dates`
+
+Usage:
+
+```powershell
+python pyplot-pandas.py --help
+
+usage: pyplot-pandas.py [-h] [-d { ,,,  }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--scatter] [--line] [--step] [--where {pre,post,mid}]
+    [--bar] [--barh] [--hist] [--box] [--kde] [--area] [--pie] [--hexbin] [--joint] [--pair] [--x X] [--y Y]
+    [--hue HUE] [--y2 Y2] [--xname XNAME] [--yname YNAME] [--huename HUENAME] [--y2name Y2NAME] [--col COL]
+    [--by BY] [--colname COLNAME] [--byname BYNAME] [--gridsize GRIDSIZE] [--color COLOR] [--anzu] [--natsume]
+    [--natsumeo] [--nofont] [--pielabel PIELABEL] [--piepercent PIEPERCENT] [--pieborder PIEBORDER]
+    [--pieradius PIERADIUS] [--pierev] [--piestartangle PIESTARTANGLE] [--lm] [--printinfo]
+    [--theme {darkgrid,dark,whitegrid,white,ticks}] [--context {paper,notebook,talk,poster}]
+    [--palette {deep,muted,pastel,bright,dark,colorblind,hls,husl}] [--color_codes] [--font_scale FONT_SCALE]
+    [--size SIZE] [--layout LAYOUT] [--noheader] [--index] [--alpha ALPHA] [--sorta SORTA] [--sortd SORTD]
+    [--datetime] [--dformat DFORMAT] [--yinterval YINTERVAL] [--minterval MINTERVAL] [--dinterval DINTERVAL]
+    [--winterval WINTERVAL]
+    [--datetimelocate {year,month,day,hour,minute,auto,monday,tuesday,wednesday,thursday,friday,saturday,sunday}]
+    [--datetimeinterval DATETIMEINTERVAL]
+    [--style {bmh,classic,dark_background,fast,fivethirtyeight,ggplot,grayscale,seaborn-bright,seaborn-colorblind,seaborn-dark-palette,seaborn-dark,seaborn-darkgrid,seaborn-deep,seaborn-muted,seaborn-notebook,seaborn-paper,seaborn-pastel,seaborn-poster,seaborn-talk,seaborn-ticks,seaborn-white,seaborn-whitegrid,seaborn,Solarize_Light2,tableau-colorblind10,_classic_test}]
+    [--jitter] [--swarm] [--jointkind {scatter,reg,resid,kde,hex}] [--mstyle MSTYLE] [--msize MSIZE]
+    [--mfillcolor MFILLCOLOR] [--medge MEDGE] [--medgecolor MEDGECOLOR] [--colormap COLORMAP] [--mycolormap]
+    [--offcolorbar] [--hatch HATCH] [--linewidth LINEWIDTH] [--hline HLINE] [--hlinewidth HLINEWIDTH]
+    [--hlinecolor HLINECOLOR] [--hline0] [--vline VLINE] [--vlinecolor VLINECOLOR] [--vlinewidth VLINEWIDTH]
+    [--hspan HSPAN] [--hspancolor HSPANCOLOR] [--hspanalpha HSPANALPHA] [--vspan VSPAN] [--vspancolor VSPANCOLOR]
+    [--vspanalpha VSPANALPHA] [--today] [--now] [--legend] [--offlegend]
+    [--legendloc {best,upper right,upper left,lower left,lower right,right,center left,center right,lower center,upper center,center}]
+    [--legendloc2 LEGENDLOC2] [--adjust ADJUST] [--title TITLE] [--xlab XLAB] [--ylab YLAB] [--xlim XLIM]
+    [--ylim YLIM] [--xstep XSTEP] [--ystep YSTEP] [--xstep2 XSTEP2] [--ystep2 YSTEP2] [--xticks XTICKS]
+    [--yticks YTICKS] [--xfmt XFMT] [--yfmt YFMT] [--x10n X10N] [--y10n Y10N] [--grid] [--grid2] [--xrs XRS]
+    [--xrsname XRSNAME] [--subplots] [--reverse] [--sharex] [--sharey] [--logx] [--logy] [--logxy] [--stacked]
+    [--rot ROT] [--fontsize FONTSIZE] [--fontsizet FONTSIZET] [--seaborn] [--monochrome] [--xkcd] [--debug]
+```
+
+Examples:
+
+```powershell
+# 区切りは -d "<separator>"で変更可能。
+# デフォルトで半角スペース区切り入力を期待
+cat iris.csv | python pyplot-pandas.py -d ","
+```
+
+```powershell
+# --indexで、1列目をpandas dataframeのindexとみなす
+cat iris.csv | python pyplot-pandas.py -d "," --index
+```
+
+
+```powershell
+# --datetimeで、1列目をpandas dataframeのdatetime型indexとみなす
+cat date.txt | python pyplot-pandas.py --datetime
+cat date.csv | python pyplot.py -d "," --datetime --minterval 2 --rot 90 --dformat "%Y-%m`n(%a)"
+```
+
+Detailed:
+
+```powershell
+python pyplot-pandas.py --help
+
+Option:
+  -h, --help            show this help message and exit
+  -d { ,,,      }, --delimiter { ,,,    }
+                        line separator(delimiter)
+  -o OUTPUT, --output OUTPUT
+                        output file name
+  -i INPUTFILE, --inputfile INPUTFILE
+                        input file name
+  --dpi DPI             output dpi
+  --scatter             graph type: scatter
+  --line                graph type: line
+  --step                graph type: line + step
+  --where {pre,post,mid}
+                        graph type: line + step config
+  --bar                 graph type: bar plot
+  --barh                graph type: bar plot
+  --hist                graph type: histogram
+  --box                 graph type: box plot
+  --kde                 graph type: Kernel density estimation
+  --area                graph type: area
+  --pie                 graph type: pie chart
+  --hexbin              graph type: hexbin
+  --joint               graph type: Plotting joint and marginal distributions
+  --pair                graph type: pair plot
+  --x X                 x colnum
+  --y Y                 y colnum
+  --hue HUE             hue colnum
+  --y2 Y2               secondary y axis columns
+  --xname XNAME         x colname
+  --yname YNAME         y colname
+  --huename HUENAME     hue colname
+  --y2name Y2NAME       y2 colname
+  --col COL             box colnum: box
+  --by BY               box group by: box
+  --colname COLNAME     box colname: box
+  --byname BYNAME       box group by: box
+  --gridsize GRIDSIZE   gridsize: hexbin
+  --color COLOR         color
+  --anzu                font: anzu
+  --natsume             font: natsume
+  --natsumeo            font: natsume osae
+  --nofont              do not set font
+  --pielabel PIELABEL   label column in pie plot
+  --piepercent PIEPERCENT
+                        add perent label in pie plot
+  --pieborder PIEBORDER
+                        border width in pie plot
+  --pieradius PIERADIUS
+                        radius of pie plot
+  --pierev              reverse label clock in pie plot
+  --piestartangle PIESTARTANGLE
+                        start angle in pie plot
+  --lm                  set least square line in scatter plot
+  --printinfo           print corr and formula
+  --theme {darkgrid,dark,whitegrid,white,ticks}
+                        set seaborn theme
+  --context {paper,notebook,talk,poster}
+                        set seaborn context
+  --palette {deep,muted,pastel,bright,dark,colorblind,hls,husl}
+                        set seaborn palette
+  --color_codes         color_codes
+  --font_scale FONT_SCALE
+                        font scale
+  --size SIZE           w inch, h inch
+  --layout LAYOUT       subplot layout
+  --noheader            noheader data
+  --index               set df.columns[0] as index
+  --alpha ALPHA         alpha betw 0 and 1
+  --sorta SORTA         sort by ascending
+  --sortd SORTD         sort by descending
+  --datetime            set df.columns[0] as datetime
+  --dformat DFORMAT     xaxis datetime formatter
+  --yinterval YINTERVAL
+                        year interval
+  --minterval MINTERVAL
+                        month interval
+  --dinterval DINTERVAL
+                        day interval
+  --winterval WINTERVAL
+                        weekday interval
+  --datetimelocate {year,month,day,hour,minute,auto,monday,tuesday,wednesday,thursday,friday,saturday,sunday}
+                        xaxis datetime locater
+  --datetimeinterval DATETIMEINTERVAL
+                        xaxis date interval
+  --style {bmh,classic,dark_background,fast,fivethirtyeight,ggplot,grayscale,seaborn-bright,seaborn-colorblind,seaborn-dark-palette,seaborn-dark,seaborn-darkgrid,seaborn-deep,seaborn-muted,seaborn-notebook,seaborn-paper,seaborn-pastel,seaborn-poster,seaborn-talk,seaborn-ticks,seaborn-white,seaborn-whitegrid,seaborn,Solarize_Light2,tableau-colorblind10,_classic_test}
+                        graph style
+  --jitter              jitter scatter plot using seaborn
+  --swarm               jitter scatter plot using seaborn
+  --jointkind {scatter,reg,resid,kde,hex}
+                        seaborn jointplot kind
+  --mstyle MSTYLE       line marker style
+  --msize MSIZE         marker size
+  --mfillcolor MFILLCOLOR
+                        marker fill
+  --medge MEDGE         marker edge width
+  --medgecolor MEDGECOLOR
+                        marker edge color
+  --colormap COLORMAP   colormap
+  --mycolormap          my color map
+  --offcolorbar         colorbar switch
+  --hatch HATCH         add hatch in bar plot
+  --linewidth LINEWIDTH
+                        line widths
+  --hline HLINE         horizon lines
+  --hlinewidth HLINEWIDTH
+                        horizon line widths
+  --hlinecolor HLINECOLOR
+                        horizon line colors
+  --hline0              add y zero line
+  --vline VLINE         vertical lines
+  --vlinecolor VLINECOLOR
+                        vertical line colors
+  --vlinewidth VLINEWIDTH
+                        vertical line widths
+  --hspan HSPAN         fill h-range
+  --hspancolor HSPANCOLOR
+                        fillcolor h-range
+  --hspanalpha HSPANALPHA
+                        fillcolor alpha h-range
+  --vspan VSPAN         fill v-range
+  --vspancolor VSPANCOLOR
+                        fillcolor v-range
+  --vspanalpha VSPANALPHA
+                        fillcolor alpha v-range
+  --today               add today vline
+  --now                 add now datetime vline
+  --legend              legend switch
+  --offlegend           legend switch
+  --legendloc {best,upper right,upper left,lower left,lower right,right,center left,center right,lower center,upper center,center}
+                        legend location
+  --legendloc2 LEGENDLOC2
+                        legend location
+  --adjust ADJUST       space adjust. eg: 0.1,0.8
+  --title TITLE         title
+  --xlab XLAB           x axis label
+  --ylab YLAB           y axis label
+  --xlim XLIM           x axis min, max
+  --ylim YLIM           y axis min, max
+  --xstep XSTEP         x axis major interval
+  --ystep YSTEP         y axis major interval
+  --xstep2 XSTEP2       x axis minor interval
+  --ystep2 YSTEP2       y axis minor interval
+  --xticks XTICKS       x axis ticks
+  --yticks YTICKS       y axis ticks
+  --xfmt XFMT           x axis format
+  --yfmt YFMT           y axis format
+  --x10n X10N           x axis format 10^n
+  --y10n Y10N           y axis format 10^n
+  --grid                add major grid
+  --grid2               add major and minor grid
+  --xrs XRS             add x-Rs hline
+  --xrsname XRSNAME     add x-Rs hline
+  --subplots            subplots
+  --reverse             reverse y axis
+  --sharex              subplots share x axis
+  --sharey              subplots share y axis
+  --logx                logx
+  --logy                logy
+  --logxy               logxy
+  --stacked             bar or area stacking
+  --rot ROT             xlab rotate
+  --fontsize FONTSIZE   fontsize
+  --fontsizet FONTSIZET
+                        title fontsize
+  --seaborn             pair plot
+  --monochrome          monochrome line
+  --xkcd                xkcd
+  --debug               output plot option
+```
+
+```powershell
+python pyplot-pandas --help
+
+EXAMPLES:
+    cat iris.csv | python pyplot-pandas.py -d ","
+    cat iris.csv | python pyplot-pandas.py -d "," --index
+    cat date.csv | python pyplot.py -d "," --datetime --minterval 2 --rot 90 --dformat "%Y-%m`n(%a)"
+
+    cat iris.csv | python pyplot-pandas.py -d "," --sorta 1,2
+    cat date.txt | python pyplot-pandas.py --datetime
+
+    cat iris.csv | python pyplot-pandas.py -d "," --bar
+    cat iris.csv | python pyplot-pandas.py -d "," --bar --hatch 3
+
+    cat iris.csv | python pyplot-pandas.py -d "," --line --mstyle 'k-^','r-o','k-D','k--' --msize 5 --mfillcolor None
+
+    cat iris.csv | python pyplot-pandas.py -d "," --step
+    cat iris.csv | python pyplot-pandas.py -d "," --step --where '[pre|mid|post]'
+
+    cat iris.csv | python pyplot-pandas.py -d "," --pair --hue 5
+    cat iris.csv | python pyplot-pandas.py -d "," --pair --hue 5 --seaborn
+
+    cat iris.csv | python pyplot-pandas.py -d "," --scatter
+    cat iris.csv | python pyplot-pandas.py -d "," --scatter --hue 4
+    cat iris.csv | python pyplot-pandas.py -d "," --scatter --x 5 --y 2 --jitter
+    cat iris.csv | python pyplot-pandas.py -d "," --scatter --x 5 --y 2 --jitter --hue 5
+    cat iris.csv | python pyplot-pandas.py -d "," --hist --subplots --layout 2,2
+
+    ## box plot
+    cat iris.csv | python pyplot-pandas.py -d "," --box
+    cat iris.csv | python pyplot-pandas.py -d "," --box --col 1 --by 5
+
+    ## histogram
+    cat iris.csv | python pyplot-pandas.py -d "," --hist
+    cat iris.csv | python pyplot-pandas.py -d "," --hist --alpha 0.5
+    cat iris.csv | python pyplot-pandas.py -d "," --hist --col 1 --by 5
+
+    ## line
+    cat iris.csv | python pyplot-pandas.py -d "," --line
+    cat iris.csv | python pyplot-pandas.py -d "," --line --y 1
+    cat iris.csv | python pyplot-pandas.py -d "," --line --subplots
+
+    ## kde
+    cat iris.csv | python pyplot-pandas.py -d "," --kde
+
+    ## hexbin
+    cat iris.csv | python pyplot-pandas.py -d "," --hexbin
+    cat iris.csv | python pyplot-pandas.py -d "," --hexbin --gridsize 10
+
+    ## pie chart
+    cat iris.csv | head -n 5 | python pyplot-pandas.py -d "," --pie --x 2 --pielabel 1
+    cat iris.csv | head -n 5 | python pyplot-pandas.py -d "," --pie --x 2 --piepercent "%1.1f%%"
+
+    python pyplot-pandas.py -i iris.csv -d ","
+    python pyplot-pandas.py -i iris.csv -d "," --monochrome
+    python pyplot-pandas.py -i iris.csv -d ',' --y2 1
+
+    ## 水平線を引く
+    python pyplot-pandas.py -i iris.csv -d ',' --hline 1 --hlinecolor "tab:red"
+    python pyplot-pandas.py -i iris.csv -d ',' --hline 3.0,2.0 --hlinecolor tab:red,tab:green
+      -> 水平線を引く。カンマ区切りで複数引けるが、その際は
+         hline, hlinecolorの引数の数を一致させる必要がある、
+         vlineも同じ。
+
+    cat iris.csv | python pyplot-pandas.py -d "," --joint --jointkind scatter
+     -> seaborn jointplotの例
+    cat iris.csv | python pyplot-pandas.py -d "," --scatter --x 1 --y 3 --lm
+    cat iris.csv | python pyplot-pandas.py -d "," --scatter --x 1 --y 3 --lm --printinfo
+      -> 散布図に最小二乗法を適用し回帰直線をプロット。同時に線形回帰式及びR^2値を凡例に表示
+
+    cat iris.csv | python pyplot-pandas.py -d "," --xrs 1
+    cat iris.csv | python pyplot-pandas.py -d "," --xrs 1 --hlinewidth 1.2
+      -> 1列目のデータを用いてX-Rs線を引く
+```
+
+
+#### `pyplot-x-rs.py` - Plot X-Rs chart using matplotlib
+
+X-Rs図（チャート）をプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。
+
+- Usage
+    - man: `python pyplot-x-rs.py [-h|--help]`
+    - `python pyplot-x-rs.py [-h] [-d { ,,, }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]`
+- Examples:
+    - `cat iris.csv | python pyplot-x-rs.py --x 2 -d ","`
+- Dependency
+    - require: `argparse`, `numpy`, `pandas`, `matplotlib.dates`
+
+Usage:
+
+```powershell
+python pyplot-x-rs.py --help
+
+usage: pyplot-x-rs.py [-h] [--x X] [--xspan XSPAN] [--linewidth LINEWIDTH] [--hlinewidth HLINEWIDTH] [--ratio] [--rolling ROLLING]
+    [--sigma] [--outval] [-d { ,,,    }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--size SIZE] [--fontsize FONTSIZE]
+    [--fontsizet FONTSIZET] [--xkcd] [--anzu] [--natsume] [--natsumeo] [--dformat DFORMAT] [--yinterval YINTERVAL]
+    [--minterval MINTERVAL] [--dinterval DINTERVAL] [--winterval WINTERVAL] [--layout LAYOUT] [--noheader] [--index]
+    [--datetime]
+    [--style {bmh,classic,dark_background,fast,fivethirtyeight,ggplot,grayscale,seaborn-bright,seaborn-colorblind,seaborn-dark-palette,seaborn-dark,seaborn-darkgrid,seaborn-deep,seaborn-muted,seaborn-notebook,seaborn-paper,seaborn-pastel,seaborn-poster,seaborn-talk,seaborn-ticks,seaborn-white,seaborn-whitegrid,seaborn,Solarize_Light2,tableau-colorblind10,_classic_test}]
+    [--legend]
+    [--legendloc {best,upper right,upper left,lower left,lower right,right,center left,center right,lower center,upper center,center}]
+    [--title TITLE] [--xlim XLIM] [--ylim YLIM] [--grid] [--logx] [--logy] [--logxy] [--rot ROT] [--seaborn]
+    [--monochrome] [--debug]
+```
+
+Examples:
+
+```powershell
+# --x <column-number>で任意の1列についてX-Rs図をプロット
+cat iris.csv | python pyplot-X-Rs.py --x 2 -d ","
+```
+
+### Image processing
+
+
+### Writing
+
