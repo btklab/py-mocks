@@ -445,7 +445,7 @@ D 104.0 67.0
 
 Examples:
 
-##### 電卓として使う
+**電卓として使う**
 
 ```powershell
 
@@ -466,7 +466,7 @@ pysym.py 'type(1.2e2)'
 # 内部でevalを用いているので、こういうことができる
 ```
 
-##### 数式の演算・シンプル化・LaTeX形式変換
+**数式の演算・シンプル化・LaTeX形式変換**
 
 ```powershell
 pysym.py 'x**2 + 2*x + 1'
@@ -482,7 +482,7 @@ pysym.py '(x**2 + 2*x + 1 + y**2).subs([(x,1),(y,2)])'
 # 複数の値の代入はタプルを用いる: 8
 ```
 
-##### 変数オプション-vを活用する
+**変数オプション-vを活用する**
 
 ```powershell
 pysym.py 'x**2 + 2*x + 1 + X*Y' -v "X,Y=sympy.symbols('X Y')"
@@ -511,7 +511,7 @@ pysym.py 'sympy.Eq(a*x**2+b*x+c, (-b + sympy.sqrt(-4*a*c + b**2))/(2*a))' --late
 # latex:  a x^{2} + b x + c = \frac{- b + \sqrt{- 4 a c + b^{2}}}{2 a}
 ```
 
-##### いろいろな演算
+**いろいろな演算**
 
 ```powershell
 pysym.py 'sympy.solve([3*x + 5*y -29, x + y - 7])'
@@ -542,7 +542,7 @@ pysym.py 'sympy.solve([x + 5*y - 2, -3*x + 6*y - 15], [x, y])'
 # 方程式の求解: {x: -3, y: 1}
 ```
 
-##### calc matrix: 行列の演算
+**calc matrix: 行列の演算**
 
 - thanks: [SymPyの使い方10 ～ 行列の定義・操作 - つれづれなる備忘録](https://atatat.hatenablog.com/entry/sympy10_matrix)
 
@@ -599,8 +599,7 @@ pysym.py 'A.rref()' -v 'd=sympy.symbols("d");A=sympy.Matrix([[5, -2, 5], [1, 1, 
 # [0, 1, 5]]), (0, 1))
 ```
 
-
-##### Matplotlibを用いたplot（グラフ描画）
+** Matplotlibを用いたplot（グラフ描画）**
 
 ```powershell
 pysym.py "sympy.plot(sin(x), (x, -2*pi, 2*pi))"
