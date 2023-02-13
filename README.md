@@ -14,10 +14,10 @@ script list:
 cat README.md | grep '^#### ' | grep -o '`[^`]+`' | sort | flat -ofs ", " | Set-Clipboard
 ```
 
-- `pycalc.py`, `pymatcalc.py`, `pyplot-pandas.py`, `pyplot-x-rs.py`, `pyplot.py`
+- `pycalc.py`, `pymatcalc.py`, `pyplot-pandas.py`, `pyplot-x-rs.py`, `pyplot.py`, `pysym.py`
 
 
-コード群にまとまりはないが、事務職（非技術職）な筆者の毎日の仕事（おもに文字列処理）を、より素早くさばくための道具としてのコマンドセットを想定している（毎日使用する関数は10個に満たないが）。
+コード群にまとまりはないが、事務職（非技術職）な筆者の毎日の仕事（おもに文字列処理）を、より素早くさばくための道具としてのコマンドセットを想定している（毎日使用する関数は5個に満たないが）。
 
 基本的に入力としてUTF-8で半角スペース区切り、行指向の文字列データ（テキストオブジェクト）を期待する、主にパターンマッチング処理を行うためのフィルタ群。Windows上でしか動かない関数も、ある。
 
@@ -58,9 +58,6 @@ if ($IsWindows){
 
 各関数の挙動と作った動機と簡単な説明。
 
-### Show functions
-
-None
 
 ### Multipurpose
 
@@ -68,9 +65,9 @@ None
 
 - Usage
     - man: `python pycalc.py -h`
-    - `pycalc.py [-h] [-i INPUTFILE] [-d { ,,,  }] [-m MODULE] [-v VARIABLE] [-n] [-q] [--index] [--datetime] [--nowrap] [--normalize] [--csv] [--tsv] [--ssv] [--max_rows MAX_ROWS] [--max_columns MAX_COLUMNS] [--max_colwidth MAX_COLWIDTH] [--size SIZE] [--debug] formula`
+    - `pycalc.py [-h] [-i INPUTFILE] [-d DELIMITER] [-m MODULE] [-v VARIABLE] [-n] [-q] [--index] [--datetime] [--nowrap] [--normalize] [--csv] [--tsv] [--ssv] [--max_rows MAX_ROWS] [--max_columns MAX_COLUMNS] [--max_colwidth MAX_COLWIDTH] [--size SIZE] [--debug] formula`
 - Example
-    - `python pycalc.py <formula;formura;...>`
+    - `python pycalc.py <formula;formula;...>`
     - `cat iris.csv | python pycalc.py -d "," "df.describe()"`
 - Library
     - require: `argparse`, `numpy`, `pandas`
@@ -95,7 +92,7 @@ python pycalc.py -h
   -h, --help            show this help message and exit
   -i INPUTFILE, --inputfile INPUTFILE
                         input file name
-  -d { ,,,	}, --delimiter { ,,,	}
+  -d DELIMITER, --delimiter DELIMITER
                         line separator(delimiter)
   -m MODULE, --module MODULE
                         import modules
@@ -411,6 +408,214 @@ D 48.0 31.0
 D 104.0 67.0
 ```
 
+#### `pysym.py` - sympy oneliner
+
+[sympy](https://docs.sympy.org/latest/index.html)ワンライナー。
+
+- Usage
+    - man: `python pysym.py -h`
+    - `pysym.py [-h] [-l] [-u] [-s] [--sympify] [--dot] [-m MODULE] [-v VARIABLE] [-i INPUTFILE] [--size SIZE] [--debug]`
+- Example
+    - `pysym.py 'x**2 - 2*x - 15' [--latex|--simplify|--dot] [--sympify]`
+    - `pysym.py 'sympy.factor(x**2 - 2*x - 15)'`
+    - `pysym.py 'sympy.factor(x**2 - 2*x - 15).subs(x,2)'`
+        - 数式をsympyが解釈して出力
+        - `--latex` : latex数式変換
+        - `--dot` : graphviz描画用dot言語変換
+        - `--sympify` : 数式を文字列として渡す。<br />ただし数式中に`=`がある場合はうまく動作しない
+- Options
+    - `-v '<val1>=<str>;<val2>=<str>;...'`で変数に代入できる
+- Dependencies
+    - `sympy`, `argparse`, `numpy`, `matplotlib`
+- Notes
+    - Default settings
+        - `sympy.init_printing(use_unicode=True)`
+        - `x, y, z = sympy.symbols('x y z')`
+        - `a, b, c = sympy.symbols('a b c')`
+        - `import sympy`
+        - `from sympy import symbols`
+        - `from sympy import Eq, solve, diff, integrate, factorial, factor, summation`
+        - `from sympy import sin, cos, tan, atan, log, I, pi, E, exp, sqrt`
+        - `from sympy import Matrix, plot`
+        - `from sympy.printing.dot import dotprint`
+        - `import io, sys, os, re`
+        - `import numpy as np`
+        - `import math`
+        - `import matplotlib.pyplot as plt`
+
+Examples:
+
+##### 電卓として使う
+
+```powershell
+
+pysym.py '1+2'
+# 電卓として使う: 3
+
+pysym.py '1.2e2'
+# 電卓として使う: 120.0
+
+pysym.py 'sympy.factorial(10)'
+# 電卓として使う: 3628800
+
+pysym.py "sympy.expand('(x+y)*(x-y)')"
+# 多項式の展開: x**2 - y**2
+
+pysym.py 'type(1.2e2)'
+# pythonコマンドの実行: <class 'float'>
+# 内部でevalを用いているので、こういうことができる
+```
+
+##### 数式の演算・シンプル化・LaTeX形式変換
+
+```powershell
+pysym.py 'x**2 + 2*x + 1'
+# 数式表示: x**2 + 2*x + 1
+
+pysym.py 'x**2 + 2*x + 1' --latex (-l)
+# latex変換: x^{2} + 2 x + 1
+
+pysym.py '(x**2 + 2*x + 1).subs(x,1)'
+# 値の代入: 4
+
+pysym.py '(x**2 + 2*x + 1 + y**2).subs([(x,1),(y,2)])'
+# 複数の値の代入はタプルを用いる: 8
+```
+
+##### 変数オプション-vを活用する
+
+```powershell
+pysym.py 'x**2 + 2*x + 1 + X*Y' -v "X,Y=sympy.symbols('X Y')"
+# 記号の追加は-vオプションでできる: X*Y + x**2 + 2*x + 1
+
+pysym.py 'x**2 + 2*x + 1 + X*Y*Z' -v "X, Y=sympy.symbols('X Y');Z=sympy.symbols('Z')"
+# -vオプションはセミコロン;区切りで複数指定可能: X*Y*Z + x**2 + 2*x + 1
+
+pysym.py 'f(x)' -v 'def f(x): return x**2'
+# python式に関数定義: x**2
+
+pysym.py 'sympy.solve(sympy.Eq(f(x), g(x)), x)' -v 'def f(x): return x**2 - 1; def g(x): return 4*x - 5'
+# y = x**2 -1 と y = 4*x - 5 が交差または接している点の x 座標: [2]
+↓
+# 解が一つなので1点で接している。その座標は？
+pysym.py '2,f(2)' -v 'def f(x): return x**2 - 1; def g(x): return 4*x - 5;'
+# (2, 3)
+↓
+# 接線の傾き
+pysym.py 'sympy.diff(f(x), x).subs(x, 2)' -v 'def f(x): return x**2 - 1; def g(x): return 4*x - 5;'
+# 4
+
+# 2次方程式の解の公式
+pysym.py 'sympy.Eq(a*x**2+b*x+c, (-b + sympy.sqrt(-4*a*c + b**2))/(2*a))' --latex
+# normal: Eq(a*x**2 + b*x + c, (-b + sqrt(-4*a*c + b**2))/(2*a))
+# latex:  a x^{2} + b x + c = \frac{- b + \sqrt{- 4 a c + b^{2}}}{2 a}
+```
+
+##### いろいろな演算
+
+```powershell
+pysym.py 'sympy.solve([3*x + 5*y -29, x + y - 7])'
+# 連立方程式を解く: {x: 3, y: 4}
+
+pysym.py 'sympy.summation(k, (k, 1, 10) )' -v "k=sympy.symbols('k', integer = True)"
+# 総和を求める: 55
+
+pysym.py 'sympy.factor(sympy.summation(k, (k, 1, N) ))' -v "k, N=sympy.symbols('k N', integer = True)"
+# 総和。上限を文字にしてもいい: N*(N + 1)/2
+
+pysym.py 'f(x)' -v 'def f(x): return x**2'
+# python式に関数定義: x**2
+
+pysym.py 'sympy.factor(x**2 + 2*x + 1)'
+# 因数分解: (x + 1)**2
+
+pysym.py 'sympy.diff(x**2 - 2*x - 15)'
+# 微分: 2*x - 2
+
+pysym.py 'sympy.integrate(x**2 - 2*x - 15)'
+# 積分: x**3/3 - x**2 - 15*x
+
+pysym.py 'sympy.integrate(x**2 - 2*x - 15, (x, 0, 10))'
+# 定積分: 250/3
+
+pysym.py 'sympy.solve([x + 5*y - 2, -3*x + 6*y - 15], [x, y])'
+# 方程式の求解: {x: -3, y: 1}
+```
+
+##### calc matrix: 行列の演算
+
+- thanks: [SymPyの使い方10 ～ 行列の定義・操作 - つれづれなる備忘録](https://atatat.hatenablog.com/entry/sympy10_matrix)
+
+```powershell
+pysym.py 'sympy.Matrix([[a, b], [c, d]])' -v 'a,b,c=sympy.symbols("a b c"); d,e,f=sympy.symbols("d e f")'
+# 行列の定義: Matrix([[a, b], [c, d]])
+
+pysym.py 'sympy.Matrix([x, y])'
+# 列ベクトルの定義: Matrix([[x], [y]])
+
+pysym.py 'sympy.Matrix([[x, y]])'
+# 行ベクトルの定義: Matrix([[x, y]])
+
+pysym.py 'A*B' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]]);B=sympy.Matrix([x, y])'
+# Matrix([[a*x + b*y], [c*x + d*y]])
+
+pysym.py 'A+B' -v 'A=sympy.Matrix([[1,2], [3,4]]);B=sympy.Matrix([[3, 4],[5,6]])'
+# 行列の和: Matrix([[4, 6], [8, 10]])
+
+pysym.py 'A.shape' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 行列の数を取得: (2, 2)
+
+pysym.py 'A.row(0)' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 行列の成分を取得: Matrix([[a, b]])
+
+pysym.py 'A.col(1)' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 行列の成分を取得: Matrix([[b], [d]])
+
+pysym.py 'A.transpose()' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 行列の転置: Matrix([[a, c], [b, d]])
+
+pysym.py 'A.det()' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 行列式（determinant）: a*d - b*c
+
+pysym.py 'A.inv()' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+pysym.py 'A**(-1)' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 逆行列: Matrix([[d/(a*d - b*c), -b/(a*d - b*c)], [-c/(a*d - b*c), a/(a*d - b*c)]])
+
+pysym.py 'A.eigenvals()' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 固有値: {a/2 + d/2 - sqrt(a**2 - 2*a*d + 4*b*c + d**2)/2: 1, a/2 + d/2 + sqrt(a**2 - 2*a*d + 4*b*c + d**2)/2: 1}
+
+pysym.py 'A.eigenvects()' -v 'd=sympy.symbols("d");A=sympy.Matrix([[a, b], [c, d]])'
+# 固有ベクトル:
+# [(a/2 + d/2 - sqrt(a**2 - 2*a*d + 4*b*c + d**2)/2, 1, [Matrix([
+# [-d/c + (a/2 + d/2 - sqrt(a**2 - 2*a*d + 4*b*c + d**2)/2)/c],
+# [                                                         1]])]), (a/2 + d/2 + sqrt(a**2 - 2*a*d + 4*b*c + d**2)/2, 1, [Matrix([
+# [-d/c + (a/2 + d/2 + sqrt(a**2 - 2*a*d + 4*b*c + d**2)/2)/c],
+# [                                                         1]])])]
+
+pysym.py 'A.rref()' -v 'd=sympy.symbols("d");A=sympy.Matrix([[5, -2, 5], [1, 1, 8]])'
+# 階段行列:
+# (Matrix([
+# [1, 0, 3],
+# [0, 1, 5]]), (0, 1))
+```
+
+
+##### Matplotlibを用いたplot（グラフ描画）
+
+```powershell
+pysym.py "sympy.plot(sin(x), (x, -2*pi, 2*pi))"
+pysym.py "sympy.plot(sin(x), (x, -2*pi, 2*pi), title='タイトル', xlabel='横軸')"
+# サインカーブ
+
+pysym.py 'plt.plot(s,t);plt.show()' -v 's=[i for i in range(6)];t=[i**2 for i in s]'
+[<matplotlib.lines.Line2D object at 0x7fe4c0a20670>]
+# matplotlib : plt.show()使用例
+
+pysym.py 'sympy.plot_parametric(cos(x), sin(x), (x, 0, 2*pi))' --size 5,5
+# グラフサイズの指定 --size width,height
+```
+
+
 ### Graph and chart
 
 #### `pyplot.py` - Plot chart using matplotlib
@@ -419,7 +624,7 @@ D 104.0 67.0
 
 - Usage
     - man: `python pyplot.py [-h|--help]`
-    - `python pyplot.py [-h] [-d { ,,, }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]`
+    - `python pyplot.py [-h] [-d DELIMITER] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]`
 - Examples
     - `cat iris.csv | python pyplot.py -d ","`
     - `cat iris.csv | python pyplot.py -d "," --index`
@@ -439,7 +644,7 @@ Usage:
 ```powershell
 python pyplot.py --help
 
-usage: pyplot.py [-h] [-d { ,,, }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]
+usage: pyplot.py [-h] [-d DELIMITER] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]
     [--fontsize FONTSIZE] [--fontsizet FONTSIZET] [--anzu] [--natsume] [--natsumeo] [--nofont] [--self SELF] [--delf DELF]
     [--sorta SORTA] [--sortd SORTD] [--noheader] [--notskipobject] [--index] [--datetime] [--dformat DFORMAT]
     [--yinterval YINTERVAL] [--minterval MINTERVAL] [--dinterval DINTERVAL] [--winterval WINTERVAL]
@@ -502,7 +707,7 @@ python pyplot.py --help
 
 options:
   -h, --help            show this help message and exit
-  -d { ,,,      }, --delimiter { ,,,    }
+  -d DELIMITER, --delimiter DELIMITER
                         line separator(delimiter)
   -o OUTPUT, --output OUTPUT
                         output file name
@@ -675,7 +880,7 @@ EXAMPLES:
 
 - Usage
     - man: `python pyplot-pandas.py [-h|--help]`
-    - `python pyplot-pandas.py [-h] [-d { ,,,  }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--scatter] [--line] [--step] [--where {pre,post,mid}]`
+    - `python pyplot-pandas.py [-h] [-d DELIMITER] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--scatter] [--line] [--step] [--where {pre,post,mid}]`
 - Examples
     - `cat iris.csv | python pyplot-pandas.py -d ","`
     - `cat iris.csv | python pyplot-pandas.py -d "," --index`
@@ -688,7 +893,7 @@ Usage:
 ```powershell
 python pyplot-pandas.py --help
 
-usage: pyplot-pandas.py [-h] [-d { ,,,  }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--scatter] [--line] [--step] [--where {pre,post,mid}]
+usage: pyplot-pandas.py [-h] [-d DELIMITER] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--scatter] [--line] [--step] [--where {pre,post,mid}]
     [--bar] [--barh] [--hist] [--box] [--kde] [--area] [--pie] [--hexbin] [--joint] [--pair] [--x X] [--y Y]
     [--hue HUE] [--y2 Y2] [--xname XNAME] [--yname YNAME] [--huename HUENAME] [--y2name Y2NAME] [--col COL]
     [--by BY] [--colname COLNAME] [--byname BYNAME] [--gridsize GRIDSIZE] [--color COLOR] [--anzu] [--natsume]
@@ -743,7 +948,7 @@ python pyplot-pandas.py --help
 
 Option:
   -h, --help            show this help message and exit
-  -d { ,,,      }, --delimiter { ,,,    }
+  -d DELIMITER, --delimiter DELIMITER
                         line separator(delimiter)
   -o OUTPUT, --output OUTPUT
                         output file name
@@ -993,19 +1198,19 @@ X-Rs図（チャート）をプロットする。入力はパイプライン経�
 
 - Usage
     - man: `python pyplot-x-rs.py [-h|--help]`
-    - `python pyplot-x-rs.py [-h] [-d { ,,, }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]`
+    - `python pyplot-x-rs.py [-h] [-d DELIMITER] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--x X] [--y Y] [--size SIZE] [--layout LAYOUT]`
 - Examples:
     - `cat iris.csv | python pyplot-x-rs.py --x 2 -d ","`
 - Dependency
-    - require: `argparse`, `numpy`, `pandas`, `matplotlib.dates`
+    - require: `argparse`, `numpy`, `pandas`, `matplotlib`
 
-Usage:
+Details:
 
 ```powershell
 python pyplot-x-rs.py --help
 
 usage: pyplot-x-rs.py [-h] [--x X] [--xspan XSPAN] [--linewidth LINEWIDTH] [--hlinewidth HLINEWIDTH] [--ratio] [--rolling ROLLING]
-    [--sigma] [--outval] [-d { ,,,    }] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--size SIZE] [--fontsize FONTSIZE]
+    [--sigma] [--outval] [-d DELIMITER] [-o OUTPUT] [-i INPUTFILE] [--dpi DPI] [--size SIZE] [--fontsize FONTSIZE]
     [--fontsizet FONTSIZET] [--xkcd] [--anzu] [--natsume] [--natsumeo] [--dformat DFORMAT] [--yinterval YINTERVAL]
     [--minterval MINTERVAL] [--dinterval DINTERVAL] [--winterval WINTERVAL] [--layout LAYOUT] [--noheader] [--index]
     [--datetime]
@@ -1019,12 +1224,39 @@ usage: pyplot-x-rs.py [-h] [--x X] [--xspan XSPAN] [--linewidth LINEWIDTH] [--hl
 Examples:
 
 ```powershell
-# --x <column-number>で任意の1列についてX-Rs図をプロット
-cat iris.csv | python pyplot-X-Rs.py --x 2 -d ","
+# --x <column-number>で任意の列に対してX-Rs図をプロット。デフォルトで1列目（--x 1）
+PS > cat iris.csv -Head 10
+sepal_length,sepal_width,petal_length,petal_width,species
+5.1,3.5,1.4,0.2,setosa
+4.9,3.0,1.4,0.2,setosa
+4.7,3.2,1.3,0.2,setosa
+4.6,3.1,1.5,0.2,setosa
+5.0,3.6,1.4,0.2,setosa
+5.4,3.9,1.7,0.4,setosa
+4.6,3.4,1.4,0.3,setosa
+5.0,3.4,1.5,0.2,setosa
+4.4,2.9,1.4,0.2,setosa
+
+cat iris.csv | python pyplot-X-Rs.py -d "," --x 2
 ```
+
+![x-rs image](img/pyplot-x-rs-img01.png)
+
+列名やラベルに日本語を含まない場合は`--xkcd`オプションで手書き風にできる。
+
+```powershell
+# using xkcd
+cat iris.csv | python pyplot-X-Rs.py -d "," --x 2 --xkcd
+```
+
+![x-rs image using xkcd](img/pyplot-x-rs-img02-xkcd.png)
+
+
 
 ### Image processing
 
+None
 
 ### Writing
 
+None

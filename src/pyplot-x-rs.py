@@ -8,7 +8,6 @@
 import io, sys, os
 import re
 import argparse
-from turtle import left, right
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -246,7 +245,10 @@ if __name__ == '__main__':
     ser_x = df[ycolname]
     ser_r = df[ycolname].diff().abs()
     if args.ratio:
-        ser_p_name = 'Ratio(変化率)'
+        if args.xkcd:
+            ser_p_name = 'Ratio(Rate of change)'
+        else:
+            ser_p_name = 'Ratio(変化率)'
         ser_p = df[ycolname].pct_change().abs()
         ser_p.index = df.index
         ser_p = ser_p.rename(ser_p_name)
@@ -259,8 +261,12 @@ if __name__ == '__main__':
     #print(ser_p)
     ser_x.index = df.index
     ser_r.index = df.index
-    ser_x_name = 'X(検査値)'
-    ser_r_name = 'Rs(移動範囲)'
+    if args.xkcd:
+        ser_x_name = 'X(Inspection value)'
+        ser_r_name = 'Rs(Moving range)'
+    else:
+        ser_x_name = 'X(検査値)'
+        ser_r_name = 'Rs(移動範囲)'
     ser_r = ser_r.rename(ser_r_name)
 
     ## calc X-CL,UCL,LCL
@@ -387,7 +393,7 @@ if __name__ == '__main__':
         if args.xkcd:
             titleStr = 'X-Rs Chart -> ' + str(ycolname)
         else:
-            titleStr = 'X-Rs管理図 -> ' + str(ycolname)
+            titleStr = 'X-Rs 管理図 -> ' + str(ycolname)
         plt.suptitle(titleStr)
 
     ## output
