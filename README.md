@@ -11,10 +11,10 @@ script list:
 
 ```powershell
 # one-liner to create function list
-cat README.md | grep '^#### ' | grep -o '`[^`]+`' | sort | flat -ofs ", " | Set-Clipboard
+(cat README.md | sls '^#### \[[^[]+\]').Matches.Value.Replace('#### ','') -join ", " | Set-Clipboard
 ```
 
-- `pycalc.py`, `pymatcalc.py`, `pyplot-pandas.py`, `pyplot-x-rs.py`, `pyplot.py`, `pysym.py`
+- [pycalc.py], [pymatcalc.py], [pysym.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py]
 
 
 コード群にまとまりはないが、事務職（非技術職）な筆者の毎日の仕事（おもに文字列処理）を、より素早くさばくための道具としてのコマンドセットを想定している（毎日使用する関数は5個に満たないが）。
@@ -61,7 +61,9 @@ if ($IsWindows){
 
 ### Multipurpose
 
-#### `pycalc.py` - Cli python-pandas executer
+#### [pycalc.py] - Cli python-pandas executer
+
+[pycalc.py](src/pycalc.py)
 
 - Usage
     - man: `python pycalc.py -h`
@@ -255,7 +257,9 @@ cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species
 
 ### Math
 
-#### `pymatcalc.py` - Cli matrix calculator by connecting with pipes
+#### [pymatcalc.py] - Cli matrix calculator by connecting with pipes
+
+[pymatcalc.py](src/pymatcalc.py)
 
 - Usage
     - man: `python pymatcalc.py [-h]`
@@ -408,7 +412,9 @@ D 48.0 31.0
 D 104.0 67.0
 ```
 
-#### `pysym.py` - sympy oneliner
+#### [pysym.py] - sympy oneliner
+
+[pysym.py](src/pysym.py)
 
 [sympy](https://docs.sympy.org/latest/index.html)ワンライナー。
 
@@ -617,7 +623,9 @@ pysym.py 'sympy.plot_parametric(cos(x), sin(x), (x, 0, 2*pi))' --size 5,5
 
 ### Graph and chart
 
-#### `pyplot.py` - Plot chart using matplotlib
+#### [pyplot.py] - Plot chart using matplotlib
+
+[pyplot.py](src/pyplot.py)
 
 棒グラフなどのチャートをプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。Wrapper of `matplotlib`. 
 
@@ -871,7 +879,9 @@ EXAMPLES:
     cat iris.csv | python pyplot.py --legendloc2 1,1,1 ## 凡例を外に。
 ```
 
-#### `pyplot-pandas.py` - Plot chart using matplotlib and pandas
+#### [pyplot-pandas.py] - Plot chart using matplotlib and pandas
+
+[pyplot-pandas.py](src/pyplot-pandas.py)
 
 棒グラフなどのチャートをプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。Wrapper of `pandas plot`. 
 
@@ -1191,7 +1201,9 @@ EXAMPLES:
 ```
 
 
-#### `pyplot-x-rs.py` - Plot X-Rs chart using matplotlib
+#### [pyplot-x-rs.py] - Plot X-Rs chart using matplotlib
+
+[pyplot-x-rs.py](src/pyplot-x-rs.py)
 
 X-Rs図（チャート）をプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。
 

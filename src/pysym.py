@@ -238,6 +238,7 @@ def get_args():
     parser.add_argument("-s", "--simplify", help="simplify", action="store_true")
     parser.add_argument("--sympify", help="sympify", action="store_true")
     parser.add_argument("--dot", help="output dot file format", action="store_true")
+    parser.add_argument("--eq", help="output formula = answer", action="store_true")
     parser.add_argument("-d", "--delimiter", help="line separator(delimiter)", default=' ',
         choices=[" ", ",","\t"])
     parser.add_argument("-m", "--module", help='<modules>,...', type=tp)
@@ -349,5 +350,16 @@ if __name__ == '__main__':
         if args.dot:
             print(dotprint(sympy.simplify(ans)))
         else:
-            output(ans, simplify=args.simplify, latex=args.latex)
+            if args.eq:
+                fm = re.sub(r'\.subs.*$', '', fml)
+                su = re.sub(r'^.*\.subs\((..*)\).*$', '$1', fml)
+                if args.sympify:
+                    fm = "sympy.sympify('" + fm + "')"
+                fm = eval(fm)
+                ofm = sympy.latex(fm)
+                oline = ofm + " &= " + str(ans)
+                print(su)
+                print(oline)
+            else:
+                output(ans, simplify=args.simplify, latex=args.latex)
 
