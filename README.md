@@ -63,7 +63,7 @@ if ($IsWindows){
 
 #### [pycalc.py] - Cli python-pandas executer
 
-[pycalc.py](src/pycalc.py)
+[pycalc.py]: src/pycalc.py
 
 - Usage
     - man: `python pycalc.py -h`
@@ -259,7 +259,7 @@ cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species
 
 #### [pymatcalc.py] - Cli matrix calculator by connecting with pipes
 
-[pymatcalc.py](src/pymatcalc.py)
+[pymatcalc.py]: src/pymatcalc.py
 
 - Usage
     - man: `python pymatcalc.py [-h]`
@@ -414,7 +414,7 @@ D 104.0 67.0
 
 #### [pysym.py] - sympy oneliner
 
-[pysym.py](src/pysym.py)
+[pysym.py]: src/pysym.py
 
 [sympy](https://docs.sympy.org/latest/index.html)ワンライナー。
 
@@ -625,7 +625,7 @@ pysym.py 'sympy.plot_parametric(cos(x), sin(x), (x, 0, 2*pi))' --size 5,5
 
 #### [pyplot.py] - Plot chart using matplotlib
 
-[pyplot.py](src/pyplot.py)
+[pyplot.py]: src/pyplot.py
 
 棒グラフなどのチャートをプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。Wrapper of `matplotlib`. 
 
@@ -881,7 +881,7 @@ EXAMPLES:
 
 #### [pyplot-pandas.py] - Plot chart using matplotlib and pandas
 
-[pyplot-pandas.py](src/pyplot-pandas.py)
+[pyplot-pandas.py]: src/pyplot-pandas.py
 
 棒グラフなどのチャートをプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。Wrapper of `pandas plot`. 
 
@@ -1203,7 +1203,7 @@ EXAMPLES:
 
 #### [pyplot-x-rs.py] - Plot X-Rs chart using matplotlib
 
-[pyplot-x-rs.py](src/pyplot-x-rs.py)
+[pyplot-x-rs.py]: src/pyplot-x-rs.py
 
 X-Rs図（チャート）をプロットする。入力はパイプライン経由の半角スペース区切り「ヘッダあり」データを期待する。
 
