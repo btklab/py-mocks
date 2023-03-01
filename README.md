@@ -488,6 +488,17 @@ pysym.py '(x**2 + 2*x + 1 + y**2).subs([(x,1),(y,2)])'
 # 複数の値の代入はタプルを用いる: 8
 ```
 
+**LaTeX形式の式と代入結果の同時出力**
+
+```powershell
+pysym.py '(x**2 + 2*x + 1 + y**2).subs([(x,1),(y,2)])' --eq
+\begin{align}
+x^{2} + 2 x + y^{2} + 1 &= 8 \\
+\end{align}
+```
+
+
+
 **変数オプション-vを活用する**
 
 ```powershell

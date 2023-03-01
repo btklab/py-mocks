@@ -19,7 +19,7 @@ from sympy import Matrix, plot
 from sympy.printing.dot import dotprint
 #from sympy.abc import x
 
-_version = "Mon 13 Feb 2023 09:35:43 AM JST"
+_version = "Wed 01 Mar 2023 21:55:00 JST"
 _code    = "MyCommands(LINUX+WINDOWS/PYTHON3/UTF-8)"
 
 ## switch stdio by platform
@@ -103,7 +103,7 @@ def get_args():
     === LaTeX形式の式と代入結果の同時出力 ===
 
     python pysym.py '(x**2 + 2*x + 1 + y**2).subs([(x,1),(y,2)])' --eq
-    begin{align}
+    \begin{align}
     x^{2} + 2 x + y^{2} + 1 &= 8 \\
     \end{align}
 
