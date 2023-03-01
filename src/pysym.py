@@ -19,7 +19,7 @@ from sympy import Matrix, plot
 from sympy.printing.dot import dotprint
 #from sympy.abc import x
 
-_version = "Mon 13 Feb 2023 09:35:43 AM JST"
+_version = "Wed 01 Mar 2023 21:55:00 JST"
 _code    = "MyCommands(LINUX+WINDOWS/PYTHON3/UTF-8)"
 
 ## switch stdio by platform
@@ -100,6 +100,12 @@ def get_args():
     pysym.py '(x**2 + 2*x + 1 + y**2).subs([(x,1),(y,2)])'
     # 複数の値の代入はタプルを用いる: 8
 
+    === LaTeX形式の式と代入結果の同時出力 ===
+
+    python pysym.py '(x**2 + 2*x + 1 + y**2).subs([(x,1),(y,2)])' --eq
+    \begin{align}
+    x^{2} + 2 x + y^{2} + 1 &= 8 \\
+    \end{align}
 
     === 変数オプション-vを活用する ===
 
@@ -226,6 +232,7 @@ def get_args():
     pysym.py 'sympy.plot_parametric(cos(x), sin(x), (x, 0, 2*pi))' --size 5,5
     # グラフサイズの指定
 
+
 """
     parser = argparse.ArgumentParser(description=help_desc_msg,
                     epilog=help_epi_msg,
@@ -351,15 +358,17 @@ if __name__ == '__main__':
             print(dotprint(sympy.simplify(ans)))
         else:
             if args.eq:
-                fm = re.sub(r'\.subs.*$', '', fml)
-                su = re.sub(r'^.*\.subs\((..*)\).*$', '$1', fml)
+                fm = re.sub(r'\.subs.*$', r'', fml)
+                su = re.sub(r'^.*\.subs\((..*)\).*$', r'\1', fml)
                 if args.sympify:
                     fm = "sympy.sympify('" + fm + "')"
                 fm = eval(fm)
                 ofm = sympy.latex(fm)
-                oline = ofm + " &= " + str(ans)
-                print(su)
-                print(oline)
+                oline = ofm + r" &= " + str(ans)
+                #print(su)
+                print(r"\begin{align}")
+                print(oline + r" \\")
+                print(r"\end{align}")
             else:
                 output(ans, simplify=args.simplify, latex=args.latex)
 
