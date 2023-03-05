@@ -14,7 +14,7 @@ script list:
 (cat README.md | sls '^#### \[[^[]+\]').Matches.Value.Replace('#### ','') -join ", " | Set-Clipboard
 ```
 
-- [pycalc.py], [pymatcalc.py], [pysym.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py]
+- [pycalc.py], [pymatcalc.py], [pysym.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py]
 
 
 コード群にまとまりはないが、事務職（非技術職）な筆者の毎日の仕事（おもに文字列処理）を、より素早くさばくための道具としてのコマンドセットを想定している（毎日使用する関数は5個に満たないが）。
@@ -1272,6 +1272,123 @@ cat iris.csv | python pyplot-X-Rs.py -d "," --x 2 --xkcd
 ```
 
 ![x-rs image using xkcd](img/pyplot-x-rs-img02-xkcd.png)
+
+
+#### [pyplot-timeline2.py] - Vertical layout of timeline and plot using matplotlib
+
+[pyplot-timeline2.py]: src/pyplot-timeline2.py
+
+
+タイムラインと折れ線グラフの重ね合わせ。
+date-label形式の時系列データと、date-value形式の時系列データを縦に並べてプロットする。
+
+時系列の値データをグラフでプロットすると、ピークや変化点で「何が起こったか」を分析したくなる。
+そんなとき、時系列の歴史データを垂直方向にならべてくらべると、視覚的に分析しやすいかもしれない。
+
+
+![pyplot-timeline2 image1](img/pyplot-timeline2-img01.png)
+
+
+- Usage
+    - man: `python pyplot-timeline2.py [-h|--help]`
+    - simple: `python pyplot-timeline2.py [-d DELIMITER] <date-label.txt> <date-value.txt>`
+    - all: `python pyplot-timeline2.py [-h] [-l LEVELS] [--x X] [--xrs XRS] [--xspan XSPAN] [--linewidth LINEWIDTH] [--hlinewidth HLINEWIDTH] [--outval] [-d DELIMITER] [-o OUTPUT] [--dpi DPI] [--size SIZE] [--fontsize FONTSIZE] [--fontsizet FONTSIZET] [--xkcd] [--anzu] [--natsume] [--natsumeo] [--dformat DFORMAT] [--yinterval YINTERVAL] [--minterval MINTERVAL] [--dinterval DINTERVAL] [--winterval WINTERVAL] [--colorful] [--ccolor CCOLOR] [--tcolor TCOLOR] [--acolor ACOLOR] [--asize ASIZE] [--afont AFONT] [--vline VLINE] [--vlinecolor VLINECOLOR] [--notskipobject] [--mtype MTYPE] [--line] [--step] [--bar] [--barh] [--grep GREP] [--gcolor GCOLOR] [--gcolor2 GCOLOR2] [--noheader] [--style {bmh,classic,dark_background,fast,fivethirtyeight,ggplot,grayscale,seaborn-bright,seaborn-colorblind,seaborn-dark-palette,seaborn-dark,seaborn-darkgrid,seaborn-deep,seaborn-muted,seaborn-notebook,seaborn-paper,seaborn-pastel,seaborn-poster,seaborn-talk,seaborn-ticks,seaborn-white,seaborn-whitegrid,seaborn,Solarize_Light2,tableau-colorblind10,_classic_test}] [--legend] [--legendloc {best,upper right,upper left,lower left,lower right,right,center left,center right,lower center,upper center,center}] [--title TITLE] [--ylab YLAB] [--xlim XLIM] [--ylim YLIM] [--ymin YMIN] [--ymax YMAX] [--grid] [--rot ROT] [--seaborn] [--monochrome] [--debug] timeline dateval`
+- Examples:
+    - `python pyplot-timeline2.py -d " " date-label.txt date-value.txt`
+    - `cat date-value.txt | python pyplot-timeline2.py -d " " date-label.txt -`
+    - ```python pyplot-timeline2.py date-label.csv date-value.csv -d "," --rot 90 --minterval 3 --grid --xrs 1 --dformat "%Y-%m`n(%a)"```
+- Dependencies:
+    - require: `argparse`, `numpy`, `pandas`, `matplotlib`
+- Reference
+    - [Creating a timeline with lines, dates, and text &#8212; Matplotlib documentation](https://matplotlib.org/stable/gallery/lines_bars_and_markers/timeline.html)
+
+
+
+input-data1 : date-label.txt
+
+```
+date version
+2020-02-26 v2.2.4
+2020-02-26 v3.0.3
+2019-11-10 v3.0.2
+2019-11-10 v3.0.1
+2019-09-18 v3.0.0
+2019-08-10 v2.2.3
+2019-03-17 v2.2.2
+2019-03-16 v2.2.1
+2019-03-06 v2.2.0
+2019-01-18 v2.1.2
+2018-12-10 v2.1.1
+2018-10-07 v2.1.0
+2018-05-10 v2.0.2
+2018-05-02 v2.0.1
+2018-01-17 v2.0.0
+```
+
+input-data2 : date-value.txt
+
+```
+date val1 val2
+2018-01 107.3 272.1
+2018-02 98.1 262.1
+2018-03 304.2 490.9
+2018-04 455.4 631.2
+2018-05 576.5 731.8
+2018-06 670.5 807.6
+2018-07 875.9 1004.1
+2018-08 888.6 1048.4
+2018-09 687.1 803.4
+2018-10 556.2 720.9
+2018-11 376.7 555.8
+2018-12 231.6 387.3
+2019-01 153.4 325.8
+2019-02 177.5 320.0
+2019-03 281.7 460.3
+2019-04 386.7 570.1
+2019-05 596.7 785.9
+2019-06 680.6 827.4
+2019-07 799.2 913.8
+2019-08 872.0 1009.7
+2019-09 762.1 914.0
+2019-10 608.2 754.6
+2019-11 366.5 540.3
+2019-12 238.8 397.2
+2020-01 221.0 381.3
+2020-02 190.9 357.2
+2020-03 304.8 484.4
+2020-04 366.5 544.1
+2020-05 605.8 770.3
+2020-06 706.9 836.6
+```
+
+Examples:
+
+```powershell
+# simple usage
+python pyplot-timeline2.py date-label.txt date-val.txt -d " "
+python pyplot-timeline2.py date-label.txt date-val.txt -d " " -o a.png
+```
+
+![pyplot-timeline2 image1](img/pyplot-timeline2-img01.png)
+
+
+```powershell
+# another example
+python pyplot-timeline2.py date-label.txt date-val.txt --xkcd --rot 90 --vline 2018-08-01,2019-08-01 --ylab "access counter" --title "Release and Access counter"
+
+# or
+
+cat date-val.txt | python pyplot-timeline2.py date-label.txt - --xkcd --rot 90 --vline 2018-08-01,2019-08-01 --ylab "access counter" --title "Release and Access counter"
+```
+
+![pyplot-timeline2 image2](img/pyplot-timeline2-img02.png)
+
+```powershell
+# X-Rs control plot
+python pyplot-timeline2.py date-label.txt date-val.txt --rot 90  --grid --ylab "access counter" --title "Release and Access counter" --legend --xrs 1 --minterval 1
+```
+
+![pyplot-timeline2 image3](img/pyplot-timeline2-img03.png)
 
 
 
