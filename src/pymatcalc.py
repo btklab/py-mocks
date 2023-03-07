@@ -2,7 +2,7 @@
 #coding: utf-8
 
 #
-# pymatcalc - numpyを用いた行列の演算
+# pymatcalc - Calculate matrix
 #
 
 import io, sys, os
@@ -10,7 +10,7 @@ import re
 import argparse
 import numpy as np
 
-_version = "Sun Jun 8 22:49:17 JST 2023"
+_version = "Wed Mar 8 06:53:17 JST 2023"
 _code    = "MyCommands(LINUX+WINDOWS/PYTHON3/UTF-8)"
 
 ## switch stdio by platform
@@ -30,10 +30,11 @@ def raise_error(msg, *arg):
     sys.exit(1)
 
 def get_args():
-    help_desc_msg ="""pymatcalc -- calc matrix using numpy.ndarray
+    help_desc_msg ="""pymatcalc - Calc matrix using numpy.ndarray
 
-    入力は複数行ならば行列、1行だけならばベクトルになる
-    パイプラインを複数つなげれば演算結果を再利用できる
+    If the input has multiple rows, it will be a matrix.
+    If it has only one row, it will be a vector.
+    By connecting multiple pipelines, operation results can be reused.
 
     Inspired by:
         Ryuichi Ueda and CIT Autonomous Robot Lab
@@ -47,15 +48,21 @@ def get_args():
         good: pymatcalc 'A@B'
         good: pymatcalc 'C=A@B'
 
-        formulaに"="を用いる場合は、必ずkeyを指定すること。
+        When using "=" in formula, need to specify key.
 
         good: pymatcalc 'C=np.eye(1, dtype=int)'
         ng:   pymatcalc 'np.eye(1, dtype=int)'
 
     Input format:
-        label val val val
-        label val val val
-        label val val val
+        label val val ...
+        label val val ...
+        label val val ...
+
+        e.g.
+            A 1 1
+            A 2 4
+            B 4 3
+            B 2 1
 
     Functions:
         スカラー積: pymatcalc 'C=A*B'
@@ -196,7 +203,7 @@ def open_file(mode = 'r'):
         try:
             readfile = open(filename, mode)
         except:
-            raise_error("ファイル %s をオープンできません。", filename)
+            raise_error("Could not open file: %s", filename)
     else:
         readfile = sys.stdin
     return readfile
