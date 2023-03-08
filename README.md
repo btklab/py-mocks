@@ -202,9 +202,8 @@ cat iris.ssv |
 
 ```powershell
 # 「species」列のカテゴリごとに要約統計量を出力
-1..4 | %{ cat iris.csv | self $_ NF `
-    | python pycalc.py "df.groupby('species').describe()" --nowrap -d ","
-    }
+cat iris.csv | self $_ NF | python pycalc.py "df.groupby('species').describe()" --nowrap -d ","
+```
 
 ```powershell
 cat iris.csv | python pycalc.py "df[df.columns[:]].groupby('species').describe()" -d "," --nowrap
@@ -290,10 +289,11 @@ ng:   pymatcalc 'np.eye(1, dtype=int)'
 ```
 
 Input format:
+
 ```
-label val val val
-label val val val
-label val val val
+label val val ...
+label val val ...
+label val val ...
 ```
 
 Functions:
