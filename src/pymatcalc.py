@@ -125,8 +125,8 @@ def get_args():
     A 3 4
     B 4 3
     B 2 1
-    C 4.0 6.0
-    C 6.0 4.0
+    C 4.0 3.0
+    C 4.0 4.0
 
     determinant:
     $ cat matrix | python pymatcalc.py 'C=np.linalg.det(A)*np.eye(1)'
@@ -151,7 +151,6 @@ def get_args():
 
     chain calc using pipe:
     $ cat matrix | python pymatcalc.py 'C=A@B' | python pymatcalc.py 'D=A@C'
-    $ cat matrix | python pymatcalc.py 'C=A@(A@B)'
     A 1 2
     A 3 4
     B 4 3
@@ -160,6 +159,14 @@ def get_args():
     C 20.0 13.0
     D 48.0 31.0
     D 104.0 67.0
+
+    $ cat matrix | python pymatcalc.py 'C=A@(A@B)'
+    A 1 2
+    A 3 4
+    B 4 3
+    B 2 1
+    C 48.0 31.0
+    C 104.0 67.0
     """
     parser = argparse.ArgumentParser(description=help_desc_msg,
                     epilog=help_epi_msg,
