@@ -203,8 +203,8 @@ def get_args():
     parser.add_argument('--hlinewidth', help='horizon line width', default=1, type=float)
 
     parser.add_argument('--outval', help='output values', action="store_true")
-    parser.add_argument('-d', '--delim', help='data separator(delimiter)', default=' ',
-        choices=[' ', ',','\t'])
+    parser.add_argument('-d', '--delim', help='data separator(delimiter)', default=r' ',
+        choices=[r' ', r',', r'\t'])
     parser.add_argument("-o", "--output", help="output file name", type=str)
     parser.add_argument('--dpi', help='output dpi', default=100, type=int)
     

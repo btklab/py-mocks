@@ -154,8 +154,8 @@ def get_args():
     td = lambda x:list(map(date_type, x.split(',')))
     td2 = lambda x:list(map(date_type2, x.split(',')))
 
-    parser.add_argument('-d', '--delimiter', help='line separator(delimiter)', default=' ',
-        choices=[' ', ',','\t'], type=str)
+    parser.add_argument('-d', '--delimiter', help='line separator(delimiter)', default=r' ',
+        choices=[r' ', r',', r'\t'], type=str)
     parser.add_argument("-o", "--output", help="output file name", type=str)
     parser.add_argument("-i", "--inputfile", help="input file name", type=str)
     parser.add_argument('--dpi', help='output dpi', default=100, type=int)

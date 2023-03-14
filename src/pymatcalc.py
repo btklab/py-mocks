@@ -177,7 +177,8 @@ def get_args():
     parser.add_argument("-i", "--inputfile", help="input file name", type=str)
     parser.add_argument("-q", "--quiet", help="print as it is", action="store_true")
     parser.add_argument("-t", "--dtype", help="array data type", default='float', type=str)
-    parser.add_argument("-d", "--delimiter", help="line separator(delimiter)", default=' ')
+    parser.add_argument("-d", "--delimiter", help="line separator(delimiter)", default=r' ',
+        choices=[r" ", r",", r"\t"])
     parser.add_argument("-V", "--version", help="version", action="version", version=_version)
     args = parser.parse_args()
     return(args)
