@@ -79,8 +79,8 @@ def get_args():
     parser.add_argument('--rolling', help='diff rolling window num', type=int)
     parser.add_argument('--sigma', help='calc X-UCL,LCL using 3sigma', action="store_true")
     parser.add_argument('--outval', help='output values', action="store_true")
-    parser.add_argument('-d', '--delimiter', help='line separator(delimiter)', default=' ',
-        choices=[' ', ',','\t'])
+    parser.add_argument('-d', '--delimiter', help='line separator(delimiter)', default=r' ',
+        choices=[r' ', r',', r'\t'])
     parser.add_argument("-o", "--output", help="output file name", type=str)
     parser.add_argument("-i", "--inputfile", help="input file name", type=str)
     parser.add_argument('--dpi', help='output dpi', default=100, type=int)

@@ -166,8 +166,8 @@ def get_args():
     sp = lambda x:list(map(str, x.split(';')))
     parser.add_argument("formula", help="python script", type=str)
     parser.add_argument("-i", "--inputfile", help="input file name", type=str)
-    parser.add_argument("-d", "--delimiter", help="line separator(delimiter)", default=' ',
-        choices=[" ", ",","\t"])
+    parser.add_argument("-d", "--delimiter", help="line separator(delimiter)", default=r' ',
+        choices=[r" ", r",", r"\t"])
     parser.add_argument("-m", "--module", help='import modules', type=tp)
     parser.add_argument("-v", "--variable", help='<variable>=<string>', type=sp)
     parser.add_argument("-n", "--noheader", help="no header", action="store_true")

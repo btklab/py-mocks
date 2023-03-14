@@ -246,8 +246,8 @@ def get_args():
     parser.add_argument("--sympify", help="sympify", action="store_true")
     parser.add_argument("--dot", help="output dot file format", action="store_true")
     parser.add_argument("--eq", help="output formula = answer", action="store_true")
-    parser.add_argument("-d", "--delimiter", help="line separator(delimiter)", default=' ',
-        choices=[" ", ",","\t"])
+    parser.add_argument("-d", "--delimiter", help="line separator(delimiter)", default=r' ',
+        choices=[r" ", r",", r"\t"])
     parser.add_argument("-m", "--module", help='<modules>,...', type=tp)
     parser.add_argument("-v", "--variable", help='<variable>=<string>;...', type=sp)
     parser.add_argument("-i", "--inputfile", help='input from data file', type=str)

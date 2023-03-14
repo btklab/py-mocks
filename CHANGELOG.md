@@ -9,7 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Fixed: [pymatcalc.py] examples
+- Fixed delimiter to use raw string [catcsv.py], [pycalc.py], [pymatcalc.py], [pyplot-pandas.py], [pyplot-timeline2.py], [pyplot-x-rs.py], [pyplot.py], [pysym.py]
+- Fixed examples [pymatcalc.py] 
 
 ### Added
 
