@@ -10,20 +10,18 @@ A mock-up cli script set of [Welcome to Python.org](https://www.python.org/) tha
 script list:
 
 ```powershell
-# one-liner to create function list
+# one-liner to create function list for PowerShell
 (cat README.md | sls '^#### \[[^[]+\]').Matches.Value.Replace('#### ','') -join ", " | Set-Clipboard
 ```
 
 - [pycalc.py], [pymatcalc.py], [pysym.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py]
 
 
-コード群にまとまりはない。事務職（非技術職）な筆者の毎日の仕事（おもに文字列処理）を、より素早くさばくための道具としてのコマンドセットを想定している（毎日使用する関数は5個に満たないが）。
-
-基本的に入力としてUTF-8で半角スペース区切り、行指向の文字列データ（テキストオブジェクト）を期待する、主にパターンマッチング処理を行うためのフィルタ群。Windows上でしか動かない関数も、ある。
+主に現実世界の不定形文字列に対してパターンマッチング処理を行うためのフィルタ群。基本的な入力として、UTF-8＋半角スペース区切り＋行指向のパイプライン経由文字列データ（テキストオブジェクト）を期待する。
 
 `src`下のファイルは1ファイル1関数。基本的に他の関数には依存しないようにしているので、関数ファイル単体を移動して利用することもできる。（一部の関数は他の関数ファイルに依存しているものもある）
 
-**充分なエラー処理をしていない**モックアップ。
+**充分なエラー処理をしていない**モックアップ。事務職（非技術職）な筆者の毎日の仕事（おもに文字列処理）を、簡単便利に楽しくさばくための道具としてのコマンドセット。
 
 
 ## Install functions
@@ -38,6 +36,7 @@ script list:
 関数実行前にカレントプロセスのエンコードを`UTF-8`にしておくとよい。
 
 ```powershell
+# for PowerShell
 # install favorite functions for japanese environment
 # set encode
 if ($IsWindows){
@@ -50,6 +49,7 @@ if ($IsWindows){
 ```
 
 ```powershell
+# for PowerShell
 # or sourcing dot files
 . path/to/py-mocks/operator.ps1
 ```
