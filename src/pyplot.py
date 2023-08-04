@@ -21,6 +21,9 @@ plt.rcParams['font.family'] = 'sans-serif'
 if os.name == 'nt':
     ## on windows
     plt.rcParams['font.sans-serif'] = ['IPAexGothic', 'BIZ UDGothic', 'MS Gothic', 'Yu Gothic', 'Noto Sans CJK JP']
+elif os.name == 'posix':
+    ## on linux
+    plt.rcParams['font.sans-serif'] = ['IPAexGothic', 'Noto Sans CJK JP']
 plt.rcParams['pdf.fonttype'] = 42
 plt.rcParams['ps.fonttype']  = 42
 #plt.rcParams['font.family'] = 'Times New Roman' #全体のフォントを設定
@@ -77,8 +80,14 @@ def date_type2(date_str):
 
 def get_args():
     help_desc_msg ="""pyplot -- data visualization using matplotlib
+
     default behavior is to read data form stdin
     if set -i option, read data from file
+
+    In the Linux(Ubuntu) environment, if you want to use Japanese fonts for column name or title, install the fonts in advance.
+
+    bash
+    $ sudo apt install fonts-ipaexfont
 
     pandasのplotを使用せずにplotする。
     微修正や拡張がよりしやすいはず。

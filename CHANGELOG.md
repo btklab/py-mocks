@@ -7,60 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Changed
+- NA
 
-- None
+## [1.2.2]
 
-### Added
-
-- None
+- Changed [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py] Specify Japanese font family in Linux environment.
 
 
 ## [1.2.1]
 
-### Changed
-
-- Fixed delimiter to use raw string [catcsv.py], [pycalc.py], [pymatcalc.py], [pyplot-pandas.py], [pyplot-timeline2.py], [pyplot-x-rs.py], [pyplot.py], [pysym.py]
+- Fixed [catcsv.py], [pycalc.py], [pymatcalc.py], [pyplot-pandas.py], [pyplot-timeline2.py], [pyplot-x-rs.py], [pyplot.py], [pysym.py] Fixed delimiter to use raw string
 - Fixed examples [pymatcalc.py] 
 - Updated [README.md]
-
-### Added
-
 - Added Pester tests and GitHub workflows
 
 
 ## [1.2.0]
 
-### Added
-
 - Added [pyplot-timeline2.py] function
 
-
 ## [1.1.0] - 2023-02-28
-
-### Added
 
 - Added [pysym.py] Output the expression and the result of assignment at the same time
 
 ## [1.0.0] - 2023-02-28
 
-### Changed
-
 - Fix [README.md] section links
-
-### Added
-
 - Added [CHANGELOG.md]
 
 
 ## [0.1.0] - 2023-02-28
 
-### Changed
-
 - Changed [README.md]
-
-### Added 
-
 - Added [pycalc.py], [pymatcalc.py], [pysym.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py]
 
 
@@ -76,7 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [CHANGELOG.md]: blob/main/CHANGELOG.md
 
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.2.1..HEAD
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.2.2..HEAD
+[1.2.2]: https://github.com/btklab/py-mocks/releases/tag/1.2.1
 [1.2.1]: https://github.com/btklab/py-mocks/releases/tag/1.2.1
 [1.2.0]: https://github.com/btklab/py-mocks/releases/tag/1.2.0
 [1.1.0]: https://github.com/btklab/py-mocks/releases/tag/1.1.0
