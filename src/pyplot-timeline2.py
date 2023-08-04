@@ -20,6 +20,9 @@ plt.rcParams['font.family'] = 'sans-serif'
 if os.name == 'nt':
     ## on windows
     plt.rcParams['font.sans-serif'] = ['IPAexGothic', 'BIZ UDGothic', 'MS Gothic', 'Yu Gothic', 'Noto Sans CJK JP']
+elif os.name == 'posix':
+    ## on linux
+    plt.rcParams['font.sans-serif'] = ['IPAexGothic', 'Noto Sans CJK JP']
 plt.rcParams['pdf.fonttype'] = 42
 plt.rcParams['ps.fonttype'] = 42
 
