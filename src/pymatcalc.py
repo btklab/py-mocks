@@ -271,6 +271,10 @@ if __name__ == '__main__':
     ## execute formula and print answer
     ans = eval(formula)
     if args.quiet:
-        print(ans)
+        pass
+        #print(ans)
     else:
         print_matrix(fkey, ans)
+
+    sys.exit(0)
+
