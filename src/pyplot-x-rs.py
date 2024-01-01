@@ -251,7 +251,7 @@ if __name__ == '__main__':
         if args.xkcd:
             ser_p_name = 'Ratio(Rate of change)'
         else:
-            ser_p_name = 'Ratio(変化率)'
+            ser_p_name = 'Ratio(Rate of change)'
         ser_p = df[ycolname].pct_change().abs()
         ser_p.index = df.index
         ser_p = ser_p.rename(ser_p_name)
@@ -268,8 +268,8 @@ if __name__ == '__main__':
         ser_x_name = 'X(Inspection value)'
         ser_r_name = 'Rs(Moving range)'
     else:
-        ser_x_name = 'X(検査値)'
-        ser_r_name = 'Rs(移動範囲)'
+        ser_x_name = 'X(Inspection value)'
+        ser_r_name = 'Rs(Moving range)'
     ser_r = ser_r.rename(ser_r_name)
 
     ## calc X-CL,UCL,LCL
@@ -396,7 +396,7 @@ if __name__ == '__main__':
         if args.xkcd:
             titleStr = 'X-Rs Chart -> ' + str(ycolname)
         else:
-            titleStr = 'X-Rs 管理図 -> ' + str(ycolname)
+            titleStr = 'X-Rs Chart -> ' + str(ycolname)
         plt.suptitle(titleStr)
 
     ## output
