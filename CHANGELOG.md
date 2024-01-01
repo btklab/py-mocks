@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - NA
 
+## [1.3.0] - 2024-01-01
+
+- Added: [Get-PeriodicTable.py] script
+- Added: [Get-MolecularMass.py] script
+- Added: [Calc-ChemWeightRL.py] script
+- Added: [Calc-ChemWeightLR.py] script
+
 ## [1.2.3] - 2024-01-01
 
 - Changed: [pyplot-x-rs.py] graph title in English
@@ -57,8 +64,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [README.md]: blob/main/README.md
 [CHANGELOG.md]: blob/main/CHANGELOG.md
 
+[Get-PeriodicTable.py]: src/Get-PeriodicTable.py
+[Get-MolecularMass.py]: src/Get-MolecularMass.py
+[Calc-ChemWeightRL.py]: src/Calc-ChemWeightRL.py
+[Calc-ChemWeightLR.py]: src/Calc-ChemWeightLR.py
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.2.3..HEAD
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.3.0..HEAD
+[1.3.0]: https://github.com/btklab/py-mocks/releases/tag/1.3.0
 [1.2.3]: https://github.com/btklab/py-mocks/releases/tag/1.2.3
 [1.2.2]: https://github.com/btklab/py-mocks/releases/tag/1.2.1
 [1.2.1]: https://github.com/btklab/py-mocks/releases/tag/1.2.1
