@@ -260,6 +260,14 @@ cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species
 cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species'];df.query('sl > 5.0 and sw < 2.5')"
 ```
 
+Solve simultaneous equations
+
+```powershell
+echo 1 | python pycalc.py 'L=[[3/4,5/2], [-2,1]];R=[-6,-7];np.linalg.solve(L, R)'
+[ 2. -3.]
+```
+
+
 ### Mathematics
 
 #### [pymatcalc.py] - Cli matrix calculator by connecting with pipes
@@ -321,6 +329,8 @@ Functions:
 # ベクトル内積: pymatcalc 'np.inner(A, B)'
 # ベクトル外積: pymatcalc 'np.outer(A, B)'
 # ランダム行列の生成: 'C=np.random.randint(-10,10,size=(3,3))'
+
+# 連立方程式を解く: pymatcalc 'C=np.linalg.inv(L)@R'
 ```
 
 EXAMPLES:
@@ -417,6 +427,41 @@ C 20.0 13.0
 D 48.0 31.0
 D 104.0 67.0
 ```
+
+Solve simultaneous equations
+
+```powershell
+cat matrix
+L 1 1
+L 2 3
+R 2
+R 5
+```
+
+`Invert` Left and `@` Right
+
+```
+cat matrix | python pymatcalc.py 'ANS = np.linalg.inv(L) @ R'
+L 1 1
+L 2 4
+R 9
+R 22
+ANS 7.0
+ANS 2.0
+```
+
+or use `np.linalg.solve(Left, Right)`
+
+```
+cat matrix | python pymatcalc.py 'ANS = np.linalg.solve(L, R)'
+L 1 1
+L 2 4
+R 9
+R 22
+ANS 7.0
+ANS 2.0
+```
+
 
 #### [pysym.py] - sympy oneliner
 

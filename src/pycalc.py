@@ -157,6 +157,9 @@ def get_args():
     cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species'];df.query('sl > 5.0 & sw < 2.5')"
     cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species'];df.query('sl > 5.0 and sw < 2.5')"
 
+    === solve simultaneous equations ===
+    echo 1 | python pycalc.py 'L=[[3/4,5/2], [-2,1]];R=[-6,-7];np.linalg.solve(L, R)'
+    [ 2. -3.]
     """
     parser = argparse.ArgumentParser(description=help_desc_msg,
                     epilog=help_epi_msg,
