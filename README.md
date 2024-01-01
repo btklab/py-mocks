@@ -1,5 +1,12 @@
 # py-mocks
 
+```markdown
+>  ____  _  _        _    _   ___    ___  _  _  ____ 
+> |  _ \( \/ ) ____ | \  / | / _ \  / __)| |/ )/  __)
+> |  __/ \  / (____)|  \/  |( (_) )( (__ |   ( \__  \
+> |_|    (__)       |_|  |_| \___/  \___)|_|\_)(____/
+```
+
 A mock-up cli script set of [Welcome to Python.org](https://www.python.org/) that filter text-object input from the pipeline(stdin) and return text-object.
 
 - For use in UTF-8 Japanese environments on windows.
@@ -10,12 +17,11 @@ A mock-up cli script set of [Welcome to Python.org](https://www.python.org/) tha
 script list:
 
 ```powershell
-# one-liner to create function list for PowerShell
+# One-liner to create function list for PowerShell
 (cat README.md | sls '^#### \[[^[]+\]').Matches.Value.Replace('#### ','') -join ", " | Set-Clipboard
 ```
 
-- [pycalc.py], [pymatcalc.py], [pysym.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py]
-
+- [pycalc.py], [pymatcalc.py], [pysym.py], [Get-PeriodicTable.py], [Get-MolecularMass.py], [Calc-ChemWeightRL.py], [Calc-ChemWeightLR.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py]
 
 主に現実世界の不定形文字列に対してパターンマッチング処理を行うためのフィルタ群。基本的な入力として、UTF-8＋半角スペース区切り＋行指向のパイプライン経由文字列データ（テキストオブジェクト）を期待する。
 
@@ -254,7 +260,7 @@ cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species
 cat iris.csv | python pycalc.py -d "," "df.columns=['sl','sw','pl','pw','species'];df.query('sl > 5.0 and sw < 2.5')"
 ```
 
-### Math
+### Mathematics
 
 #### [pymatcalc.py] - Cli matrix calculator by connecting with pipes
 
@@ -629,6 +635,599 @@ pysym.py 'plt.plot(s,t);plt.show()' -v 's=[i for i in range(6)];t=[i**2 for i in
 
 pysym.py 'sympy.plot_parametric(cos(x), sin(x), (x, 0, 2*pi))' --size 5,5
 # グラフサイズの指定 --size width,height
+```
+
+### Chemistry
+
+#### [Get-PeriodicTable.py] - Get Element data using pymatgen
+
+[Get-PeriodicTable.py]: src/Get-PeriodicTable.py
+
+- Usage:
+    - man: `python Get-PeriodicTable.py [-h]`
+    - `Get-PeriodicTable.py [-f Element] [--raw] [--json] [-s] [-p] [-a] [-i ITEM] [-pad PADDING] [-h]`
+    - `"Element" | Get-PeriodicTable.py [--raw] [--json] [-s] [-p] [-a] [-i ITEM] [-pad PADDING] [-h]`
+    - Windows
+        - `python Get-PeriodicTable.py -f "<Element>, <Element>, ..."`
+        - `"<Element>, <Element>, ..." | python Get-PeriodicTable.py`
+- Dependency:
+    - pymatgen
+        - https://pymatgen.org/
+    - GitHub - materialsproject/pymatgen
+        - https://github.com/materialsproject/pymatgen
+        - https://pymatgen.org/pymatgen.core.html#module-pymatgen.core
+- Install module:
+    - https://github.com/materialsproject/pymatgen#installation
+        - e.g. `python -m pip install pymatgen`
+- Links:
+    - Calc-ChemWeightRL.py, Calc-ChemWeightLR.py, Get-PeriodicTable.py, Get-MolecularMass.py
+
+Options:
+
+```
+-h, --help            show this help message and exit
+-f FORMULA, --formula FORMULA
+                    molecular formula
+--raw                 output json as-is
+--json                output json
+-s, --short           output short data
+-p, --pretty          output pretty data
+-a, --all             output all data
+-i ITEM, --item ITEM  select item
+-pad PADDING, --padding PADDING
+                    display name padding
+```
+
+Example: get specified items (Case sensitive)
+
+```powershell
+python Get-PeriodicTable.py -f 'Cu,Ag,H' -i "Name, Atomic mass, Boiling point"
+```
+
+Output:
+
+```yaml
+Name              : Copper
+Atomic mass       : 63.546
+Boiling point     : 3200 K
+
+Name              : Silver
+Atomic mass       : 107.8682
+Boiling point     : 2435 K
+
+Name              : Hydrogen
+Atomic mass       : 1.00794
+Boiling point     : 20.28 K
+```
+
+Example: get short data
+
+```powershell
+"Fe" | python Get-PeriodicTable.py
+```
+
+Output:
+
+```yaml
+Atomic no         : 26
+Name              : Iron
+Atomic mass       : 55.845
+Atomic radius     : 1.4
+Boiling point     : 3134 K
+Critical temperature : no data K
+Density of solid  : 7874 kg m<sup>-3</sup>
+ICSD oxidation states : [2, 3]
+Ionization energies : [7.9024681, 16.19921, 30.651, 54.91, 75.0, 98.985, 124.976, 151.06, 233.6, 262.1, 290.9, 330.8, 361.0, 392.2, 456.2, 489.312, 1262.7, 1357.8, 1460.0, 1575.6, 1687.0, 1798.4, 1950.4, 2045.759, 8828.1879, 9277.6818]
+IUPAC ordering    : 64
+Liquid range      : 1323 K
+Melting point     : 1811 K
+Molar volume      : 7.09 cm<sup>3</sup>
+Oxidation states  : [-2, -1, 1, 2, 3, 4, 5, 6]
+Superconduction temperature : no data K
+Thermal conductivity : 80 W m<sup>-1</sup> K<sup>-1</sup>
+Van der waals radius : 2.04
+Youngs modulus    : 211 GPa
+```
+
+Example: get pretty data
+
+```powershell
+"Fe" | python Get-PeriodicTable.py --pretty
+```
+
+Output:
+
+```yaml
+Atomic no         : 26
+Name              : Iron
+Atomic mass       : 55.845
+Atomic radius     : 1.4
+Boiling point     : 3134 K
+Critical temperature : no data K
+Density of solid  : 7874 kg m<sup>-3</sup>
+ICSD oxidation states : [2, 3]
+Ionization energies : [7.9024681, 16.19921, 30.651, 54.91, 75.0, 98.985, 124.976, 151.06, 233.6, 262.1, 290.9, 330.8, 361.0, 392.2, 456.2, 489.312, 1262.7, 1357.8, 1460.0, 1575.6, 1687.0, 1798.4, 1950.4, 2045.759, 8828.1879, 9277.6818]
+IUPAC ordering    : 64
+is_actinoid       : False
+is_alkali_metal   : False
+is_alkali_earth_metal : False
+is_chalcogen      : False
+is_halogen        : False
+is_lanthanoid     : False
+is_metal          : True
+is_metalloid      : False
+is_noble_gas      : False
+is_post_transition_metal : False
+is_quadrupolar    : False
+is_rare_earth_metal : False
+is_transition_metal : True
+Liquid range      : 1323 K
+Melting point     : 1811 K
+Molar volume      : 7.09 cm<sup>3</sup>
+Oxidation states  : [-2, -1, 1, 2, 3, 4, 5, 6]
+Superconduction temperature : no data K
+Thermal conductivity : 80 W m<sup>-1</sup> K<sup>-1</sup>
+Van der waals radius : 2.04
+Youngs modulus    : 211 GPa
+reference         : https://pymatgen.org/pymatgen.core.html
+search_bing       : https://www.bing.com/search?q=Iron
+search_google     : https://www.google.com/search?q=Iron
+search_wiki       : https://en.wikipedia.org/wiki/Iron
+```
+
+Example: output all data
+
+```powershell
+"Fe" | python Get-PeriodicTable.py --all
+```
+
+Example: Output as Json and convert to hashtable using PowerShell 7
+
+```powershell
+"Fe" | python Get-PeriodicTable.py --raw | ConvertFrom-Json -AsHashtable    
+```
+    
+
+#### [Get-MolecularMass.py] - Get molecular data using pymatgen
+
+[Get-MolecularMass.py]: src/Get-MolecularMass.py
+
+- Usage:
+    - man: `python Get-MolecularMass.py [-h]`
+    - `Get-MolecularMass.py [-h] [-f FORMULA] [-p PROCESS] [-e END] [-b BEGIN] [-skip SKIP] [-r] [--replace REPLACE] [-s] [-pad PADDING] [-o]`
+        - `'<composition>, <composition>, ...' | python Get-MolecularMass.py`
+        - `python Get-MolecularMass.py -f '<composition>, <composition>, ...'`
+- Dependency:
+    - pymatgen
+        - https://pymatgen.org/
+    - GitHub - materialsproject/pymatgen
+        - https://github.com/materialsproject/pymatgen
+        - https://pymatgen.org/pymatgen.core.html#module-pymatgen.core
+- Install module:
+    - https://github.com/materialsproject/pymatgen#installation
+        - e.g. `python -m pip install pymatgen`
+- Links:
+    - Calc-ChemWeightRL.py, Calc-ChemWeightLR.py, Get-PeriodicTable.py, Get-MolecularMass.py
+
+Tips:
+
+Each molecular weight is stored in the variables `M<int>`, `N<int>`.
+`<int>` is assigned 1, 2, 3,... in the order of read molecules.
+
+- `M<int>` is Molecular weight for each record.
+- `N<int>` is Molecular name for each record.
+
+Calculations using molecular weight can be performed using this variable with the following options:
+
+```
+--begin   "<exp;exp;...>"
+--process "<exp;exp;...>"
+--end     "<exp;exp;...>"
+```
+
+In the `--process` option, the `#` symbol is assigned 1,2,3,... in the order of molecules read.
+
+
+Options:
+
+```
+-h, --help            show this help message and exit
+-f FORMULA, --formula FORMULA
+                molecular formula
+-p PROCESS, --process PROCESS
+                run expression for each material
+-e END, --end END     run expression after output all materials
+-b BEGIN, --begin BEGIN
+                run expression before read materials
+-skip SKIP, --skip SKIP
+                skip applying expression to first record
+-r, --remove_charges  remove charges from composition
+--replace REPLACE     replace element using dictionary
+-s, --short           short output
+-pad PADDING, --padding PADDING
+                display name padding
+-o, --only            output only expression
+```
+
+Examples: Using PowerShell on Windows:
+
+```powershell
+"LiFePO4, H4O2, CH2(SO4)2" | python Get-MolecularMass.py --short
+```
+
+Output:
+
+```yaml
+name              : LiFePO4
+name_reduced_i    : LiFePO4, 1.0
+chem_system       : Fe-Li-O-P
+molar_mass        : 157.7574 (g/mol)
+as_dict           : {'Li': 1.0, 'Fe': 1.0, 'P': 1.0, 'O': 4.0}
+fractional_comp   : Li0.14285714 Fe0.14285714 P0.14285714 O0.57142857
+set_variable      : M1 = 157.757362 (g/mol)
+
+name              : H4O2
+name_reduced_i    : H2O, 2.0
+chem_system       : H-O
+molar_mass        : 36.0306 (g/mol)
+as_dict           : {'H': 4.0, 'O': 2.0}
+fractional_comp   : H0.66666667 O0.33333333
+set_variable      : M2 = 36.03056 (g/mol)
+
+name              : CH2(SO4)2
+name_reduced_i    : H2C(SO4)2, 1.0
+chem_system       : C-H-O-S
+molar_mass        : 206.1518 (g/mol)
+as_dict           : {'C': 1.0, 'H': 2.0, 'S': 2.0, 'O': 8.0}
+fractional_comp   : C0.07692308 H0.15384615 S0.15384615 O0.61538462
+set_variable      : M3 = 206.15177999999997 (g/mol)
+```
+
+Example: Calculation example using molecular weight variables `M<int>`
+
+```powershell
+"LiFePO4, CH2(SO4)2" | python Get-MolecularMass.py -s --end 'print(M1 + M2)'
+```
+
+Output:
+
+```yaml
+name              : LiFePO4
+name_reduced_i    : LiFePO4, 1.0
+chem_system       : Fe-Li-O-P
+molar_mass        : 157.7574 (g/mol)
+as_dict           : {'Li': 1.0, 'Fe': 1.0, 'P': 1.0, 'O': 4.0}
+fractional_comp   : Li0.14285714 Fe0.14285714 P0.14285714 O0.57142857
+set_variable      : M1 = 157.757362 (g/mol)
+
+name              : CH2(SO4)2
+name_reduced_i    : H2C(SO4)2, 1.0
+chem_system       : C-H-O-S
+molar_mass        : 206.1518 (g/mol)
+as_dict           : {'C': 1.0, 'H': 2.0, 'S': 2.0, 'O': 8.0}
+fractional_comp   : C0.07692308 H0.15384615 S0.15384615 O0.61538462
+set_variable      : M2 = 206.15177999999997 (g/mol)
+
+exec_end          : print(M1 + M2)
+return            : 363.909142
+```
+
+Example: Calculation example using molecular weight variables `M<int>`
+
+In the `--process`, the `#` symbol is assigned 1,2,3,... in the order of molecules read.
+
+```powershell
+"LiFePO4, H4O2" | python Get-MolecularMass.py --short --process "C# = comp.weight;print(C#)" --end "print(C1 + C2)"
+```
+
+```yaml
+name              : LiFePO4
+name_reduced_i    : LiFePO4, 1.0
+chem_system       : Fe-Li-O-P
+molar_mass        : 157.7574 (g/mol)
+as_dict           : {'Li': 1.0, 'Fe': 1.0, 'P': 1.0, 'O': 4.0}
+fractional_comp   : Li0.14285714 Fe0.14285714 P0.14285714 O0.57142857
+set_variable      : M1 = 157.757362 (g/mol)
+
+exec_foreach      : C1 = comp.weight
+return            :
+
+exec_foreach      : print(C1)
+return            : 157.757362 amu
+
+name              : H4O2
+name_reduced_i    : H2O, 2.0
+chem_system       : H-O
+molar_mass        : 36.0306 (g/mol)
+as_dict           : {'H': 4.0, 'O': 2.0}
+fractional_comp   : H0.66666667 O0.33333333
+set_variable      : M2 = 36.03056 (g/mol)
+
+exec_foreach      : C2 = comp.weight
+return            :
+
+exec_foreach      : print(C2)
+return            : 36.03056 amu
+
+exec_end          : print(C1 + C2)
+return            : 193.787922 amu
+```
+
+Example: replace elements using dictionary
+
+```powershell
+"Fe2O3" | python Get-MolecularMass.py -s --replace '{"Fe":{"Mn":1.0}}'
+```
+
+Output:
+
+```yaml
+name              : Fe2O3
+name_replaced     : Mn2O3, 1
+name_reduced_i    : Mn2O3, 1.0
+chem_system       : Mn-O
+molar_mass        : 157.8743 (g/mol)
+as_dict           : {'O': 3.0, 'Mn': 2.0}
+fractional_comp   : O0.6 Mn0.4
+set_variable      : M1 = 157.87429 (g/mol)
+```
+
+Example: replace Element Case 2
+
+```powershell
+"Fe2O3" | python Get-MolecularMass.py -s --replace '{"Fe":{"Mn":0.5,"Cu":0.5}}'
+```
+
+Output:
+
+```yaml
+name              : Fe2O3
+name_replaced     : MnCuO3, 1
+name_reduced_i    : MnCuO3, 1.0
+chem_system       : Cu-Mn-O
+molar_mass        : 166.4822 (g/mol)
+as_dict           : {'O': 3.0, 'Mn': 1.0, 'Cu': 1.0}
+fractional_comp   : O0.6 Mn0.2 Cu0.2
+set_variable      : M1 = 166.482245 (g/mol)
+```
+
+Example: Calculation using `M<int>` and `N<int>` and --skip `<int>`
+
+```powershell
+"BaTiO3, BaCO3, TiO2" | python Get-MolecularMass.py --process 'print("{} : {:.3f} g".format(N#, 1/M1*M#*1.5))' -s -skip 1
+```
+
+Output:
+
+```yaml
+name              : BaTiO3
+name_reduced_i    : BaTiO3, 1.0
+chem_system       : Ba-O-Ti
+molar_mass        : 233.1922 (g/mol)
+as_dict           : {'Ba': 1.0, 'Ti': 1.0, 'O': 3.0}
+fractional_comp   : Ba0.2 Ti0.2 O0.6
+set_variable      : M1 = 233.19219999999999 (g/mol)
+
+name              : BaCO3
+name_reduced_i    : BaCO3, 1.0
+chem_system       : Ba-C-O
+molar_mass        : 197.3359 (g/mol)
+as_dict           : {'Ba': 1.0, 'C': 1.0, 'O': 3.0}
+fractional_comp   : Ba0.2 C0.2 O0.6
+set_variable      : M2 = 197.33589999999998 (g/mol)
+
+exec_foreach      : print("{} : {:.3f} g".format(N2, 1/M1*M2*1.5))
+return            : BaCO3 : 1.269 g
+
+name              : TiO2
+name_reduced_i    : TiO2, 1.0
+chem_system       : O-Ti
+molar_mass        : 79.8658 (g/mol)
+as_dict           : {'Ti': 1.0, 'O': 2.0}
+fractional_comp   : Ti0.33333333 O0.66666667
+set_variable      : M3 = 79.8658 (g/mol)
+
+exec_foreach      : print("{} : {:.3f} g".format(N3, 1/M1*M3*1.5))
+return            : TiO2 : 0.514 g
+```
+
+
+#### [Calc-ChemWeightRL.py] - Chemical weighing calculator using pymatgen
+
+[Calc-ChemWeightRL.py]: src/Calc-ChemWeightRL.py
+
+Calculate the weight(gram) of each term in the chemical formula from the first term on the Right side to the Left side. `(R -> L)`
+
+
+- Usage:
+    - man: `python Calc-ChemWeightRL.py [-h]`
+    - `Calc-ChemWeightRL.py [-h] [-f FORMULA] [-g GRAM] [-p PADDING] [-wf WFORMAT] [-wp WPADDING] [-d] [-kg] [-mg] [-v]`
+        - `'comp1 + comp2 -> product' | python Calc-ChemWeightRL.py`
+        - `python Calc-ChemWeightRL.py -f 'comp1 + comp2 -> product'`
+- Dependency:
+    - pymatgen
+        - https://pymatgen.org/
+    - GitHub - materialsproject/pymatgen
+        - https://github.com/materialsproject/pymatgen
+        - https://pymatgen.org/pymatgen.core.html#module-pymatgen.core
+- Install module:
+    - https://github.com/materialsproject/pymatgen#installation
+        - e.g. `python -m pip install pymatgen`
+- Links:
+    - Calc-ChemWeightRL.py, Calc-ChemWeightLR.py, Get-PeriodicTable.py, Get-MolecularMass.py
+Notes:
+    - Calculate by default to get 1g of the first term on the Right compound
+    - Spaces in expressions are ignored
+    - The number at the beginning of each compound is considered the number of moles
+
+Options:
+
+```
+-h, --help            show this help message and exit
+-f FORMULA, --formula FORMULA
+                molecular formula
+-g GRAM, --gram GRAM  product weight
+-p PADDING, --padding PADDING
+                debug padding
+-wf WFORMAT, --wformat WFORMAT
+                weight format
+-wp WPADDING, --wpadding WPADDING
+                weight padding
+-d, --debug           debug
+-kg, --kg             kilogram
+-mg, --mg             milligram
+-v, --verbose         verbose output
+```
+
+Example: Calculate Grams of Methane(`CH4`) and Oxygen(`O2`) required to obtain `44g` of carbon dioxide(`CO2`)
+
+```powershell
+"CH4 + 2 O2 -> CO2 + 2 H2O" | python Calc-ChemWeightRL.py -g 44.0
+```
+
+Output:
+
+```
+Formula  :      CH4       +      2O2       ->      CO2       +      2H2O
+Molratio :       1        :       2        :        1        :       2
+Molmass  :     16.04      +   2 * 32.00    ->     44.01      +   2 * 18.02
+Weight   :    16.039 g    +    63.984 g    ->    44.000 g    +    36.023 g
+```
+
+Example: verbose output (`-v`, `--verbose` option)
+
+```powershell
+"CH4 + 2 O2 -> CO2 + 2 H2O" | python Calc-ChemWeightRL.py -g 44.0 -v
+```
+
+Output:
+
+```yaml
+Type     : Product
+Name     : CO2 * 1.0
+Weight   : 44.00000000 (g)
+Ratio    : 0.99978414 (ratio)
+Mol_mass : CO2 = 44.0095 (g/mol)
+Formula  : 1 / gram_per_mol / mol * target_gram = 1 / 44.010 / 1.0 * 44.000
+
+Type     : Product
+Name     : H2O * 2.0
+Weight   : 36.02278235 (g)
+Ratio    : 0.99978414 (ratio)
+Mol_mass : H2O = 18.01528 (g/mol)
+Formula  : gram_per_mol * mol * mol_ratio = 18.015 * 2.0 * 1.000
+
+Type     : Material
+Name     : CH4 * 1.0
+Weight   : 16.03899703 (g)
+Ratio    : 0.99978414 (ratio)
+Mol_mass : CH4 = 16.04246 (g/mol)
+Formula  : gram_per_mol * mol * mol_ratio = 16.042 * 1.0 * 1.000
+
+Type     : Material
+Name     : O2 * 2.0
+Weight   : 63.98378532 (g)
+Ratio    : 0.99978414 (ratio)
+Mol_mass : O2 = 31.9988 (g/mol)
+Formula  : gram_per_mol * mol * mol_ratio = 31.999 * 2.0 * 1.000
+```
+
+
+#### [Calc-ChemWeightLR.py] - Chemical weighing calculator using pymatgen
+
+[Calc-ChemWeightLR.py]: src/Calc-ChemWeightLR.py
+
+Calculate the weight(gram) of each term in the chemical formula from the first term on the Left side to the Right side. `(L -> R)`
+
+- Usage:
+    - man: `python Calc-ChemWeightLR.py [-h]`
+    - `Calc-ChemWeightLR.py [-h] [-f FORMULA] [-g GRAM] [-p PADDING] [-wf WFORMAT] [-wp WPADDING] [-d] [-kg] [-mg] [-v]`
+        - `'comp1 + comp2 -> product' | python Calc-ChemWeightLR.py`
+        - `python Calc-ChemWeightLR.py -f 'comp1 + comp2 -> product'`
+- Dependency:
+    - pymatgen
+        - https://pymatgen.org/
+    - GitHub - materialsproject/pymatgen
+        - https://github.com/materialsproject/pymatgen
+        - https://pymatgen.org/pymatgen.core.html#module-pymatgen.core
+- Install module:
+    - https://github.com/materialsproject/pymatgen#installation
+        - e.g. `python -m pip install pymatgen`
+- Links:
+    - Calc-ChemWeightRL.py, Calc-ChemWeightLR.py, Get-PeriodicTable.py, Get-MolecularMass.py
+- Notes:
+    - Calculate by default to get 1g of the first term on the Left compound
+    - Spaces in expressions are ignored
+    - The number at the beginning of each compound is considered the number of moles
+
+Options:
+
+```
+-h, --help            show this help message and exit
+-f FORMULA, --formula FORMULA
+                molecular formula
+-g GRAM, --gram GRAM  product weight
+-p PADDING, --padding PADDING
+                debug padding
+-wf WFORMAT, --wformat WFORMAT
+                weight format
+-wp WPADDING, --wpadding WPADDING
+                weight padding
+-d, --debug           debug
+-kg, --kg             kilogram
+-mg, --mg             milligram
+-v, --verbose         verbose output
+```
+
+Example: Calculate Grams of Carbon dioxide(`CO2`) from `16g` of Methane(`CH4`)
+
+```powershell
+"CH4 + 2 O2 -> CO2 + 2 H2O" | python Calc-ChemWeightLR.py -g 16.042
+```
+
+```
+Formula  :      CH4       +      2O2       ->      CO2       +      2H2O
+Molratio :       1        :       2        :        1        :       2
+Molmass  :     16.04      +   2 * 32.00    ->     44.01      +   2 * 18.02
+Weight   :    16.042 g    +    63.996 g    ->    44.008 g    +    36.030 g
+```
+
+Example: verbose output (`-v`, `--verbose` option)
+
+```powershell
+"CH4 + 2 O2 -> CO2 + 2 H2O" | python Calc-ChemWeightLR.py -g 16.042 -v
+```
+
+Output:
+
+```yaml
+Type     : Material
+Name     : CH4 * 1.0
+Weight   : 16.04200000 (g)
+Ratio    : 0.99997133 (ratio)
+Mol_mass : CH4 = 16.04246 (g/mol)
+Formula  : 1 / gram_per_mol / mol * target_gram = 1 / 16.042 / 1.0 * 16.042
+
+Type     : Material
+Name     : O2 * 2.0
+Weight   : 63.99576494 (g)
+Ratio    : 0.99997133 (ratio)
+Mol_mass : O2 = 31.9988 (g/mol)
+Formula  : gram_per_mol * mol * mol_ratio = 31.999 * 2.0 * 1.000
+
+Type     : Product
+Name     : CO2 * 1.0
+Weight   : 44.00823808 (g)
+Ratio    : 0.99997133 (ratio)
+Mol_mass : CO2 = 44.0095 (g/mol)
+Formula  : gram_per_mol * mol * mol_ratio = 44.010 * 1.0 * 1.000
+
+Type     : Product
+Name     : H2O * 2.0
+Weight   : 36.02952686 (g)
+Ratio    : 0.99997133 (ratio)
+Mol_mass : H2O = 18.01528 (g/mol)
+Formula  : gram_per_mol * mol * mol_ratio = 18.015 * 2.0 * 1.000
 ```
 
 
