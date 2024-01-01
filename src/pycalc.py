@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import unicodedata
 
-_version = "Sun Jun 8 22:49:17 JST 2023"
+_version = "Mon Jun 1 16:48:17 JST 2024"
 _code    = "MyCommands(LINUX+WINDOWS/PYTHON3/UTF-8)"
 
 ## switch stdio by platform
@@ -116,8 +116,7 @@ def get_args():
     
     ## 「species」列のカテゴリごとに要約統計量を出力
     1..4 | %{ cat iris.csv | self $_ NF `
-        | python pycalc.py "df.groupby('species').describe()" --nowrap -d ","
-        }
+        | python pycalc.py "df.groupby('species').describe()" --nowrap -d "," }
 
     cat iris.csv | python pycalc.py "df[df.columns[:]].groupby('species').describe()" -d "," --nowrap
 
@@ -133,7 +132,7 @@ def get_args():
     [<matplotlib.lines.Line2D object at 0x7f96395f19a0>]
     # 式をセミコロンで区切ると複数の式を記述できる
 
-    === dataframe生成 ===
+    === create dataframe ===
     echo 1 | python pycalc.py "df=pd.DataFrame({'city': ['osaka', 'osaka', 'osaka', 'osaka', 'tokyo', 'tokyo', 'tokyo'],'food': ['apple', 'orange', 'banana', 'banana', 'apple', 'apple', 'banana'],'price': [100, 200, 250, 300, 150, 200, 400],'quantity': [1, 2, 3, 4, 5, 6, 7]});df"
     echo 1 | python pycalc.py "df=...; df.groupby('city').mean()"
     echo 1 | python pycalc.py "df=...; df.groupby('city').mean().T"
@@ -295,11 +294,15 @@ if __name__ == '__main__':
         fmls = str(args.formula).split(";")
         for fml in fmls:
             fml = str(fml).strip()
-            # "="を含む場合はexec, 含まないならeval
+            # if formula(tml) contains "=", run exec, otherwise run eval
             if re.search('^([^\(]+)=', fml):
                 exec(fml)
             else:
                 ans = eval(fml)
-                if args.quiet: print(ans)
-                else: print(ans)
+                if args.quiet:
+                    pass
+                else:
+                    print(ans)
+
+    sys.exit(0)
 

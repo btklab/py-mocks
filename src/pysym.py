@@ -372,3 +372,5 @@ if __name__ == '__main__':
             else:
                 output(ans, simplify=args.simplify, latex=args.latex)
 
+    sys.exit(0)
+

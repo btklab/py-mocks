@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- NA
+- Added [pymatcalc.py], [pycalc.py], [pysym.py] `sys.exit(0)` end of script
 
 ## [1.3.0] - 2024-01-01
 
