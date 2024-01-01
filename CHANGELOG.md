@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - NA
 
+## [1.2.3] - 2024-01-01
+
+- Changed: [pyplot-x-rs.py] graph title in English
+
 ## [1.2.2]
 
 - Changed [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py] Specify Japanese font family in Linux environment.
@@ -54,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [CHANGELOG.md]: blob/main/CHANGELOG.md
 
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.2.2..HEAD
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.2.3..HEAD
+[1.2.3]: https://github.com/btklab/py-mocks/releases/tag/1.2.3
 [1.2.2]: https://github.com/btklab/py-mocks/releases/tag/1.2.1
 [1.2.1]: https://github.com/btklab/py-mocks/releases/tag/1.2.1
 [1.2.0]: https://github.com/btklab/py-mocks/releases/tag/1.2.0
