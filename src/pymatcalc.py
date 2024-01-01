@@ -65,22 +65,25 @@ def get_args():
             B 2 1
 
     Functions:
-        スカラー積: pymatcalc 'C=A*B'
-        アダマール積: pymatcalc 'C=np.multiply(A, B)'
-        単位行列1: pymatcalc 'C=np.eye(n, dtype=int)'
-        単位行列2: pymatcalc 'C=np.identity(n, dtype=int)'
-        転置行列: pymatcalc 'C=A.T'
-        行列式: pymatcalc 'C=np.linalg.det(A)*np.eye(1)'
+        スカラー積   : pymatcalc 'C=A*B'
+        アダマール積 : pymatcalc 'C=np.multiply(A, B)'
+        単位行列1    : pymatcalc 'C=np.eye(n, dtype=int)'
+        単位行列2    : pymatcalc 'C=np.identity(n, dtype=int)'
+        転置行列     : pymatcalc 'C=A.T'
+        行列式       : pymatcalc 'C=np.linalg.det(A)*np.eye(1)'
           - 出力が値の場合は単位行列を掛ける
-        逆行列: pymatcalc 'np.linalg.inv(A)'
-        固有値と固有ベクトル: pymatcalc 'np.linalg.eig(A)[0]'
-        固有値と固有ベクトル: pymatcalc 'np.linalg.eig(A)[1]'
-        内積（ドット積）: pymatcalc 'np.dot(A, B)'
-        行列積1: pymatcalc 'A@B'
-        行列積2: pymatcalc 'np.matmul(A, B)'
-        ベクトル内積: pymatcalc 'np.inner(A, B)'
-        ベクトル外積: pymatcalc 'np.outer(A, B)'
-        ランダム行列の生成: 'C=np.random.randint(-10,10,size=(3,3))'
+
+        逆行列       : pymatcalc 'np.linalg.inv(A)'
+        固有値と固有ベクトル : pymatcalc 'np.linalg.eig(A)[0]'
+        固有値と固有ベクトル : pymatcalc 'np.linalg.eig(A)[1]'
+        内積（ドット積）     : pymatcalc 'np.dot(A, B)'
+        行列積1      : pymatcalc 'A@B'
+        行列積2      : pymatcalc 'np.matmul(A, B)'
+        ベクトル内積 : pymatcalc 'np.inner(A, B)'
+        ベクトル外積 : pymatcalc 'np.outer(A, B)'
+        ランダム行列の生成 : 'C=np.random.randint(-10,10,size=(3,3))'
+
+        連立方程式を解く: pymatcalc 'C=np.linalg.inv(L)@R'
 
     """
     help_epi_msg = """EXAMPLES:
@@ -167,6 +170,34 @@ def get_args():
     B 2 1
     C 48.0 31.0
     C 104.0 67.0
+
+    solve simultaneous equations
+    $ cat matrix
+    L 1 1
+    L 2 3
+    R 2
+    R 5
+
+    invert Left and @ Right
+
+    $ cat matrix | python pymatcalc.py 'ANS = np.linalg.inv(L) @ R'
+    L 1 1
+    L 2 4
+    R 9
+    R 22
+    ANS 7.0
+    ANS 2.0
+
+    or use np.linalg.solve(Left, Right)
+
+    $ cat matrix | python pymatcalc.py 'ANS = np.linalg.solve(L, R)'
+    L 1 1
+    L 2 4
+    R 9
+    R 22
+    ANS 7.0
+    ANS 2.0
+
     """
     parser = argparse.ArgumentParser(description=help_desc_msg,
                     epilog=help_epi_msg,
