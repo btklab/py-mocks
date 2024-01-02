@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Added [Get-PeriodicTable.py] `--molmass` option
 - Added [pymatcalc.py], [pycalc.py], [pysym.py] `sys.exit(0)` end of script
 - Added [pymatcalc.py], [pycalc.py] examples of solve simultaneous equations
 
