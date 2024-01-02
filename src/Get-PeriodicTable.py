@@ -137,8 +137,42 @@ def get_args():
     "Fe" | python Get-PeriodicTable.py --all
 
     # Output as Json and convert to hashtable using PowerShell 7
-    "Fe" | python Get-PeriodicTable.py --raw | ConvertFrom-Json -AsHashtable    
+    "Fe" | python Get-PeriodicTable.py --raw | ConvertFrom-Json -AsHashtable
+    
+    # Output dictionary using -m or --molmass switch
+    "Fe,O" | python Get-PeriodicTable.py --molmass
+    {'Fe': 55.845, 'O': 15.9994}
 
+    # using --molmass with --item and --json and --raw
+    "Fe,O" | python Get-PeriodicTable.py --molmass --item 'Oxidation states, Atomic mass' --json --raw
+    {"Fe": {"Oxidation states": [-2, -1, 1, 2, 3, 4, 5, 6], "Atomic mass": 55.845}, "O": {"Oxidation states": [-2, -1, 1, 2], "Atomic mass": 15.9994}}
+
+    # using --molmass with --item and --json
+    "Fe,O" | python Get-PeriodicTable.py --molmass --item 'Oxidation states, Atomic mass' --json
+    {
+        "Fe": {
+            "Oxidation states": [
+                -2,
+                -1,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+            ],
+            "Atomic mass": 55.845
+        },
+        "O": {
+            "Oxidation states": [
+                -2,
+                -1,
+                1,
+                2
+            ],
+            "Atomic mass": 15.9994
+        }
+    }
     """
 
     parser = argparse.ArgumentParser(description=help_desc_msg,
@@ -153,6 +187,7 @@ def get_args():
     parser.add_argument("-s", "--short", help="output short data", action="store_true")
     parser.add_argument("-p", "--pretty", help="output pretty data", action="store_true")
     parser.add_argument("-a", "--all", help="output all data", action="store_true")
+    parser.add_argument("-m", "--molmass", help="output only molar mass", action="store_true")
     parser.add_argument("-i", "--item", help="select item", type=ts)
     parser.add_argument("-pad", "--padding", help="display name padding", default=17, type=int)
     parser.add_argument("-V", "--version", help="version", action="version", version=_version)
@@ -180,6 +215,8 @@ if __name__ == '__main__':
 
     ## read file
     formulas = []
+    if args.molmass:
+        elm_dict = {}
     if args.formula:
         formulas = strip_formulas(args.formula)
     else:
@@ -195,7 +232,20 @@ if __name__ == '__main__':
         elem_name = line
         elem_json = Element(elem_name).data
         #print(type(elem_json))
-        if args.json or args.raw:
+        if args.molmass:
+            if args.item:
+                item_dict = {}
+                for i in args.item:
+                    key = str(i).strip()
+                    if str(key) in elem_json.keys():
+                        item_dict[key] = elem_json[key]
+                    else:
+                        raise_error("{} could not found in dict-keys.".format(i))
+                elm_dict[elem_name] = item_dict
+            else:
+                key = r"Atomic mass"
+                elm_dict[elem_name] = elem_json[key]
+        elif args.json or args.raw:
             if args.raw:
                 print(elem_json)
             else:
@@ -460,5 +510,16 @@ if __name__ == '__main__':
             if args.all or args.pretty:
                 encoded_uri = r"https://en.wikipedia.org/wiki/" + urllib.parse.quote(elem_json["Name"])
                 print("{} : {}".format(key.ljust(args.padding), encoded_uri))
+
+    if args.molmass:
+        if args.json:
+            # json output
+            if args.raw:
+                print(json.dumps(elm_dict))
+            else:
+                print(json.dumps(elm_dict, indent=4))
+        else:
+            # raw output
+            print(elm_dict)
 
     sys.exit(0)
