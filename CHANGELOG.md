@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- NA
+
+## [1.4.0] - 2024-01-04
+
+- Added [Calc-ChemMassPercent.py] script
 - Added [Get-PeriodicTable.py] `--molmass` option
 - Added [pymatcalc.py], [pycalc.py], [pysym.py] `sys.exit(0)` end of script
 - Added [pymatcalc.py], [pycalc.py] examples of solve simultaneous equations
@@ -72,7 +77,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 [Calc-ChemWeightRL.py]: src/Calc-ChemWeightRL.py
 [Calc-ChemWeightLR.py]: src/Calc-ChemWeightLR.py
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.3.0..HEAD
+[Calc-ChemMassPercent.py]: src/Calc-ChemMassPercent.py
+
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.4.0..HEAD
+[1.4.0]: https://github.com/btklab/py-mocks/releases/tag/1.4.0
 [1.3.0]: https://github.com/btklab/py-mocks/releases/tag/1.3.0
 [1.2.3]: https://github.com/btklab/py-mocks/releases/tag/1.2.3
 [1.2.2]: https://github.com/btklab/py-mocks/releases/tag/1.2.1
