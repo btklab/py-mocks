@@ -68,8 +68,9 @@ def get_args():
         in the order of molecules read.
     
     Links:
-        Calc-ChemWeightRL.py, Calc-ChemWeightLR.py,
-        Get-PeriodicTable.py, Get-MolecularMass.py
+        Calc-ChemMassPercent.py, Calc-ChemWeightLR.py,
+        Get-PeriodicTable.py, Get-MolecularMass.py,
+        Calc-ChemMassPercent.py
     """
     help_epi_msg = """EXAMPLES:
 

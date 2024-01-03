@@ -1291,7 +1291,7 @@ Recalculate the mass percent concentration
     - MathPython
         - <https://wiki3.jp/MathPython/page/34>
 - Links:
-    - [Calc-ChemMassPercent.py], [Calc-ChemWeightLR.py], [Get-PeriodicTable.py], [Get-MolecularMass.py], [Calc-ChemMassPercent]
+    - [Calc-ChemMassPercent.py], [Calc-ChemWeightLR.py], [Get-PeriodicTable.py], [Get-MolecularMass.py], [Calc-ChemMassPercent.py]
 
 Options:
 
@@ -1356,9 +1356,13 @@ Volume : Ratio     -> 100 : 0.3
 With Unit:
 
 ```
-Volume [unit]             -> 100 mL
-Volume [unit] : Percent % -> 100 mL : 3 %
-Volume [unit] : Ratio     -> 100 mL : 0.3
+Volume [unit]                 -> 100 mL
+Volume [unit] : w/v Percent % -> 100 mL : 3 %
+Volume [unit] : Ratio         -> 100 mL : 0.3
+
+Weight [unit]                 -> 100 kg
+Weight [unit] : w/w Percent % -> 100 kg : 3 %
+Weight [unit] : Ratio         -> 100 kg : 0.3
 
 <Note>
 - The Solute units must be the same throughout the formula.

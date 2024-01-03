@@ -73,9 +73,13 @@ def get_args():
               (Example at the top of the list)
 
         With Unit:
-            Volume [unit]             -> 100 mL
-            Volume [unit] : Percent % -> 100 mL : 3 %
-            Volume [unit] : Ratio     -> 100 mL : 0.3
+            Volume [unit]                 -> 100 mL
+            Volume [unit] : w/v Percent % -> 100 mL : 3 %
+            Volume [unit] : Ratio         -> 100 mL : 0.3
+
+            Weight [unit]                 -> 100 kg
+            Weight [unit] : w/w Percent % -> 100 kg : 3 %
+            Weight [unit] : Ratio         -> 100 kg : 0.3
 
             <Note>
             - The Solute units must be the same throughout the formula.
@@ -141,7 +145,7 @@ def get_args():
     Links:
         Calc-ChemMassPercent.py, Calc-ChemWeightLR.py,
         Get-PeriodicTable.py, Get-MolecularMass.py,
-        Calc-ChemMassPercent
+        Calc-ChemMassPercent.py
 
     """
     help_epi_msg = """EXAMPLES:

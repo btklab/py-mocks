@@ -52,8 +52,9 @@ def get_args():
         "<Element>, <Element>, ..." | python Get-PeriodicTable.py
     
     Links:
-        Calc-ChemWeightRL.py, Calc-ChemWeightLR.py,
-        Get-PeriodicTable.py, Get-MolecularMass.py
+        Calc-ChemMassPercent.py, Calc-ChemWeightLR.py,
+        Get-PeriodicTable.py, Get-MolecularMass.py,
+        Calc-ChemMassPercent.py
     """
     help_epi_msg = """EXAMPLES:
 
