@@ -1291,7 +1291,7 @@ Recalculate the mass percent concentration
     - MathPython
         - <https://wiki3.jp/MathPython/page/34>
 - Links:
-    - [Calc-ChemMassPercent.py], [Calc-ChemWeightLR.py], [Get-PeriodicTable.py], [Get-MolecularMass.py], [Calc-ChemMassPercent]
+    - [Calc-ChemMassPercent.py], [Calc-ChemWeightLR.py], [Get-PeriodicTable.py], [Get-MolecularMass.py], [Calc-ChemMassPercent.py]
 
 Options:
 

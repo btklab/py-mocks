@@ -69,8 +69,9 @@ def get_args():
         https://github.com/materialsproject/pymatgen#installation
     
     Links:
-        Calc-ChemWeightRL.py, Calc-ChemWeightLR.py,
-        Get-PeriodicTable.py, Get-MolecularMass.py
+        Calc-ChemMassPercent.py, Calc-ChemWeightLR.py,
+        Get-PeriodicTable.py, Get-MolecularMass.py,
+        Calc-ChemMassPercent.py
 
     """
     help_epi_msg = """EXAMPLES:

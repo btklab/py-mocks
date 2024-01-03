@@ -141,7 +141,7 @@ def get_args():
     Links:
         Calc-ChemMassPercent.py, Calc-ChemWeightLR.py,
         Get-PeriodicTable.py, Get-MolecularMass.py,
-        Calc-ChemMassPercent
+        Calc-ChemMassPercent.py
 
     """
     help_epi_msg = """EXAMPLES:
