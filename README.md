@@ -712,7 +712,7 @@ Options:
 ```
 -h, --help            show this help message and exit
 -f FORMULA, --formula FORMULA
-                    molecular formula
+                      molecular formula
 --raw                 output json as-is
 --json                output json
 -s, --short           output short data
@@ -720,7 +720,7 @@ Options:
 -a, --all             output all data
 -i ITEM, --item ITEM  select item
 -pad PADDING, --padding PADDING
-                    display name padding
+                      display name padding
 ```
 
 Example: get specified items (Case sensitive)
@@ -878,19 +878,19 @@ Options:
 ```
 -h, --help            show this help message and exit
 -f FORMULA, --formula FORMULA
-                molecular formula
+                      molecular formula
 -p PROCESS, --process PROCESS
-                run expression for each material
+                      run expression for each material
 -e END, --end END     run expression after output all materials
 -b BEGIN, --begin BEGIN
-                run expression before read materials
+                      run expression before read materials
 -skip SKIP, --skip SKIP
-                skip applying expression to first record
+                      skip applying expression to first record
 -r, --remove_charges  remove charges from composition
 --replace REPLACE     replace element using dictionary
 -s, --short           short output
 -pad PADDING, --padding PADDING
-                display name padding
+                      display name padding
 -o, --only            output only expression
 ```
 
@@ -1110,14 +1110,14 @@ Options:
 ```
 -h, --help            show this help message and exit
 -f FORMULA, --formula FORMULA
-                molecular formula
+                      molecular formula
 -g GRAM, --gram GRAM  product weight
 -p PADDING, --padding PADDING
-                debug padding
+                      debug padding
 -wf WFORMAT, --wformat WFORMAT
-                weight format
+                      weight format
 -wp WPADDING, --wpadding WPADDING
-                weight padding
+                      weight padding
 -d, --debug           debug
 -kg, --kg             kilogram
 -mg, --mg             milligram
@@ -1210,14 +1210,14 @@ Options:
 ```
 -h, --help            show this help message and exit
 -f FORMULA, --formula FORMULA
-                molecular formula
+                      molecular formula
 -g GRAM, --gram GRAM  product weight
 -p PADDING, --padding PADDING
-                debug padding
+                      debug padding
 -wf WFORMAT, --wformat WFORMAT
-                weight format
+                      weight format
 -wp WPADDING, --wpadding WPADDING
-                weight padding
+                      weight padding
 -d, --debug           debug
 -kg, --kg             kilogram
 -mg, --mg             milligram
