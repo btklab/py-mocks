@@ -1284,7 +1284,7 @@ Recalculate the mass percent concentration
 
 - Usage:
     - man: `python Calc-ChemMassPercent.py [-h]`
-    - `Calc-ChemMassPercent.py [-h] [-f FORMULA] [-r|--round ROUND] [-v] [-d|--debug]`
+    - `Calc-ChemMassPercent.py [-h] [-f FORMULA] [-r|--round ROUND] [-m] [-v] [-d|--debug]`
         - `'solution.1 + solution.2 + ...' | python Calc-ChemMassPercent.py`
         - `python Calc-ChemMassPercent.py -f 'solution.1 + solution.2 + ...'`
 - Thanks:
@@ -1299,6 +1299,7 @@ Options:
 -h, --help            show this help message and exit
 -f FORMULA, --formula FORMULA
                       molecular formula
+-m, --molar           calc molar concentration
 -r ROUND, --round ROUND
                       round
 -v, --verbose         verbose output
@@ -1408,6 +1409,39 @@ In this case, if the total volume of aqueous solution
 in the formula is zero, a "div/0" error will be returned.
 ```
 
+Molarity mode (-m, --molar) syntax:
+
+- Required: liquid volume unit, molecule name
+- Optional: density
+
+```
+1. With volume unit and molecule name:
+-> "1000 ml : 35% HCl" | python Calc-ChemMassPercent.py --molar
+
+    Type          : Solution.1
+    Formula       : 1000ml:35%HCl
+    Volume        : 1000 ml
+    HCl           : 350.0 g / 36.461 amu / 1.0 L = 9.599 mol/L (M)
+
+2. With density (density * volume):
+-> "1.17 * 1000 g: 35% HCl" | python Calc-ChemMassPercent.py --molar
+
+    Type          : Solution.1
+    Formula       : 1.17*1000g:35%HCl
+    Volume        : 1170.0 g (1.000 L)
+    HCl           : 409.5 g / 36.461 amu / 1.0 L = 11.231 mol/L (M)
+
+<Note>
+- If the solvent unit is liquid volume rather than mass, 
+    the concentration of the solvent will be w/v% instead of w/w%.
+    - 1st examples unit: solution = "ml", solvent = "w/v %"
+    - 2nd examples unit: solution = "g",  solvent = "w/w %"
+- By specifying the density, the molarity (mol/L) can be calculated.
+- Density must be written to the left of the liquid volume.
+- When specifying density, the liquid volume unit is mass.
+```
+
+
 Practices:
 
 ```
@@ -1436,6 +1470,21 @@ An aqueous solution weighing 100g containing
 
 ```
 100 : 10%, 3% = 100 : 10/100, 3/100*1.0
+```
+
+```
+<Q.3>
+Calculate the molar concentration (mol/L)
+of CH3COOH
+with a density of 1.05 g/mL at 20℃
+and a purity of 100 w/w%.
+
+    "1.05 * 1000 g : 100% CH3COOH"| python Calc-ChemMassPercent.py --molar
+
+    Type          : Solution.1
+    Formula       : 1.05*1000g:100%CH3COOH
+    Volume        : 1050.0 g (1.000 L)
+    CH3COOH       : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
 ```
 
 EXAMPLES:
