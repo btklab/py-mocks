@@ -7,13 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- NA
+- Changed [Calc-ChemMassPercent.py] to print output at the end
+- Fixed [Calc-ChemMassPercent.py] invalid variable name `Solid_@`
 
 ## [1.4.1] - 2024-01-04
 
 - Updated links
 - Added [Calc-ChemMassPercent.py] `--molar` option
-- Updated [Calc-ChemMassPercent.py] synopsis
 
 ## [1.4.0] - 2024-01-04
 

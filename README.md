@@ -709,18 +709,18 @@ pysym.py 'sympy.plot_parametric(cos(x), sin(x), (x, 0, 2*pi))' --size 5,5
 
 Options:
 
-```
--h, --help            show this help message and exit
--f FORMULA, --formula FORMULA
-                      molecular formula
---raw                 output json as-is
---json                output json
--s, --short           output short data
--p, --pretty          output pretty data
--a, --all             output all data
--i ITEM, --item ITEM  select item
--pad PADDING, --padding PADDING
-                      display name padding
+```markdown
+    -h, --help            show this help message and exit
+    -f FORMULA, --formula FORMULA
+                          molecular formula
+    --raw                 output json as-is
+    --json                output json
+    -s, --short           output short data
+    -p, --pretty          output pretty data
+    -a, --all             output all data
+    -i ITEM, --item ITEM  select item
+    -pad PADDING, --padding PADDING
+                          display name padding
 ```
 
 Example: get specified items (Case sensitive)
@@ -1132,7 +1132,7 @@ Example: Calculate Grams of Methane(`CH4`) and Oxygen(`O2`) required to obtain `
 
 Output:
 
-```
+```yaml
 Formula  :      CH4       +      2O2       ->      CO2       +      2H2O
 Molratio :       1        :       2        :        1        :       2
 Molmass  :     16.04      +   2 * 32.00    ->     44.01      +   2 * 18.02
@@ -1284,7 +1284,7 @@ Recalculate the mass percent concentration
 
 - Usage:
     - man: `python Calc-ChemMassPercent.py [-h]`
-    - `Calc-ChemMassPercent.py [-h] [-f FORMULA] [-r|--round ROUND] [-m] [-v] [-d|--debug]`
+    - `Calc-ChemMassPercent.py [-h] [-f|--formula FORMULA] [-r|--round ROUND] [-m|--molar] [-e|--expression EXPRESSION] [-v] [--mvar] [-d|--debug]`
         - `'solution.1 + solution.2 + ...' | python Calc-ChemMassPercent.py`
         - `python Calc-ChemMassPercent.py -f 'solution.1 + solution.2 + ...'`
 - Thanks:
@@ -1295,16 +1295,18 @@ Recalculate the mass percent concentration
 
 Options:
 
-```
--h, --help            show this help message and exit
--f FORMULA, --formula FORMULA
-                      molecular formula
--m, --molar           calc molar concentration
--r ROUND, --round ROUND
-                      round
--v, --verbose         verbose output
--d, --debug           debug
--V, --version         version
+```markdown
+    -h, --help          show this help message and exit
+    -f FORMULA, --formula FORMULA
+                        molecular formula
+    -m, --molar         calc molar concentration
+    -r ROUND, --round ROUND
+                        round
+    -e EXPRESSION, --expression EXPRESSION
+                        execute expression
+    -v, --verbose       verbose output
+    --mvar              Use M# in expression
+    -d, --debug         debug
 ```
 
 Input:
@@ -1315,7 +1317,7 @@ python Calc-ChemMassPercent.py -f "100 mL : 0.3 NaCl, 0.03 T-N + 100 mL : 3.0% T
 
 Output:
 
-```markdown
+```yaml
 Type          : Solution.1
 Formula       : 100 mL : 0.3 NaCl, 0.03 T-N
 Volume        : 100 mL
@@ -1336,7 +1338,7 @@ Formula       : 100mL:0.3NaCl,0.03T-N + 100mL:3.0%T-N + 200mL
 Total_Volume  : 400.0 mL
 Total_NaCl    : 30.0 g / 400.0 mL = 0.07 (7.50 %)
 Total_T-N     : 6.0 g / 400.0 mL = 0.01 (1.50 %)
-Total_Solid_@ : 36.0 g / 400.0 mL = 0.09 (9.00 %)
+Total_Solid   : 36.0 g / 400.0 mL = 0.09 (9.00 %)
 ```
 
 
@@ -1351,7 +1353,7 @@ Volume : Ratio     -> 100 : 0.3
 
 <Rule>
 - Allows specification of solute only
-    (Example at the top of the list)
+  (Example at the top of the list)
 ```
 
 With Unit:
@@ -1367,7 +1369,7 @@ Weight [unit] : Ratio         -> 100 kg : 0.3
 
 <Note>
 - The Solute units must be the same throughout the formula.
-    (If a unit difference detected, an error will be returned)
+  (If a unit difference detected, an error will be returned)
 ```
 
 With Solvent name:
@@ -1378,17 +1380,17 @@ Volume : Ratio Name     -> 100 : 0.3 NaCl
 ```
 
 ```
-Mix Multiple Solutions with different concentrations (use the '+'):
+Mix Multiple Solutions with different concentrations (use the `+`):
 -> 100:3% + 100:1%
 -> 100mL:3%NaCl + 100mL:1%NaCl
 
 <Note>
 - Add up solvents with the same name.
 - If the solvents name is omitted, the names
-    M1, M2, ... are automatically assigned from the left.
+  `M1`, `M2`, ... are automatically assigned from the left.
 ```
 
-Solutions containing multiple Solvents (use ","):
+Solutions containing multiple Solvents (use `,`):
 
 ```
 -> 100 : 10%, 3%
@@ -1444,8 +1446,9 @@ Molarity mode (-m, --molar) syntax:
 
 Practices:
 
-```
-<Q.1>
+```markdown
+## <Q.1>
+
 Dilute 100mL of 3w/v% NaCl solution
 to double volume with water.
 
@@ -1455,8 +1458,9 @@ to double volume with water.
     100 : 0.3 + 100
 ```
 
-```
-<Q.2>
+```markdown
+## <Q.2>
+
 An aqueous solution weighing 100g containing
 10w/w% NaCl and 3w/w%T-N as a solvent.
 
@@ -1466,40 +1470,86 @@ An aqueous solution weighing 100g containing
     100 : 0.1, 0.03
 ```
 
-`/`,`*` can be used for concentration term, but do not use "+" because it is used to express mixtures of Solutions:
+`/`,`*` can be used for concentration term, but do not use `+` because it is used to express mixtures of Solutions:
 
 ```
 100 : 10%, 3% = 100 : 10/100, 3/100*1.0
 ```
 
-```
-<Q.3>
+```markdown
+## <Q.3>
+
 Calculate the molar concentration (mol/L)
 of CH3COOH
 with a density of 1.05 g/mL at 20℃
 and a purity of 100 w/w%.
-
-    "1.05 * 1000 g : 100% CH3COOH"| python Calc-ChemMassPercent.py --molar
-
-    Type          : Solution.1
-    Formula       : 1.05*1000g:100%CH3COOH
-    Volume        : 1050.0 g (1.000 L)
-    CH3COOH       : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
 ```
+
+```powershell
+"1.05 * 1000 g : 100% CH3COOH" | python Calc-ChemMassPercent.py --molar
+```
+
+```yaml
+Type    : Solution.1
+Formula : 1.05*1000g:100%CH3COOH
+Volume  : 1050.0 g (1.000 L)
+CH3COOH : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
+```
+
+
+```markdown
+## <Q.4>
+
+Calculate the factor(molar concentration ratio) of HCl/N,
+1000 ml : 4.21 w/v% of N and 12.34 w/v% of HCl
+```
+
+```powershell
+"1000ml: 4.21% N, 12.34% HCl" `
+    | python Calc-ChemMassPercent.py `
+        --molar `
+        --expression 'print("Total_Volume = {} {}".format(Prod.volume, Prod.unit));print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))' `
+        --verbose
+```
+
+```yaml
+Type          : Solution.1
+Formula       : 1000ml:4.21%N,12.34%HCl
+Volume        : 1000 ml
+N             : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
+HCl           : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
+
+Type          : Product
+Formula       : 1000ml:4.21%N,12.34%HCl
+Total_Volume  : 1000.0 ml
+Total_N       : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
+Total_HCl     : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
+
+Set_Variable  : Prod = Product(name, volume, unit)
+Set_Variable  : N = Material(name, volume, unit, mol, molar, molar_unit)
+Set_Variable  : HCl = Material(name, volume, unit, mol, molar, molar_unit)
+
+exec_end      : print("Total_Volume = {} {}".format(Prod.volume, Prod.unit))
+return        : Total_Volume = 1000.0 ml
+
+exec_end      : print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))
+return        : factor = 1.1260 HCl/N molar concentration ratio
+```
+
 
 EXAMPLES:
 
-Dilute a solvent with a weight of 100 in which 15 w/w% of something (Mat.1) is dissolved with the same weight of water.
+Dilute a solvent with a weight of 100 in which 15 w/w% of something (M1) is dissolved with the same weight of water.
 
 ```powershell
 python Calc-ChemMassPercent.py -f "100:0.15+100"
 ```
 
-```markdown
+```yaml
 Type          : Solution.1
 Formula       : 100:0.15
 Volume        : 100
-Mat.1         : 15.0 / 100 = 0.150 (15.000 %)
+M1            : 15.0 / 100 = 0.150 (15.000 %)
 
 Type          : Solution.2
 Formula       : 100
@@ -1508,8 +1558,8 @@ Volume        : 100
 Type          : Product
 Formula       : 100:0.15 + 100
 Total_Volume  : 200.0
-Total_Mat.1   : 15.0 / 200.0 = 0.075 (7.500 %)
-Total_Solid_@ : 15.0 / 200.0 = 0.075 (7.500 %)
+Total_M1      : 15.0 / 200.0 = 0.075 (7.500 %)
+Total_Solid   : 15.0 / 200.0 = 0.075 (7.500 %)
 ```
 
 Dissolve 15.0g of salt in 100g of saline solution with a concentration of 10 w/w%
@@ -1518,22 +1568,22 @@ Dissolve 15.0g of salt in 100g of saline solution with a concentration of 10 w/w
 python Calc-ChemMassPercent.py -f "100 mL : 0.1 NaCl + 0 mL : 15.0 NaCl"
 ```
 
-```markdown
+```yaml
 Type          : Solution.1
-Formula       : 100 mL : 0.1 NaCl
+Formula       : 100mL:0.1NaCl
 Volume        : 100 mL
-NaCl          : 10.0 g / 100 mL = 0.100 (10.000 %)
+NaCl          : 10.0 g / 100 mL = 0.100 (10.000 w/v%)
 
 Type          : Solution.2
-Formula       : 0 mL : 15.0 NaCl
-Volume        : 0
-NaCl          : 15.000 g
+Formula       : 0mL:15.0NaCl
+Volume        : 0 mL
+NaCl          : 15.0 g
 
 Type          : Product
-Formula       : 100mL:0.1NaCl + 0:15.0NaCl
+Formula       : 100mL:0.1NaCl + 0mL:15.0NaCl
 Total_Volume  : 100.0 mL
-Total_NaCl    : 25.0 g / 100.0 mL = 0.250 (25.000 %)
-Total_Solid_@ : 25.0 g / 100.0 mL = 0.250 (25.000 %)
+Total_NaCl    : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
+Total_Solid   : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
 ```
 
 Calculate mass percent concentration when mixing multiple solutions.
@@ -1544,16 +1594,16 @@ Calculate mass percent concentration when mixing multiple solutions.
 python Calc-ChemMassPercent.py -f "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200"
 ```
 
-```markdown
+```yaml
 Type          : Solution.1
-Formula       : 100 L : 3.0% NaCl
+Formula       : 100L:3.0%NaCl
 Volume        : 100 L
-NaCl          : 3.0 kg / 100 L = 0.03 (3.00 %)
+NaCl          : 3.0 kg / 100 L = 0.030 (3.000 w/v%)
 
 Type          : Solution.2
-Formula       : 100 L : 9.0% NaCl
+Formula       : 100L:9.0%NaCl
 Volume        : 100 L
-NaCl          : 9.0 kg / 100 L = 0.09 (9.00 %)
+NaCl          : 9.0 kg / 100 L = 0.090 (9.000 w/v%)
 
 Type          : Solution.3
 Formula       : 200
@@ -1562,45 +1612,45 @@ Volume        : 200
 Type          : Product
 Formula       : 100L:3.0%NaCl + 100L:9.0%NaCl + 200
 Total_Volume  : 400.0 L
-Total_NaCl    : 12.0 kg / 400.0 L = 0.03 (3.00 %)
-Total_Solid_@ : 12.0 kg / 400.0 L = 0.03 (3.00 %)
+Total_NaCl    : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
+Total_Solid   : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
 ```
 
-`-v`, `--verbose` option: Output total solvent weight for each step
+`-v`,` --verbose` option: Output total solvent weight for each step
 
 ```powershell
 python Calc-ChemMassPercent.py -f "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200" -v
 ```
 
-```markdown
+```yaml
 Type          : Solution.1
-Formula       : 100 L : 3.0% NaCl
+Formula       : 100L:3.0%NaCl
 Volume        : 100 L
-NaCl          : 3.0 kg / 100 L = 0.030 (3.000 %)
+NaCl          : 3.0 kg / 100 L = 0.030 (3.000 w/v%)
 Total_Volume  : 100.0 L
-Total_Solid_@ : 3.0 kg / 100.0 L = 0.030 (3.000 %)
-Total_NaCl    : 3.0 kg / 100.0 L = 0.030 (3.000 %)
+Total_Solid   : 3.0 kg / 100.0 L = 0.030 (3.000 w/v%)
+Total_NaCl    : 3.0 kg / 100.0 L = 0.030 (3.000 w/v%)
 
 Type          : Solution.2
-Formula       : 100 L : 9.0% NaCl
+Formula       : 100L:9.0%NaCl
 Volume        : 100 L
-NaCl          : 9.0 kg / 100 L = 0.090 (9.000 %)
+NaCl          : 9.0 kg / 100 L = 0.090 (9.000 w/v%)
 Total_Volume  : 200.0 L
-Total_Solid_@ : 12.0 kg / 200.0 L = 0.060 (6.000 %)
-Total_NaCl    : 12.0 kg / 200.0 L = 0.060 (6.000 %)
+Total_Solid   : 12.0 kg / 200.0 L = 0.060 (6.000 w/v%)
+Total_NaCl    : 12.0 kg / 200.0 L = 0.060 (6.000 w/v%)
 
 Type          : Solution.3
 Formula       : 200
 Volume        : 200
 Total_Volume  : 400.0 L
-Total_Solid_@ : 12.0 kg / 400.0 L = 0.030 (3.000 %)
-Total_NaCl    : 12.0 kg / 400.0 L = 0.030 (3.000 %)
+Total_Solid   : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
+Total_NaCl    : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
 
 Type          : Product
 Formula       : 100L:3.0%NaCl + 100L:9.0%NaCl + 200
 Total_Volume  : 400.0 L
-Total_NaCl    : 12.0 kg / 400.0 L = 0.030 (3.000 %)
-Total_Solid_@ : 12.0 kg / 400.0 L = 0.030 (3.000 %)
+Total_NaCl    : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
+Total_Solid   : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
 ```
 
 Simple expression: Mix 100g of 3w/w% saline and 100g of 9w/w% saline:
@@ -1609,22 +1659,22 @@ Simple expression: Mix 100g of 3w/w% saline and 100g of 9w/w% saline:
 python Calc-ChemMassPercent.py -f "100g:3% + 100g:9%"
 ```
 
-```markdown
+```yaml
 Type          : Solution.1
 Formula       : 100g:3%
 Volume        : 100 g
-Mat.1         : 3.0 g / 100 g = 0.030 (3.000 %)
+M1            : 3.0 g / 100 g = 0.030 (3.000 w/w%)
 
 Type          : Solution.2
 Formula       : 100g:9%
 Volume        : 100 g
-Mat.1         : 9.0 g / 100 g = 0.090 (9.000 %)
+M1            : 9.0 g / 100 g = 0.090 (9.000 w/w%)
 
 Type          : Product
 Formula       : 100g:3% + 100g:9%
 Total_Volume  : 200.0 g
-Total_Mat.1   : 12.0 g / 200.0 g = 0.060 (6.000 %)
-Total_Solid_@ : 12.0 g / 200.0 g = 0.060 (6.000 %)
+Total_M1      : 12.0 g / 200.0 g = 0.060 (6.000 w/w%)
+Total_Solid   : 12.0 g / 200.0 g = 0.060 (6.000 w/w%)
 ```
 
 Mixing multiple solutions containing multiple solvents
@@ -1633,29 +1683,30 @@ Mixing multiple solutions containing multiple solvents
 python Calc-ChemMassPercent.py -f "100 mL : 0.3 NaCl, 0.03 T-N + 100 mL : 3.0% T-N +200 mL" -r 2
 ```
 
-```markdown
+```yaml
 Type          : Solution.1
-Formula       : 100 mL : 0.3 NaCl, 0.03 T-N
+Formula       : 100mL:0.3NaCl,0.03T-N
 Volume        : 100 mL
-NaCl          : 30.0 g / 100 mL = 0.30 (30.00 %)
-T-N           : 3.0 g / 100 mL = 0.03 (3.00 %)
+NaCl          : 30.0 g / 100 mL = 0.30 (30.00 w/v%)
+T-N           : 3.0 g / 100 mL = 0.03 (3.00 w/v%)
 
 Type          : Solution.2
-Formula       : 100 mL : 3.0% T-N
+Formula       : 100mL:3.0%T-N
 Volume        : 100 mL
-T-N           : 3.0 g / 100 mL = 0.03 (3.00 %)
+T-N           : 3.0 g / 100 mL = 0.03 (3.00 w/v%)
 
 Type          : Solution.3
-Formula       : 200 mL
+Formula       : 200mL
 Volume        : 200 mL
 
 Type          : Product
 Formula       : 100mL:0.3NaCl,0.03T-N + 100mL:3.0%T-N + 200mL
 Total_Volume  : 400.0 mL
-Total_NaCl    : 30.0 g / 400.0 mL = 0.07 (7.50 %)
-Total_T-N     : 6.0 g / 400.0 mL = 0.01 (1.50 %)
-Total_Solid_@ : 36.0 g / 400.0 mL = 0.09 (9.00 %)
+Total_NaCl    : 30.0 g / 400.0 mL = 0.07 (7.50 w/v%)
+Total_T-N     : 6.0 g / 400.0 mL = 0.01 (1.50 w/v%)
+Total_Solid   : 36.0 g / 400.0 mL = 0.09 (9.00 w/v%)
 ```
+
 
 ### Graph and chart
 
