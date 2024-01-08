@@ -1284,7 +1284,7 @@ Recalculate the mass percent concentration
 
 - Usage:
     - man: `python Calc-ChemMassPercent.py [-h]`
-    - `Calc-ChemMassPercent.py [-h] [-f FORMULA] [-r|--round ROUND] [-m] [-v] [-d|--debug]`
+    - `Calc-ChemMassPercent.py [-h] [-f|--formula FORMULA] [-r|--round ROUND] [-m|--molar] [-e|--expression EXPRESSION] [-v] [--mvar] [-d|--debug]`
         - `'solution.1 + solution.2 + ...' | python Calc-ChemMassPercent.py`
         - `python Calc-ChemMassPercent.py -f 'solution.1 + solution.2 + ...'`
 - Thanks:
@@ -1296,15 +1296,17 @@ Recalculate the mass percent concentration
 Options:
 
 ```
--h, --help            show this help message and exit
+-h, --help          show this help message and exit
 -f FORMULA, --formula FORMULA
-                      molecular formula
--m, --molar           calc molar concentration
+                    molecular formula
+-m, --molar         calc molar concentration
 -r ROUND, --round ROUND
-                      round
--v, --verbose         verbose output
--d, --debug           debug
--V, --version         version
+                    round
+-e EXPRESSION, --expression EXPRESSION
+                    execute expression
+-v, --verbose       verbose output
+--mvar              Use M# in expression
+-d, --debug         debug
 ```
 
 Input:
@@ -1444,8 +1446,9 @@ Molarity mode (-m, --molar) syntax:
 
 Practices:
 
-```
-<Q.1>
+```markdown
+## <Q.1>
+
 Dilute 100mL of 3w/v% NaCl solution
 to double volume with water.
 
@@ -1455,8 +1458,9 @@ to double volume with water.
     100 : 0.3 + 100
 ```
 
-```
-<Q.2>
+```markdown
+## <Q.2>
+
 An aqueous solution weighing 100g containing
 10w/w% NaCl and 3w/w%T-N as a solvent.
 
@@ -1466,14 +1470,15 @@ An aqueous solution weighing 100g containing
     100 : 0.1, 0.03
 ```
 
-`/`,`*` can be used for concentration term, but do not use "+" because it is used to express mixtures of Solutions:
+`/`,`*` can be used for concentration term, but do not use `+` because it is used to express mixtures of Solutions:
 
 ```
 100 : 10%, 3% = 100 : 10/100, 3/100*1.0
 ```
 
-```
-<Q.3>
+```markdown
+## <Q.3>
+
 Calculate the molar concentration (mol/L)
 of CH3COOH
 with a density of 1.05 g/mL at 20℃
@@ -1486,6 +1491,39 @@ and a purity of 100 w/w%.
     Volume        : 1050.0 g (1.000 L)
     CH3COOH       : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
 ```
+
+
+```markdown
+## <Q.4>
+
+Calculate the factor(molar concentration ratio) of HCl/N,
+1000 ml : 4.21 w/v% of N and 12.34 w/v% of HCl
+
+"1000ml: 4.21% N, 12.34% HCl" | python Calc-ChemMassPercent.py --molar --expression 'print("Total_Volume = {} {}".format(Prod.volume, Prod.unit));print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))' --verbose
+
+    Type          : Solution.1
+    Formula       : 1000ml:4.21%N,12.34%HCl
+    Volume        : 1000 ml
+    N             : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
+    HCl           : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
+
+    Type          : Product
+    Formula       : 1000ml:4.21%N,12.34%HCl
+    Total_Volume  : 1000.0 ml
+    Total_N       : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
+    Total_HCl     : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
+
+    Set_Variable  : Prod = Product(name, volume, unit)
+    Set_Variable  : N = Material(name, volume, unit, mol, molar, molar_unit)
+    Set_Variable  : HCl = Material(name, volume, unit, mol, molar, molar_unit)
+
+    exec_end      : print("Total_Volume = {} {}".format(Prod.volume, Prod.unit))
+    return        : Total_Volume = 1000.0 ml
+
+    exec_end      : print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))
+    return        : factor = 1.1260 HCl/N molar concentration ratio
+```
+
 
 EXAMPLES:
 
