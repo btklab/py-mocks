@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Changed [Calc-ChemMassPercent.py] to print output at the end
 - Fixed [Calc-ChemMassPercent.py] invalid variable name `Solid_@`
 
 ## [1.4.1] - 2024-01-04
