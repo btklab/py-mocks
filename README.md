@@ -7,7 +7,7 @@
 > |_|    (__)       |_|  |_| \___/  \___)|_|\_)(____/
 ```
 
-A mock-up cli script set of [Welcome to Python.org](https://www.python.org/) that filter text-object input from the pipeline(stdin) and return text-object.
+A mock-up cli script set of [Python](https://www.python.org/) that filter text-object input from the pipeline(stdin) and return text-object.
 
 - For use in UTF-8 Japanese environments on windows.
 - For my personal work and hobby use.

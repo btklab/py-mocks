@@ -76,11 +76,11 @@ def get_args():
             Volume [unit]                 -> 100 mL
             Volume [unit] : w/v Percent % -> 100 mL : 3 %
             Volume [unit] : Ratio         -> 100 mL : 0.3
-
+            
             Weight [unit]                 -> 100 kg
             Weight [unit] : w/w Percent % -> 100 kg : 3 %
             Weight [unit] : Ratio         -> 100 kg : 0.3
-
+            
             <Note>
             - The Solute units must be the same throughout the formula.
               (If a unit difference detected, an error will be returned)
@@ -88,6 +88,10 @@ def get_args():
         With Solvent name:
             Volume : Percent % Name -> 100 : 3 % NaCl
             Volume : Ratio Name     -> 100 : 0.3 NaCl
+
+        Volume with density:
+            density=1.17 g/ml, Volume = 1000 ml, 35w/w% HCl
+                -> 1.17 * 1000 g : 35% HCl
         
         Mix Multiple Solutions with different concentrations (use the '+'):
             -> 100:3% + 100:1%
@@ -131,7 +135,8 @@ def get_args():
                 Total_HCl     : 350.0 g / 36.461 amu / 1.0 L = 9.599 mol/L (M)
 
             2. With density (density * volume):
-            -> "1.17 * 1000 g: 35% HCl" | python Calc-ChemMassPercent.py --molar
+            -> 1.17 g/ml, 1000 ml, 35w/w% HCl
+            -> "1.17 * 1000 g : 35% HCl" | python Calc-ChemMassPercent.py --molar
 
                 Type          : Solution.1
                 Formula       : 1.17*1000g:35%HCl
@@ -714,19 +719,27 @@ if __name__ == '__main__':
                     else:
                         total_volume.sumSplitVolume(float(split_vol), str_vol_unit)
                         print(total_volume.getSplitVolume())
+            # set Property name
+            if isVolume == "Weight":
+                propNameVolumeOrWeight = r"Weight"
+            elif isVolume == "Volume":
+                propNameVolumeOrWeight = r"Volume"
+            else:
+                propNameVolumeOrWeight = r"Weight"
+                
             if True:
                 print_list.append("{} : {}".format("Type".ljust(debug_ljust), solution_id))
                 print_list.append("{} : {}".format("Formula".ljust(debug_ljust), solution))
                 if print_solution_unit == '':
-                    print_list.append("{} : {}".format("Volume".ljust(debug_ljust), str_vol))
+                    print_list.append("{} : {}".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol))
                 else:
                     if isVolume == "Weight" and total_volume.isSplitVolume():
                         if split_vol != None:
                             str_split_vol = str("{:." + args.round + "f}").format(float(split_vol) * coef_solu_to_liter)
                             str_split_vol_unit = 'L'
-                        print_list.append("{} : {} {} ({} {})".format("Volume".ljust(debug_ljust), str_vol, str_vol_unit, str_split_vol, str_split_vol_unit))
+                        print_list.append("{} : {} {} ({} {})".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol, str_vol_unit, str_split_vol, str_split_vol_unit))
                     else:
-                        print_list.append("{} : {} {}".format("Volume".ljust(debug_ljust), str_vol, str_vol_unit))
+                        print_list.append("{} : {} {}".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol, str_vol_unit))
             
             # get each mass percent concentration nums
             if conc == '':
@@ -845,11 +858,12 @@ if __name__ == '__main__':
             
             if args.debug or args.verbose:
                 # output 
+                propName = "Total_" + propNameVolumeOrWeight
                 if not args.molar:
                     if print_solution_unit == '':
-                        print_list.append("{} : {}".format("Total_Volume".ljust(debug_ljust), total_volume.getSoluteVolume()))
+                        print_list.append("{} : {}".format(propName.ljust(debug_ljust), total_volume.getSoluteVolume()))
                     else:
-                        print_list.append("{} : {} {}".format("Total_Volume".ljust(debug_ljust), total_volume.getSoluteVolume(), print_solution_unit))
+                        print_list.append("{} : {} {}".format(propName.ljust(debug_ljust), total_volume.getSoluteVolume(), print_solution_unit))
                     if len(solvent_dict) > 0:
                         for key in solvent_dict.keys():
                             c = str("Total_" + key).ljust(debug_ljust)
@@ -878,7 +892,8 @@ if __name__ == '__main__':
         if not args.molar:
             material_list.append(solid_name)
         # output product
-        n = "Total_Volume".ljust(debug_ljust)
+        propName = "Total_" + propNameVolumeOrWeight
+        n = propName.ljust(debug_ljust)
         v = total_volume.getSoluteVolume()
         print_list.append("{} : {}".format("Type".ljust(debug_ljust), "Product"))
         print_list.append("{} : {}".format("Formula".ljust(debug_ljust), fml.replace(' ', '').replace('+', ' + ')))
@@ -889,9 +904,9 @@ if __name__ == '__main__':
             if isVolume == "Weight" and total_volume.isSplitVolume():
                 vs = total_volume.getSplitVolume()
                 ts = str("{:." + args.round + "f}").format(vs * coef_solu_to_liter)
-                print_list.append("{} : {} {} ({} L)".format("Total_Volume".ljust(debug_ljust), v, u, ts))
+                print_list.append("{} : {} {} ({} L)".format(propName.ljust(debug_ljust), v, u, ts))
             else:
-                print_list.append("{} : {} {}".format("Total_Volume".ljust(debug_ljust), v, u))
+                print_list.append("{} : {} {}".format(propName.ljust(debug_ljust), v, u))
         if args.expression:
             # set Product(name, weight, volume, unit)
             product_symbol = "Prod"
