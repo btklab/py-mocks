@@ -9,7 +9,7 @@ import io, sys, os
 import re
 import argparse
 
-_version = "Tue Jan  9 05:28:13 TST 2024"
+_version = "Sat Jan 13 06:23:11 TST 2024"
 _code    = "MyCommands(LINUX+WINDOWS/PYTHON3/UTF-8)"
 
 ## switch stdio by platform
@@ -57,7 +57,7 @@ def get_args():
             Total_NaCl    : 30.0 g / 400.0 mL = 0.07 (7.50 w/v%)
             Total_T-N     : 6.0 g / 400.0 mL = 0.01 (1.50 w/v%)
             Total_Solid   : 36.0 g / 400.0 mL = 0.09 (9.00 w/v%)
-
+    
     Usage:
         'solution.1 + solution.2 + ...' | python Calc-ChemMassPercent.py
         python Calc-ChemMassPercent.py -f 'solution.1 + solution.2 + ...'
@@ -133,21 +133,21 @@ def get_args():
                 Formula       : 1000ml:35%HCl
                 Total_Volume  : 1000.0 ml
                 Total_HCl     : 350.0 g / 36.461 amu / 1.0 L = 9.599 mol/L (M)
-
+            
             2. With density (density * volume):
             -> 1.17 g/ml, 1000 ml, 35w/w% HCl
             -> "1.17 * 1000 g : 35% HCl" | python Calc-ChemMassPercent.py --molar
 
                 Type          : Solution.1
                 Formula       : 1.17*1000g:35%HCl
-                Volume        : 1170.0 g (1.000 L)
+                Weight        : 1170.0 g (1.000 L)
                 HCl           : 409.5 g / 36.461 amu / 1.0 L = 11.231 mol/L (M)
-                
+
                 Type          : Product
                 Formula       : 1.17*1000g:35%HCl
-                Total_Volume  : 1170.0 g (1.000 L)
+                Total_Weight  : 1170.0 g (1.000 L)
                 Total_HCl     : 409.5 g / 36.461 amu / 1.0 L = 11.231 mol/L (M)
-
+            
             <Note>
             - If the solvent unit is liquid volume rather than mass, 
               the concentration of the solvent will be w/v% instead of w/w%.
@@ -190,11 +190,16 @@ def get_args():
 
                 "1.05 * 1000 g : 100% CH3COOH" | python Calc-ChemMassPercent.py --molar
 
-                Type          : Solution.1
-                Formula       : 1.05*1000g:100%CH3COOH
-                Volume        : 1050.0 g (1.000 L)
-                CH3COOH       : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
-            
+                    Type          : Solution.1
+                    Formula       : 1.05*1000g:100%CH3COOH
+                    Weight        : 1050.0 g (1.000 L)
+                    CH3COOH       : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
+
+                    Type          : Product
+                    Formula       : 1.05*1000g:100%CH3COOH
+                    Total_Weight  : 1050.0 g (1.000 L)
+                    Total_CH3COOH : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
+                        
             <Q.4>
             Calculate the factor(molar concentration ratio) of HCl/N,
             1000 ml : 4.21 w/v% of N and 12.34 w/v% of HCl
@@ -222,7 +227,7 @@ def get_args():
 
                 exec_end      : print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))
                 return        : factor = 1.1260 HCl/N molar concentration ratio
-
+    
     Thanks:
         MathPython
         https://wiki3.jp/MathPython/page/34
@@ -243,19 +248,19 @@ def get_args():
 
         Type          : Solution.1
         Formula       : 100:0.15
-        Volume        : 100
+        Weight        : 100
         M1            : 15.0 / 100 = 0.150 (15.000 %)
 
         Type          : Solution.2
         Formula       : 100
-        Volume        : 100
+        Weight        : 100
 
         Type          : Product
         Formula       : 100:0.15 + 100
-        Total_Volume  : 200.0
+        Total_Weight  : 200.0
         Total_M1      : 15.0 / 200.0 = 0.075 (7.500 %)
         Total_Solid   : 15.0 / 200.0 = 0.075 (7.500 %)
-
+    
     # Dissolve 15.0g of salt in 100g of saline solution
     # with a concentration of 10 w/w%
 
@@ -276,7 +281,7 @@ def get_args():
         Total_Volume  : 100.0 mL
         Total_NaCl    : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
         Total_Solid   : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
-    
+        
     # Calculate mass percent concentration when mixing multiple solutions.
     "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200" | python Calc-ChemMassPercent.py
     # or
@@ -301,7 +306,7 @@ def get_args():
         Total_Volume  : 400.0 L
         Total_NaCl    : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
         Total_Solid   : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
-
+    
     # -v, --verbose option: Output total solvent weight for each step
     python Calc-ChemMassPercent.py -f "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200" -v
 
@@ -333,26 +338,26 @@ def get_args():
         Total_Volume  : 400.0 L
         Total_NaCl    : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
         Total_Solid   : 12.0 kg / 400.0 L = 0.030 (3.000 w/v%)
-
+    
     # Simple expression: Mix 100g of 3w/w% saline and 100g of 9w/w% saline:
     python Calc-ChemMassPercent.py -f "100g:3% + 100g:9%"
 
         Type          : Solution.1
         Formula       : 100g:3%
-        Volume        : 100 g
+        Weight        : 100 g
         M1            : 3.0 g / 100 g = 0.030 (3.000 w/w%)
 
         Type          : Solution.2
         Formula       : 100g:9%
-        Volume        : 100 g
+        Weight        : 100 g
         M1            : 9.0 g / 100 g = 0.090 (9.000 w/w%)
 
         Type          : Product
         Formula       : 100g:3% + 100g:9%
-        Total_Volume  : 200.0 g
+        Total_Weight  : 200.0 g
         Total_M1      : 12.0 g / 200.0 g = 0.060 (6.000 w/w%)
         Total_Solid   : 12.0 g / 200.0 g = 0.060 (6.000 w/w%)
-
+    
     # Mixing multiple solutions containing multiple solvents
     python Calc-ChemMassPercent.py -f "100 mL : 0.3 NaCl, 0.03 T-N + 100 mL : 3.0% T-N +200 mL" -r 2
     
@@ -361,16 +366,16 @@ def get_args():
         Volume        : 100 mL
         NaCl          : 30.0 g / 100 mL = 0.30 (30.00 w/v%)
         T-N           : 3.0 g / 100 mL = 0.03 (3.00 w/v%)
-
+        
         Type          : Solution.2
         Formula       : 100mL:3.0%T-N
         Volume        : 100 mL
         T-N           : 3.0 g / 100 mL = 0.03 (3.00 w/v%)
-
+        
         Type          : Solution.3
         Formula       : 200mL
         Volume        : 200 mL
-
+        
         Type          : Product
         Formula       : 100mL:0.3NaCl,0.03T-N + 100mL:3.0%T-N + 200mL
         Total_Volume  : 400.0 mL
@@ -731,15 +736,15 @@ if __name__ == '__main__':
                 print_list.append("{} : {}".format("Type".ljust(debug_ljust), solution_id))
                 print_list.append("{} : {}".format("Formula".ljust(debug_ljust), solution))
                 if print_solution_unit == '':
-                    print_list.append("{} : {}".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol))
+                    print_list.append("{} : {}".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol).strip())
                 else:
                     if isVolume == "Weight" and total_volume.isSplitVolume():
                         if split_vol != None:
                             str_split_vol = str("{:." + args.round + "f}").format(float(split_vol) * coef_solu_to_liter)
                             str_split_vol_unit = 'L'
-                        print_list.append("{} : {} {} ({} {})".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol, str_vol_unit, str_split_vol, str_split_vol_unit))
+                        print_list.append("{} : {} {} ({} {})".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol, str_vol_unit, str_split_vol, str_split_vol_unit).strip())
                     else:
-                        print_list.append("{} : {} {}".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol, str_vol_unit))
+                        print_list.append("{} : {} {}".format(propNameVolumeOrWeight.ljust(debug_ljust), str_vol, str_vol_unit).strip())
             
             # get each mass percent concentration nums
             if conc == '':
@@ -821,9 +826,9 @@ if __name__ == '__main__':
                         u_solv = print_solvent_unit
                         if float(v) == 0:
                             # case Volume == 0 (only solvent)
-                            print_list.append(str("{} : {} ({} {})").format(c, w_str, w, u_solv))
+                            print_list.append(str("{} : {} ({} {})").format(c, w_str, w, u_solv).strip())
                         else:
-                            print_list.append(str("{} : {} / {} / {} = {}").format(c, w_str, m_str, v_str, p_str))
+                            print_list.append(str("{} : {} / {} / {} = {}").format(c, w_str, m_str, v_str, p_str).strip())
                 else:
                     c = str_solv_name.ljust(debug_ljust)
                     v = str_vol
@@ -844,26 +849,26 @@ if __name__ == '__main__':
                     if print_solution_unit == '':
                         if float(v) == 0:
                             # case Volume == 0 (only solvent)
-                            print_list.append(str("{} : {}").format(c, w))
+                            print_list.append(str("{} : {}").format(c, w).strip())
                         else:
-                            print_list.append(str("{} : {} / {} = {} ({})").format(c, w, v, n_str, p_str))
+                            print_list.append(str("{} : {} / {} = {} ({})").format(c, w, v, n_str, p_str).strip())
                     else:
                         u_solv = print_solvent_unit
                         u_solu = print_solution_unit
                         if float(v) == 0:
                             # case Volume == 0 (only solvent)
-                            print_list.append(str("{} : {} {}").format(c, w, u_solv))
+                            print_list.append(str("{} : {} {}").format(c, w, u_solv).strip())
                         else:
-                            print_list.append(str("{} : {} {} / {} {} = {} ({})").format(c, w, u_solv, v, u_solu, n_str, p_str))
+                            print_list.append(str("{} : {} {} / {} {} = {} ({})").format(c, w, u_solv, v, u_solu, n_str, p_str).strip())
             
             if args.debug or args.verbose:
                 # output 
                 propName = "Total_" + propNameVolumeOrWeight
                 if not args.molar:
                     if print_solution_unit == '':
-                        print_list.append("{} : {}".format(propName.ljust(debug_ljust), total_volume.getSoluteVolume()))
+                        print_list.append("{} : {}".format(propName.ljust(debug_ljust), total_volume.getSoluteVolume()).strip())
                     else:
-                        print_list.append("{} : {} {}".format(propName.ljust(debug_ljust), total_volume.getSoluteVolume(), print_solution_unit))
+                        print_list.append("{} : {} {}".format(propName.ljust(debug_ljust), total_volume.getSoluteVolume(), print_solution_unit).strip())
                     if len(solvent_dict) > 0:
                         for key in solvent_dict.keys():
                             c = str("Total_" + key).ljust(debug_ljust)
@@ -880,11 +885,11 @@ if __name__ == '__main__':
                             r_str = str("{:." + args.round + "f}").format(r)
                             p_str = str("{:." + args.round + "f} {}").format(p, p_unit)
                             if print_solution_unit == '':
-                                print_list.append(str("{} : {} / {} = {} ({})").format(c, w, v, r_str, p_str))
+                                print_list.append(str("{} : {} / {} = {} ({})").format(c, w, v, r_str, p_str).strip())
                             else:
                                 u_solv = print_solvent_unit
                                 u_solu = print_solution_unit
-                                print_list.append(str("{} : {} {} / {} {} = {} ({})").format(c, w, u_solv, v, u_solu, r_str, p_str))            
+                                print_list.append(str("{} : {} {} / {} {} = {} ({})").format(c, w, u_solv, v, u_solu, r_str, p_str).strip())
             if True:
                 print_list.append("")
         
@@ -898,15 +903,15 @@ if __name__ == '__main__':
         print_list.append("{} : {}".format("Type".ljust(debug_ljust), "Product"))
         print_list.append("{} : {}".format("Formula".ljust(debug_ljust), fml.replace(' ', '').replace('+', ' + ')))
         if print_solution_unit == '':
-            print_list.append("{} : {}".format(n, v))
+            print_list.append("{} : {}".format(n, v).strip())
         else:
             u = print_solution_unit
             if isVolume == "Weight" and total_volume.isSplitVolume():
                 vs = total_volume.getSplitVolume()
                 ts = str("{:." + args.round + "f}").format(vs * coef_solu_to_liter)
-                print_list.append("{} : {} {} ({} L)".format(propName.ljust(debug_ljust), v, u, ts))
+                print_list.append("{} : {} {} ({} L)".format(propName.ljust(debug_ljust), v, u, ts).strip())
             else:
-                print_list.append("{} : {} {}".format(propName.ljust(debug_ljust), v, u))
+                print_list.append("{} : {} {}".format(propName.ljust(debug_ljust), v, u).strip())
         if args.expression:
             # set Product(name, weight, volume, unit)
             product_symbol = "Prod"
@@ -965,9 +970,9 @@ if __name__ == '__main__':
                         u_solv = print_solvent_unit
                         if float(v) == 0:
                             # case Volume == 0 (only solvent)
-                            print_list.append(str("{} : {} ({} {})").format(c, w_str, w, u_solv))
+                            print_list.append(str("{} : {} ({} {})").format(c, w_str, w, u_solv)).strip()
                         else:
-                            print_list.append(str("{} : {} / {} / {} = {}").format(c, w_str, m_str, v_str, p_str))
+                            print_list.append(str("{} : {} / {} / {} = {}").format(c, w_str, m_str, v_str, p_str).strip())
                         # set Material(name, weight, volume, unit, mol, ratio, ratio_unit)
                         if args.expression:
                             exp_str = var_symbol + " = Material(key, w_gram, w_gram, 'g', molmass, molar, vol_unit)"
@@ -988,7 +993,7 @@ if __name__ == '__main__':
                     r_str = str("{:." + args.round + "f}").format(r)
                     p_str = str("{:." + args.round + "f} {}").format(p, p_unit)
                     if print_solution_unit == '':
-                        print_list.append(str("{} : {} / {} = {} ({})").format(c, w, v, r_str, p_str))
+                        print_list.append(str("{} : {} / {} = {} ({})").format(c, w, v, r_str, p_str).strip())
                         if args.expression:
                             # set Material(name, weight, volume, unit, mol, ratio, ratio_unit)
                             exp_str = var_symbol + " = Material(key, w, w, None, None, p, p_unit)"
@@ -997,7 +1002,7 @@ if __name__ == '__main__':
                     else:
                         u_solv = print_solvent_unit
                         u_solu = print_solution_unit
-                        print_list.append(str("{} : {} {} / {} {} = {} ({})").format(c, w, u_solv, v, u_solu, r_str, p_str))
+                        print_list.append(str("{} : {} {} / {} {} = {} ({})").format(c, w, u_solv, v, u_solu, r_str, p_str).strip())
                         if args.expression:
                             # set Material(name, weight, volume, unit, mol, ratio, ratio_unit)
                             exp_str = var_symbol + " = Material(key, w, w, u_solv, None, p, p_unit)"
@@ -1026,7 +1031,7 @@ if __name__ == '__main__':
             print_list.append("")
             for var in variable_list:
                 n = "Set_Variable".ljust(debug_ljust)
-                print_list.append(str("{} : {}").format(n, var))
+                print_list.append(str("{} : {}").format(n, var).strip())
         
         # print
         if len(print_list) > 0:
