@@ -7,8 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- NA
+
+## [1.4.2] - 2024-01-13
+
+- Changed [Calc-ChemMassPercent.py] property name depending on unit
 - Changed [Calc-ChemMassPercent.py] to print output at the end
 - Fixed [Calc-ChemMassPercent.py] invalid variable name `Solid_@`
+- Fixed [README.md] typo
 
 ## [1.4.1] - 2024-01-04
 
@@ -85,7 +91,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Calc-ChemMassPercent.py]: src/Calc-ChemMassPercent.py
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.4.1..HEAD
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.4.2..HEAD
+[1.4.2]: https://github.com/btklab/py-mocks/releases/tag/1.4.2
 [1.4.1]: https://github.com/btklab/py-mocks/releases/tag/1.4.1
 [1.4.0]: https://github.com/btklab/py-mocks/releases/tag/1.4.0
 [1.3.0]: https://github.com/btklab/py-mocks/releases/tag/1.3.0
