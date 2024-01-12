@@ -1319,26 +1319,26 @@ Output:
 
 ```yaml
 Type          : Solution.1
-Formula       : 100 mL : 0.3 NaCl, 0.03 T-N
+Formula       : 100mL:0.3NaCl,0.03T-N
 Volume        : 100 mL
-NaCl          : 30.0 g / 100 mL = 0.30 (30.00 %)
-T-N           : 3.0 g / 100 mL = 0.03 (3.00 %)
+NaCl          : 30.0 g / 100 mL = 0.30 (30.00 w/v%)
+T-N           : 3.0 g / 100 mL = 0.03 (3.00 w/v%)
 
 Type          : Solution.2
-Formula       : 100 mL : 3.0% T-N
+Formula       : 100mL:3.0%T-N
 Volume        : 100 mL
-T-N           : 3.0 g / 100 mL = 0.03 (3.00 %)
+T-N           : 3.0 g / 100 mL = 0.03 (3.00 w/v%)
 
 Type          : Solution.3
-Formula       : 200 mL
+Formula       : 200mL
 Volume        : 200 mL
 
 Type          : Product
 Formula       : 100mL:0.3NaCl,0.03T-N + 100mL:3.0%T-N + 200mL
 Total_Volume  : 400.0 mL
-Total_NaCl    : 30.0 g / 400.0 mL = 0.07 (7.50 %)
-Total_T-N     : 6.0 g / 400.0 mL = 0.01 (1.50 %)
-Total_Solid   : 36.0 g / 400.0 mL = 0.09 (9.00 %)
+Total_NaCl    : 30.0 g / 400.0 mL = 0.07 (7.50 w/v%)
+Total_T-N     : 6.0 g / 400.0 mL = 0.01 (1.50 w/v%)
+Total_Solid   : 36.0 g / 400.0 mL = 0.09 (9.00 w/v%)
 ```
 
 
@@ -1389,6 +1389,27 @@ Mix Multiple Solutions with different concentrations (use the `+`):
 - If the solvents name is omitted, the names
   `M1`, `M2`, ... are automatically assigned from the left.
 ```
+
+Volume with density:
+
+```
+density=1.17 g/ml, Volume = 1000 ml, 35w/w% HCl
+
+    -> 1.17 * 1000 g : 35% HCl
+```
+
+Mix Multiple Solutions with different concentrations (use the `+`):
+
+```
+-> 100:3% + 100:1%
+-> 100mL:3%NaCl + 100mL:1%NaCl
+
+<Note>
+- Add up solvents with the same name.
+- If the solvents name is omitted, the names
+    M1, M2, ... are automatically assigned from the left.
+```
+
 
 Solutions containing multiple Solvents (use `,`):
 
@@ -1490,10 +1511,15 @@ and a purity of 100 w/w%.
 ```
 
 ```yaml
-Type    : Solution.1
-Formula : 1.05*1000g:100%CH3COOH
-Volume  : 1050.0 g (1.000 L)
-CH3COOH : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
+Type          : Solution.1
+Formula       : 1.05*1000g:100%CH3COOH
+Weight        : 1050.0 g (1.000 L)
+CH3COOH       : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
+
+Type          : Product
+Formula       : 1.05*1000g:100%CH3COOH
+Total_Weight  : 1050.0 g (1.000 L)
+Total_CH3COOH : 1050.0 g / 60.052 amu / 1.0 L = 17.485 mol/L (M)
 ```
 
 
@@ -1548,16 +1574,16 @@ python Calc-ChemMassPercent.py -f "100:0.15+100"
 ```yaml
 Type          : Solution.1
 Formula       : 100:0.15
-Volume        : 100
+Weight        : 100
 M1            : 15.0 / 100 = 0.150 (15.000 %)
 
 Type          : Solution.2
 Formula       : 100
-Volume        : 100
+Weight        : 100
 
 Type          : Product
 Formula       : 100:0.15 + 100
-Total_Volume  : 200.0
+Total_Weight  : 200.0
 Total_M1      : 15.0 / 200.0 = 0.075 (7.500 %)
 Total_Solid   : 15.0 / 200.0 = 0.075 (7.500 %)
 ```
@@ -1662,17 +1688,17 @@ python Calc-ChemMassPercent.py -f "100g:3% + 100g:9%"
 ```yaml
 Type          : Solution.1
 Formula       : 100g:3%
-Volume        : 100 g
+Weight        : 100 g
 M1            : 3.0 g / 100 g = 0.030 (3.000 w/w%)
 
 Type          : Solution.2
 Formula       : 100g:9%
-Volume        : 100 g
+Weight        : 100 g
 M1            : 9.0 g / 100 g = 0.090 (9.000 w/w%)
 
 Type          : Product
 Formula       : 100g:3% + 100g:9%
-Total_Volume  : 200.0 g
+Total_Weight  : 200.0 g
 Total_M1      : 12.0 g / 200.0 g = 0.060 (6.000 w/w%)
 Total_Solid   : 12.0 g / 200.0 g = 0.060 (6.000 w/w%)
 ```
