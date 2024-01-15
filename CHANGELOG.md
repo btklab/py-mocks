@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- NA
+- Updated [Calc-ChemMassPercent.py] output error massage when hyphen is used in molecular formula
 
 ## [1.4.3] - 2024-01-13
 

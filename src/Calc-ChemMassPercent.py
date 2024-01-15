@@ -770,6 +770,9 @@ if __name__ == '__main__':
                     raise_error("Please specify molecule name '{}'.".format(solution))
                 elif str_solv_name == r'':
                     str_solv_name = term_symbol + str(term_counter)
+                if args.molar or args.expression:
+                    if re.search(r'\-', str_solv_name):
+                        raise_error("Hyphen cannot be used in molecular formula: '{}'.".format(str_solv_name))
                 # test duplication of term
                 #print("{} : {}".format(str_solv_name, solid_name))
                 if str_solv_name == solid_name:
