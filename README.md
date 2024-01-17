@@ -1347,9 +1347,9 @@ Expression pattern:
 Basic:
 
 ```
-Volume             -> 100
-Volume : Percent % -> 100 : 3 %
-Volume : Ratio     -> 100 : 0.3
+Weight             -> 100
+Weight : Percent % -> 100 : 3 %
+Weight : Ratio     -> 100 : 0.3
 
 <Rule>
 - Allows specification of solute only
@@ -1474,9 +1474,9 @@ Dilute 100mL of 3w/v% NaCl solution
 to double volume with water.
 
     100 mL : 3% NaCl + 100 mL
-    100 mL : 0.3 NaCl + 100 mL
+    100 mL : 0.03 NaCl + 100 mL
     100 : 3% + 100
-    100 : 0.3 + 100
+    100 : 0.03 + 100
 ```
 
 ```markdown
@@ -1591,25 +1591,25 @@ Total_Solid   : 15.0 / 200.0 = 0.075 (7.500 %)
 Dissolve 15.0g of salt in 100g of saline solution with a concentration of 10 w/w%
 
 ```powershell
-python Calc-ChemMassPercent.py -f "100 mL : 0.1 NaCl + 0 mL : 15.0 NaCl"
+python Calc-ChemMassPercent.py -f "100 g : 10% NaCl + 0 g : 15.0 NaCl"
 ```
 
 ```yaml
 Type          : Solution.1
-Formula       : 100mL:0.1NaCl
-Volume        : 100 mL
-NaCl          : 10.0 g / 100 mL = 0.100 (10.000 w/v%)
+Formula       : 100g:0.1NaCl
+Weight        : 100 g
+NaCl          : 10.0 g / 100 g = 0.100 (10.000 w/w%)
 
 Type          : Solution.2
-Formula       : 0mL:15.0NaCl
-Volume        : 0 mL
+Formula       : 0g:15.0NaCl
+Weight        : 0 g
 NaCl          : 15.0 g
 
 Type          : Product
-Formula       : 100mL:0.1NaCl + 0mL:15.0NaCl
-Total_Volume  : 100.0 mL
-Total_NaCl    : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
-Total_Solid   : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
+Formula       : 100g:0.1NaCl + 0g:15.0NaCl
+Total_Weight  : 100.0 g
+Total_NaCl    : 25.0 g / 100.0 g = 0.250 (25.000 w/w%)
+Total_Solid   : 25.0 g / 100.0 g = 0.250 (25.000 w/w%)
 ```
 
 Calculate mass percent concentration when mixing multiple solutions.

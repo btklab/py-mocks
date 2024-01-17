@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - NA
 
+## [1.4.4] - 2024-01-17
+
+- Fix: synopsis
+- Updated [Calc-ChemMassPercent.py] output error massage when hyphen is used in molecular formula
+
 ## [1.4.3] - 2024-01-13
 
 - Updated [Calc-ChemMassPercent.py] examples
@@ -95,7 +100,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Calc-ChemMassPercent.py]: src/Calc-ChemMassPercent.py
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.4.3..HEAD
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.4.4..HEAD
+[1.4.4]: https://github.com/btklab/py-mocks/releases/tag/1.4.4
 [1.4.3]: https://github.com/btklab/py-mocks/releases/tag/1.4.3
 [1.4.2]: https://github.com/btklab/py-mocks/releases/tag/1.4.2
 [1.4.1]: https://github.com/btklab/py-mocks/releases/tag/1.4.1

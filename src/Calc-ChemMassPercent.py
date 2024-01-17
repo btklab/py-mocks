@@ -64,9 +64,9 @@ def get_args():
 
     Expression pattern:
         Basic:
-            Volume             -> 100
-            Volume : Percent % -> 100 : 3 %
-            Volume : Ratio     -> 100 : 0.3
+            Weight             -> 100
+            Weight : Percent % -> 100 : 3 %
+            Weight : Ratio     -> 100 : 0.3
 
             <Rule>
             - Allows specification of solute only
@@ -163,9 +163,9 @@ def get_args():
             to double volume with water.
 
                 100 mL : 3% NaCl + 100 mL
-                100 mL : 0.3 NaCl + 100 mL
+                100 mL : 0.03 NaCl + 100 mL
                 100 : 3% + 100
-                100 : 0.3 + 100
+                100 : 0.03 + 100
 
             <Q.2>
             An aqueous solution weighing 100g containing
@@ -264,24 +264,24 @@ def get_args():
     # Dissolve 15.0g of salt in 100g of saline solution
     # with a concentration of 10 w/w%
 
-    python Calc-ChemMassPercent.py -f "100 mL : 0.1 NaCl + 0 mL : 15.0 NaCl"
+    python Calc-ChemMassPercent.py -f "100 g : 10% NaCl + 0 g : 15.0 NaCl"
 
         Type          : Solution.1
-        Formula       : 100mL:0.1NaCl
-        Volume        : 100 mL
-        NaCl          : 10.0 g / 100 mL = 0.100 (10.000 w/v%)
-
-        Type          : Solution.2
-        Formula       : 0mL:15.0NaCl
-        Volume        : 0 mL
-        NaCl          : 15.0 g
-
-        Type          : Product
-        Formula       : 100mL:0.1NaCl + 0mL:15.0NaCl
-        Total_Volume  : 100.0 mL
-        Total_NaCl    : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
-        Total_Solid   : 25.0 g / 100.0 mL = 0.250 (25.000 w/v%)
+        Formula       : 100g:0.1NaCl
+        Weight        : 100 g
+        NaCl          : 10.0 g / 100 g = 0.100 (10.000 w/w%)
         
+        Type          : Solution.2
+        Formula       : 0g:15.0NaCl
+        Weight        : 0 g
+        NaCl          : 15.0 g
+        
+        Type          : Product
+        Formula       : 100g:0.1NaCl + 0g:15.0NaCl
+        Total_Weight  : 100.0 g
+        Total_NaCl    : 25.0 g / 100.0 g = 0.250 (25.000 w/w%)
+        Total_Solid   : 25.0 g / 100.0 g = 0.250 (25.000 w/w%)
+
     # Calculate mass percent concentration when mixing multiple solutions.
     "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200" | python Calc-ChemMassPercent.py
     # or
@@ -770,6 +770,9 @@ if __name__ == '__main__':
                     raise_error("Please specify molecule name '{}'.".format(solution))
                 elif str_solv_name == r'':
                     str_solv_name = term_symbol + str(term_counter)
+                if args.molar or args.expression:
+                    if re.search(r'\-', str_solv_name):
+                        raise_error("Hyphen cannot be used in molecular formula: '{}'.".format(str_solv_name))
                 # test duplication of term
                 #print("{} : {}".format(str_solv_name, solid_name))
                 if str_solv_name == solid_name:
