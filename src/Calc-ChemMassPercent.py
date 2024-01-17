@@ -163,9 +163,9 @@ def get_args():
             to double volume with water.
 
                 100 mL : 3% NaCl + 100 mL
-                100 mL : 0.3 NaCl + 100 mL
+                100 mL : 0.03 NaCl + 100 mL
                 100 : 3% + 100
-                100 : 0.3 + 100
+                100 : 0.03 + 100
 
             <Q.2>
             An aqueous solution weighing 100g containing

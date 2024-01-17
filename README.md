@@ -1474,9 +1474,9 @@ Dilute 100mL of 3w/v% NaCl solution
 to double volume with water.
 
     100 mL : 3% NaCl + 100 mL
-    100 mL : 0.3 NaCl + 100 mL
+    100 mL : 0.03 NaCl + 100 mL
     100 : 3% + 100
-    100 : 0.3 + 100
+    100 : 0.03 + 100
 ```
 
 ```markdown
