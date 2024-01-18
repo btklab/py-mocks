@@ -1349,7 +1349,7 @@ Basic:
 ```
 Weight             -> 100
 Weight : Percent % -> 100 : 3 %
-Weight : Ratio     -> 100 : 0.3
+Weight : Ratio     -> 100 : 0.03
 
 <Rule>
 - Allows specification of solute only
@@ -1361,11 +1361,11 @@ With Unit:
 ```
 Volume [unit]                 -> 100 mL
 Volume [unit] : w/v Percent % -> 100 mL : 3 %
-Volume [unit] : Ratio         -> 100 mL : 0.3
+Volume [unit] : Ratio         -> 100 mL : 0.03
 
 Weight [unit]                 -> 100 kg
 Weight [unit] : w/w Percent % -> 100 kg : 3 %
-Weight [unit] : Ratio         -> 100 kg : 0.3
+Weight [unit] : Ratio         -> 100 kg : 0.03
 
 <Note>
 - The Solute units must be the same throughout the formula.
@@ -1376,7 +1376,7 @@ With Solvent name:
 
 ```
 Volume : Percent % Name -> 100 : 3 % NaCl
-Volume : Ratio Name     -> 100 : 0.3 NaCl
+Volume : Ratio Name     -> 100 : 0.03 NaCl
 ```
 
 ```
