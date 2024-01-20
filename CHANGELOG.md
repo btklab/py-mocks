@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- NA
+- Added [requirements.txt] pymatgen
 
 ## [1.4.4] - 2024-01-17
 
@@ -92,6 +92,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [README.md]: blob/main/README.md
 [CHANGELOG.md]: blob/main/CHANGELOG.md
+[requirements.txt]: blob/main/requirements.txt
 
 [Get-PeriodicTable.py]: src/Get-PeriodicTable.py
 [Get-MolecularMass.py]: src/Get-MolecularMass.py
