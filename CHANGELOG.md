@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- NA
+
+## [1.5.0] - 2024-01-21
+
+- Added [Calc-LPpulp.py] script
 - Added [requirements.txt] pymatgen
 
 ## [1.4.4] - 2024-01-17
@@ -101,7 +106,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Calc-ChemMassPercent.py]: src/Calc-ChemMassPercent.py
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.4.4..HEAD
+[Calc-LPpulp.py]: src/Calc-LPpulp.py
+
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.5.0..HEAD
+[1.5.0]: https://github.com/btklab/py-mocks/releases/tag/1.5.0
 [1.4.4]: https://github.com/btklab/py-mocks/releases/tag/1.4.4
 [1.4.3]: https://github.com/btklab/py-mocks/releases/tag/1.4.3
 [1.4.2]: https://github.com/btklab/py-mocks/releases/tag/1.4.2

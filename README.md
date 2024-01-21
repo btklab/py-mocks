@@ -21,7 +21,7 @@ script list:
 (cat README.md | sls '^#### \[[^[]+\]').Matches.Value.Replace('#### ','') -join ", " | Set-Clipboard
 ```
 
-- [pycalc.py], [pymatcalc.py], [pysym.py], [Get-PeriodicTable.py], [Get-MolecularMass.py], [Calc-ChemWeightRL.py], [Calc-ChemWeightLR.py], [Calc-ChemMassPercent.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py]
+- [pycalc.py], [pymatcalc.py], [pysym.py], [Calc-LPpulp.py], [Get-PeriodicTable.py], [Get-MolecularMass.py], [Calc-ChemWeightRL.py], [Calc-ChemWeightLR.py], [Calc-ChemMassPercent.py], [pyplot.py], [pyplot-pandas.py], [pyplot-x-rs.py], [pyplot-timeline2.py]
 
 主に現実世界の不定形文字列に対してパターンマッチング処理を行うためのフィルタ群。基本的な入力として、UTF-8＋半角スペース区切り＋行指向のパイプライン経由文字列データ（テキストオブジェクト）を期待する。
 
@@ -681,6 +681,293 @@ pysym.py 'plt.plot(s,t);plt.show()' -v 's=[i for i in range(6)];t=[i**2 for i in
 pysym.py 'sympy.plot_parametric(cos(x), sin(x), (x, 0, 2*pi))' --size 5,5
 # グラフサイズの指定 --size width,height
 ```
+
+#### [Calc-LPpulp.py] - Solve Linear Problem with matrix using PULP
+
+[Calc-LPpulp.py]: src/Calc-LPpulp.py
+
+Linear Problem optimizer that expresses objective variables and constraints in a matrix.
+
+- Usage:
+    - man: `python Calc-LPpulp.py [-h]`
+
+input.txt:
+
+```markdown
+    0.013   0.008, "Total Cost of Ingredients per can"
+    1      1      == 100, "PercentagesSum"
+    0.100  0.200  >= 8.0, "ProteinRequirement"
+    0.080  0.100  >= 6.0, "FatRequirement"
+    0.001  0.005  <= 2.0, "FibreRequirement"
+    0.002  0.005  <= 0.4, "SaltRequirement"
+```
+
+script:
+
+```powershell
+python ./Calc-LPpulp.py --lbound 0 --category "Integer"
+```
+
+output:
+
+```markdown
+    Status  = Optimal (Minimize)
+    Name    = objective
+    Option  = {'lowBound': 0.0, 'upBound': None, 'cat': 'Integer'}
+    x1      = 34.0
+    x2      = 66.0
+    Obj_Val = 0.97
+```
+
+input data format:
+
+- basic
+    - Express the objective function and constraints as a numeric matrix separated by spaces
+    - The variable names are automatically assigned, but you can also specify any variable names (see below)
+    - Multiple spaces will be replaced with a single space, so you can format it for easier reading
+
+- skip line
+    - The following lines of input data are skipped
+        - Lines beginning with `#`
+        - Empty lines
+        - Space handling
+            - Multiple consecutive spaces in input data are recognized as single space. (This is convenient when formatting input data to make it easier for human to read)
+            - Extra spaces at the beginning and end of each line in the input data is removed.
+
+- title line
+    - The first line beginning with "#" is interpreted as title
+
+- set variable symbols
+    - Variables can be declared on the first line, excluding the title line, separated by spaces
+    - If no variables are specified, x1, x2,... will be automatically assigned in order from the left column of the matrix
+    - Variable names can also be specified with the --names option, but it is recommended to write variable names on the input data as much as possible. (This is because if you write the data and variable name separately, one is likely to be lost.)
+    - If the number of variables is less than the number of columns in the objective function, the columns of the objective function to which variables are not assigned are simply considered as numbers to be summed. 
+
+```
+    example : case where the number of variables is
+                less than the number of columns of the
+                objective function
+
+        x  y
+        1  1 1
+        3  5 0 <= 15
+        2  1   >= 4
+        1 -1 1 == 1
+
+    output
+
+        1*x + 1*y + 1
+        _C1: 3 x + 5 y <= 15
+        _C2: 2 x + y >= 4
+        _C3: x - y = 0
+```
+
+- set objective function
+    - The first line starting with a number is considered the objective function
+    - The specification of the objective function can be　skipped. For example, it is not necessary to use an　objective function to derive a solution to a quadratic　function
+
+```
+    example without objective function
+
+        1 1 == 100
+        2 4 == 272
+
+    how to specify variable names when
+    there is no objective function
+
+        x y
+        1 1 == 100
+        2 4 == 272
+```
+
+- set constraints
+    - Data lines containing operators `<=`, `==`, `>=` are considered constraints
+    - Multiple constraints can be specified
+
+- misc
+    - If you specify the `-d` (`--debug`) option, it shows the description of the problem. It can be used to verify the answer
+    - If you specify the `-o` (`--output <filepath>`), it output the python script into a file. It can be used when you want to add more complex processing
+
+- what this script cannot do
+    - Variable assignment statements cannot be written in input data
+    - Variables cannot be automatically generated from a two-dimensional table
+
+- References:
+    - GitHub - coin-or/pulp: A python Linear Programming API
+        - https://github.com/coin-or/pulp
+    - Optimization with PuLP - PuLP documentation
+        - https://coin-or.github.io/pulp/
+
+Examples:
+
+- Solve a Blending Problem
+    - https://coin-or.github.io/pulp/CaseStudies/a_blending_problem.html
+
+input.txt:
+
+```
+# title  --category "Integer" --lbound 0
+## objective
+0.013 0.008 0.010 0.002 0.005 0.001, "Total Cost of Ingredients per can"
+
+## constraints
+1 1 1 1 1 1 == 100
+0.100 0.200 0.150 0.000 0.040 0.000 >= 8.0, "proteinPercent"
+0.080 0.100 0.110 0.010 0.010 0.000 >= 6.0, "fatPercent"
+0.001 0.005 0.003 0.100 0.150 0.000 <= 2.0, "fibrePercent"
+0.002 0.005 0.007 0.002 0.008 0.000 <= 0.4, "saltPercent"
+```
+
+solve:
+
+```powershell
+python Calc-LPpulp.py -f input.txt --category "Integer" --lbound 0 [-d]
+cat input.txt | python Calc-LPpulp.py --category "Integer" --lbound 0 [-d]
+```
+
+```markdown
+    Status  = Optimal (Minimize)
+    Name    = title
+    Option  = --cat "Integer" --lbound 0
+    x1      = 0.0
+    x2      = 60.0
+    x3      = 0.0
+    x4      = 0.0
+    x5      = 0.0
+    x6      = 40.0
+    Obj_Val = 0.5
+```
+
+Simplest example:
+
+```
+0.013 0.008 0.010 0.002 0.005 0.001
+1 1 1 1 1 1 == 100
+0.100 0.200 0.150 0.000 0.040 0.000 >= 8.0
+0.080 0.100 0.110 0.010 0.010 0.000 >= 6.0
+0.001 0.005 0.003 0.100 0.150 0.000 <= 2.0
+0.002 0.005 0.007 0.002 0.008 0.000 <= 0.4
+```
+
+solve:
+
+```powershell
+python Calc-LPpulp.py -f input.txt --lbound 0
+```
+
+```markdown
+    Status  = Optimal (Minimize)
+    Name    = Problem
+    Option  = {'lowBound': 0.0, 'upBound': None, 'cat': 'Continuous'}
+    x1      = 0.0
+    x2      = 60.0
+    x3      = 0.0
+    x4      = 0.0
+    x5      = 0.0
+    x6      = 40.0
+    Obj_Val = 0.52
+```
+
+Add title and comment
+
+```
+# this is title
+
+## objective
+0.013 0.008 0.010 0.002 0.005 0.001
+
+## constraints
+1 1 1 1 1 1 == 100
+0.100 0.200 0.150 0.000 0.040 0.000 >= 8.0
+0.080 0.100 0.110 0.010 0.010 0.000 >= 6.0
+0.001 0.005 0.003 0.100 0.150 0.000 <= 2.0
+0.002 0.005 0.007 0.002 0.008 0.000 <= 0.4
+```
+
+solve:
+
+```powershell
+python Calc-LPpulp.py -f input.txt --lbound 0
+```
+
+```markdown
+    Status  = Optimal (Minimize)
+    Name    = this_is_title
+    Option  = {'lowBound': 0.0, 'upBound': None, 'cat': 'Continuous'}
+    x1      = 0.0
+    x2      = 60.0
+    x3      = 0.0
+    x4      = 0.0
+    x5      = 0.0
+    x6      = 40.0
+    Obj_Val = 0.52
+```
+
+Add variable names within input data
+
+```
+# this is title
+
+## objective
+CHICKEN  BEEF MUTTON  RICE WHEAT   GEL
+  0.013 0.008  0.010 0.002 0.005 0.001
+
+## constraints
+1 1 1 1 1 1 == 100
+0.100 0.200 0.150 0.000 0.040 0.000 >= 8.0
+0.080 0.100 0.110 0.010 0.010 0.000 >= 6.0
+0.001 0.005 0.003 0.100 0.150 0.000 <= 2.0
+0.002 0.005 0.007 0.002 0.008 0.000 <= 0.4
+```
+
+solve:
+
+```powershell
+python Calc-LPpulp.py -f input.txt --lbound 0 -c 'Integer'
+```
+
+```markdown
+    Status  = Optimal (Minimize)
+    Name    = this_is_title
+    Option  = {'lowBound': 0.0, 'upBound': None, 'cat': 'Integer'}
+    BEEF    = 60.0
+    CHICKEN = 0.0
+    GEL     = 40.0
+    MUTTON  = 0.0
+    RICE    = 0.0
+    WHEAT   = 0.0
+    Obj_Val = 0.5
+```
+
+output debug mode:
+
+```powershell
+python Calc-LPpulp.py -f input.txt --lbound 0 -c 'Integer' -d
+```
+
+output python script to file:
+
+```powershell
+python Calc-LPpulp.py -f input.txt --lbound 0 -c 'Integer' -o out.py
+```
+
+all input format:
+
+```
+# title  --category "Integer" --lbound 0
+
+## objective
+CHICKEN BEEF   MUTTON RICE  WHEAT GEL
+0.013   0.008  0.010  0.002 0.005 0.001, "Total Cost of Ingredients per can"
+
+## constraints
+1 1 1 1 1 1 == 100
+0.100 0.200 0.150 0.000 0.040 0.000 >= 8.0, "proteinPercent"
+0.080 0.100 0.110 0.010 0.010 0.000 >= 6.0, "fatPercent"
+0.001 0.005 0.003 0.100 0.150 0.000 <= 2.0, "fibrePercent"
+0.002 0.005 0.007 0.002 0.008 0.000 <= 0.4, "saltPercent"
+```
+
 
 ### Chemistry
 
