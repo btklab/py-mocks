@@ -36,7 +36,7 @@ def get_args():
     constraints in a matrix.
 
     input.txt:
-        0.013   0.008, "Total Cost of Ingredients per can"
+        0.013  0.008, "Total Cost of Ingredients per can"
         1      1      == 100, "PercentagesSum"
         0.100  0.200  >= 8.0, "ProteinRequirement"
         0.080  0.100  >= 6.0, "FatRequirement"
