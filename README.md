@@ -694,7 +694,7 @@ Linear Problem optimizer that expresses objective variables and constraints in a
 input.txt:
 
 ```markdown
-    0.013   0.008, "Total Cost of Ingredients per can"
+    0.013  0.008, "Total Cost of Ingredients per can"
     1      1      == 100, "PercentagesSum"
     0.100  0.200  >= 8.0, "ProteinRequirement"
     0.080  0.100  >= 6.0, "FatRequirement"
@@ -752,7 +752,7 @@ input data format:
         1  1 1
         3  5 0 <= 15
         2  1   >= 4
-        1 -1 1 == 1
+        1 -1 2 == 1
 
     output
 
