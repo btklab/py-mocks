@@ -1571,8 +1571,8 @@ Recalculate the mass percent concentration
 
 - Usage:
     - man: `python Calc-ChemMassPercent.py [-h]`
-    - `Calc-ChemMassPercent.py [-h] [-f|--formula FORMULA] [-r|--round ROUND] [-m|--molar] [-e|--expression EXPRESSION] [-v] [--mvar] [-d|--debug]`
-        - `'solution.1 + solution.2 + ...' | python Calc-ChemMassPercent.py`
+    - `Calc-ChemMassPercent.py [-h] [-f|--formula FORMULA] [-r|--round ROUND] [-m|--molar] [-mm|--massmolarity] [-e|--expression EXPRESSION] [-v] [--mvar] [-d|--debug]`
+        - `echo 'solution.1 + solution.2 + ...' | python Calc-ChemMassPercent.py`
         - `python Calc-ChemMassPercent.py -f 'solution.1 + solution.2 + ...'`
 - Thanks:
     - MathPython
@@ -1847,6 +1847,31 @@ return        : Total_Volume = 1000.0 ml
 
 exec_end      : print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))
 return        : factor = 1.1260 HCl/N molar concentration ratio
+```
+
+```markdown
+## <Q.5>
+
+Calculate mass molarity of
+d=1.2 g/ml, 1000 ml, 20 w/w% NaOH
+```
+
+```powershell
+echo "1.2*1000 g : 20% NaOH" | python Calc-ChemMassPercent.py -mm
+# or
+echo "1.2*1000 g : 20% NaOH" | python Calc-ChemMassPercent.py --massmolarity
+```
+
+```yaml
+Type          : Solution.1
+Formula       : 1.2*1000g:20%NaOH
+Weight        : 1200.0 g (1.000 L)
+NaOH          : 240.0 g / 39.997 amu / 0.96 kg = 6.250 mol/kg
+
+Type          : Product
+Formula       : 1.2*1000g:20%NaOH
+Total_Weight  : 1200.0 g (1.000 L)
+Total_NaOH    : 240.0 g / 39.997 amu / 0.96 kg = 6.250 mol/kg
 ```
 
 
