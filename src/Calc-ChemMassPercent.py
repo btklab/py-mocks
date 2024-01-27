@@ -9,7 +9,7 @@ import io, sys, os
 import re
 import argparse
 
-_version = "Sat Jan 13 06:23:11 TST 2024"
+_version = "Sat Jan 27 19:48:18 TST 2024"
 _code    = "MyCommands(LINUX+WINDOWS/PYTHON3/UTF-8)"
 
 ## switch stdio by platform
@@ -122,7 +122,7 @@ def get_args():
             Optional: density
             
             1. With volume unit and molecule name:
-            -> "1000 ml : 35% HCl" | python Calc-ChemMassPercent.py --molar
+            -> echo "1000 ml : 35% HCl" | python Calc-ChemMassPercent.py --molar
 
                 Type          : Solution.1
                 Formula       : 1000ml:35%HCl
@@ -136,7 +136,7 @@ def get_args():
             
             2. With density (density * volume):
             -> 1.17 g/ml, 1000 ml, 35w/w% HCl
-            -> "1.17 * 1000 g : 35% HCl" | python Calc-ChemMassPercent.py --molar
+            -> echo "1.17 * 1000 g : 35% HCl" | python Calc-ChemMassPercent.py --molar
 
                 Type          : Solution.1
                 Formula       : 1.17*1000g:35%HCl
@@ -185,10 +185,10 @@ def get_args():
             <Q.3>
             Calculate the molar concentration (mol/L)
             of CH3COOH
-            with a density of 1.05 g/mL at 20℃
+            with a density of 1.05 g/mL at 20 degrees
             and a purity of 100 w/w%.
 
-                "1.05 * 1000 g : 100% CH3COOH" | python Calc-ChemMassPercent.py --molar
+                echo "1.05 * 1000 g : 100% CH3COOH" | python Calc-ChemMassPercent.py --molar
 
                     Type          : Solution.1
                     Formula       : 1.05*1000g:100%CH3COOH
@@ -204,29 +204,47 @@ def get_args():
             Calculate the factor(molar concentration ratio) of HCl/N,
             1000 ml : 4.21 w/v% of N and 12.34 w/v% of HCl
 
-            "1000ml: 4.21% N, 12.34% HCl" | python Calc-ChemMassPercent.py --molar --expression 'print("Total_Volume = {} {}".format(Prod.volume, Prod.unit));print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))' --verbose
+                echo "1000ml: 4.21% N, 12.34% HCl" | python Calc-ChemMassPercent.py --molar --expression 'print("Total_Volume = {} {}".format(Prod.volume, Prod.unit));print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))' --verbose
 
-                Type          : Solution.1
-                Formula       : 1000ml:4.21%N,12.34%HCl
-                Volume        : 1000 ml
-                N             : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
-                HCl           : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
+                    Type          : Solution.1
+                    Formula       : 1000ml:4.21%N,12.34%HCl
+                    Volume        : 1000 ml
+                    N             : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
+                    HCl           : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
 
-                Type          : Product
-                Formula       : 1000ml:4.21%N,12.34%HCl
-                Total_Volume  : 1000.0 ml
-                Total_N       : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
-                Total_HCl     : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
+                    Type          : Product
+                    Formula       : 1000ml:4.21%N,12.34%HCl
+                    Total_Volume  : 1000.0 ml
+                    Total_N       : 42.1 g / 14.007 amu / 1.0 L = 3.006 mol/L (M)
+                    Total_HCl     : 123.39999999999999 g / 36.461 amu / 1.0 L = 3.384 mol/L (M)
 
-                Set_Variable  : Prod = Product(name, volume, unit)
-                Set_Variable  : N = Material(name, volume, unit, mol, molar, molar_unit)
-                Set_Variable  : HCl = Material(name, volume, unit, mol, molar, molar_unit)
+                    Set_Variable  : Prod = Product(name, volume, unit)
+                    Set_Variable  : N = Material(name, volume, unit, mol, molar, molar_unit)
+                    Set_Variable  : HCl = Material(name, volume, unit, mol, molar, molar_unit)
 
-                exec_end      : print("Total_Volume = {} {}".format(Prod.volume, Prod.unit))
-                return        : Total_Volume = 1000.0 ml
+                    exec_end      : print("Total_Volume = {} {}".format(Prod.volume, Prod.unit))
+                    return        : Total_Volume = 1000.0 ml
 
-                exec_end      : print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))
-                return        : factor = 1.1260 HCl/N molar concentration ratio
+                    exec_end      : print( "factor = {:.4f} HCl/N molar concentration ratio".format(HCl.molar / N.molar))
+                    return        : factor = 1.1260 HCl/N molar concentration ratio
+
+            <Q.5>
+            Calculate mass molarity of
+            d=1.2 g/ml, 1000 ml, 20 w/w% NaOH
+
+                echo "1.2*1000 g : 20% NaOH" | python Calc-ChemMassPercent.py -mm
+                echo "1.2*1000 g : 20% NaOH" | python Calc-ChemMassPercent.py --massmolarity
+
+                    Type          : Solution.1
+                    Formula       : 1.2*1000g:20%NaOH
+                    Weight        : 1200.0 g (1.000 L)
+                    NaOH          : 240.0 g / 39.997 amu / 0.96 kg = 6.250 mol/kg
+                    
+                    Type          : Product
+                    Formula       : 1.2*1000g:20%NaOH
+                    Total_Weight  : 1200.0 g (1.000 L)
+                    Total_NaOH    : 240.0 g / 39.997 amu / 0.96 kg = 6.250 mol/kg
+
     
     Thanks:
         MathPython
@@ -283,7 +301,7 @@ def get_args():
         Total_Solid   : 25.0 g / 100.0 g = 0.250 (25.000 w/w%)
 
     # Calculate mass percent concentration when mixing multiple solutions.
-    "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200" | python Calc-ChemMassPercent.py
+    echo "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200" | python Calc-ChemMassPercent.py
     # or
     python Calc-ChemMassPercent.py -f "100 L : 3.0% NaCl + 100 L : 9.0% NaCl + 200"
     
@@ -392,6 +410,7 @@ def get_args():
     ts = lambda x:list(map(str, x.split(';')))
     parser.add_argument("-f", "--formula", help="molecular formula", type=ts)
     parser.add_argument("-m", "--molar", help="calc molar concentration", action="store_true")
+    parser.add_argument("-mm", "--massmolarity", help="calc mass molarity", action="store_true")
     parser.add_argument("-r", "--round", help="round", default="3", type=str)
     parser.add_argument("-e", "--expression", help="execute expression", type=str)
     parser.add_argument("-v", "--verbose", help="verbose output", action="store_true")
@@ -628,7 +647,11 @@ if __name__ == '__main__':
     args = get_args()
 
     # read module
-    if args.molar:
+    if args.molar or args.massmolarity:
+        molar_flag = True
+    else:
+        molar_flag = False
+    if molar_flag:
         from pymatgen.core import Composition
 
     # read formula
@@ -697,7 +720,7 @@ if __name__ == '__main__':
                 conc = str('')
             # set solution volume and unit
             str_vol, str_vol_unit, split_density, split_vol = splitTermToNumAndUnit(vol, regex_separate_num_and_unit)
-            if str_vol_unit == "" and args.molar:
+            if str_vol_unit == "" and molar_flag:
                 raise_error("Please specify solution unit (e.g. L, mL, g, mg, kg) '{}'.".format(vol))
             if solution_counter == 1:
                 # init volume
@@ -766,11 +789,11 @@ if __name__ == '__main__':
                 if regex_allowed_num_and_percent.search(cterm):
                     cterm = regex_allowed_num_and_percent.sub(r'\1/100\2', cterm)
                 str_solv_num, str_solv_name, _, _ = splitTermToNumAndUnit(cterm, regex_separate_num_and_unit)
-                if str_solv_name == r'' and args.molar:
+                if str_solv_name == r'' and molar_flag:
                     raise_error("Please specify molecule name '{}'.".format(solution))
                 elif str_solv_name == r'':
                     str_solv_name = term_symbol + str(term_counter)
-                if args.molar or args.expression:
+                if molar_flag or args.expression:
                     if re.search(r'\-', str_solv_name):
                         raise_error("Hyphen cannot be used in molecular formula: '{}'.".format(str_solv_name))
                 # test duplication of term
@@ -785,7 +808,7 @@ if __name__ == '__main__':
                     # init material_list
                     material_list.append(str_solv_name)
                     # init solvent dict
-                    if args.molar:
+                    if molar_flag:
                         solvent_dict[str_solv_name] = Solution(float(str_solv_num), float(str_vol), str(str_solv_name), True)
                         #print(solvent_dict[str_solv_name].getMolMass())
                     else:
@@ -793,7 +816,7 @@ if __name__ == '__main__':
                 if True:
                     solvent_dict[solid_name].sumSolventWeight(float(str_solv_num), float(str_vol))
                 # output each solvent mass percent
-                if args.molar:
+                if molar_flag:
                     c = str_solv_name.ljust(debug_ljust)
                     v = str_vol
                     if isVolume == r"Volume":
@@ -801,7 +824,9 @@ if __name__ == '__main__':
                         v_liter = float(v) * coef_solu_to_liter
                         v_str = str("{} L").format(v_liter)
                     elif isVolume == r"Weight":
-                        if total_volume.isSplitVolume() and split_vol != None:
+                        if args.massmolarity:
+                            pass
+                        elif total_volume.isSplitVolume() and split_vol != None:
                             vol_unit = r" mol/L (M)"
                             v_liter = float(split_vol) * coef_solu_to_liter
                             v_str = str("{} L").format(v_liter)
@@ -821,6 +846,10 @@ if __name__ == '__main__':
                     else:
                         w = n * float(v)
                         w_gram = w * coef_solv_to_gram
+                        if args.massmolarity:
+                            vol_unit = r" mol/kg"
+                            v_liter = float(v) * coef_solu_to_liter - w_gram / 1000
+                            v_str = str("{} kg").format(v_liter)
                         molar = w_gram / molmass / v_liter
                     w_str = str("{} g").format(w_gram)
                     m_str = str("{:." + args.round + "f} amu").format(molmass)
@@ -867,7 +896,7 @@ if __name__ == '__main__':
             if args.debug or args.verbose:
                 # output 
                 propName = "Total_" + propNameVolumeOrWeight
-                if not args.molar:
+                if not molar_flag:
                     if print_solution_unit == '':
                         print_list.append("{} : {}".format(propName.ljust(debug_ljust), total_volume.getSoluteVolume()).strip())
                     else:
@@ -897,7 +926,7 @@ if __name__ == '__main__':
                 print_list.append("")
         
         # add material_list
-        if not args.molar:
+        if not molar_flag:
             material_list.append(solid_name)
         # output product
         propName = "Total_" + propNameVolumeOrWeight
@@ -939,14 +968,16 @@ if __name__ == '__main__':
                     var_symbol = key
                 if args.expression:
                     var_symbol = remove_illegal_chars_from_variable_name(var_symbol)
-                if args.molar:
+                if molar_flag:
                     c = str("Total_" + key).ljust(debug_ljust)
                     if isVolume == r"Volume":
                         vol_unit = r" mol/L (M)"
                         v_liter = float(v) * coef_solu_to_liter
                         v_str = str("{} L").format(v_liter)
                     elif isVolume == r"Weight":
-                        if total_volume.isSplitVolume():
+                        if args.massmolarity:
+                            pass
+                        elif total_volume.isSplitVolume():
                             vol_unit = r" mol/L (M)"
                             v_liter = vs * coef_solu_to_liter
                             v_str = str("{} L").format(v_liter)
@@ -965,6 +996,10 @@ if __name__ == '__main__':
                     if float(v) == 0:
                         molar = w_gram / molmass
                     else:
+                        if args.massmolarity:
+                            vol_unit = r" mol/kg"
+                            v_liter = float(v) * coef_solu_to_liter - w_gram / 1000
+                            v_str = str("{} kg").format(v_liter)
                         molar = w_gram / molmass / v_liter
                     w_str = str("{} g").format(w_gram)
                     m_str = str("{:." + args.round + "f} amu").format(molmass)
@@ -1013,7 +1048,7 @@ if __name__ == '__main__':
                             except: raise_error("invalid variable name: '{}'".format(var_symbol))
                 # set variable expression
                 if args.expression:
-                    if args.molar:
+                    if molar_flag:
                         if isVolume == r"Volume":
                             exp_reg = var_symbol + " = Material(name, volume, unit, mol, molar, molar_unit)"
                         elif isVolume == r"Weight":

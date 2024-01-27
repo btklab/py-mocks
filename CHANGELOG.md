@@ -7,8 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- NA
+
+## [1.5.1] - 2024-01-27
+
 - Fixed [README.md] synopsis
 - Fixed [Calc-LPpulp.py] synopsis
+- Added [Calc-ChemMassPercent.py] `-mm|--massmolarity` option
 
 ## [1.5.0] - 2024-01-21
 
@@ -109,7 +114,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Calc-LPpulp.py]: src/Calc-LPpulp.py
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.5.0..HEAD
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.5.1..HEAD
+[1.5.1]: https://github.com/btklab/py-mocks/releases/tag/1.5.1
 [1.5.0]: https://github.com/btklab/py-mocks/releases/tag/1.5.0
 [1.4.4]: https://github.com/btklab/py-mocks/releases/tag/1.4.4
 [1.4.3]: https://github.com/btklab/py-mocks/releases/tag/1.4.3
