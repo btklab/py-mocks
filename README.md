@@ -693,13 +693,13 @@ Linear Problem optimizer that expresses objective variables and constraints in a
 
 input.txt:
 
-```markdown
-    0.013  0.008, "Total Cost of Ingredients per can"
-    1      1      == 100, "PercentagesSum"
-    0.100  0.200  >= 8.0, "ProteinRequirement"
-    0.080  0.100  >= 6.0, "FatRequirement"
-    0.001  0.005  <= 2.0, "FibreRequirement"
-    0.002  0.005  <= 0.4, "SaltRequirement"
+```
+0.013  0.008, "Total Cost of Ingredients per can"
+1      1      == 100, "PercentagesSum"
+0.100  0.200  >= 8.0, "ProteinRequirement"
+0.080  0.100  >= 6.0, "FatRequirement"
+0.001  0.005  <= 2.0, "FibreRequirement"
+0.002  0.005  <= 0.4, "SaltRequirement"
 ```
 
 script:
@@ -739,45 +739,46 @@ input data format:
 
 - set variable symbols
     - Variables can be declared on the first line, excluding the title line, separated by spaces
-    - If no variables are specified, x1, x2,... will be automatically assigned in order from the left column of the matrix
-    - Variable names can also be specified with the --names option, but it is recommended to write variable names on the input data as much as possible. (This is because if you write the data and variable name separately, one is likely to be lost.)
+    - If no variables are specified, `x1`, `x2`,... will be automatically assigned in order from the left column of the matrix
+    - Variable names can also be specified with the `--names` option, but it is recommended to write variable names on the input data as much as possible. (This is because if you write the data and variable name separately, one is likely to be lost.)
     - If the number of variables is less than the number of columns in the objective function, the columns of the objective function to which variables are not assigned are simply considered as numbers to be summed. 
 
+example: case where the number of variables is less than the number of columns of the objective function
+
 ```
-    example : case where the number of variables is
-                less than the number of columns of the
-                objective function
+x  y
+1  1 1
+3  5 0 <= 15
+2  1   >= 4
+1 -1 1 == 1
+```
 
-        x  y
-        1  1 1
-        3  5 0 <= 15
-        2  1   >= 4
-        1 -1 1 == 1
+output:
 
-    output
-
-        1*x + 1*y + 1
-        _C1: 3 x + 5 y <= 15
-        _C2: 2 x + y >= 4
-        _C3: x - y = 0
+```markdown
+    1*x + 1*y + 1
+    _C1: 3 x + 5 y <= 15
+    _C2: 2 x + y >= 4
+    _C3: x - y = 0
 ```
 
 - set objective function
     - The first line starting with a number is considered the objective function
-    - The specification of the objective function can be　skipped. For example, it is not necessary to use an　objective function to derive a solution to a quadratic　function
+    - The specification of the objective function can be skipped. For example, it is not necessary to use an　objective function to derive a solution to a quadratic　function
+
+example without objective function:
 
 ```
-    example without objective function
+1 1 == 100
+2 4 == 272
+```
 
-        1 1 == 100
-        2 4 == 272
+how to specify variable names when there is no objective function:
 
-    how to specify variable names when
-    there is no objective function
-
-        x y
-        1 1 == 100
-        2 4 == 272
+```
+x y
+1 1 == 100
+2 4 == 272
 ```
 
 - set constraints
@@ -822,6 +823,7 @@ solve:
 
 ```powershell
 python Calc-LPpulp.py -f input.txt --category "Integer" --lbound 0 [-d]
+# or
 cat input.txt | python Calc-LPpulp.py --category "Integer" --lbound 0 [-d]
 ```
 
