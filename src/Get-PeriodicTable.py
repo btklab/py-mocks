@@ -34,7 +34,7 @@ def raise_error(msg, *arg):
 def get_args():
     help_desc_msg ="""Get-PeriodicTable - Get Element data using pymatgen
 
-    Denpendency:
+    Dependency:
         pymatgen
         https://pymatgen.org/
 
