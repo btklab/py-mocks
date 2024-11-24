@@ -290,7 +290,7 @@ if __name__ == '__main__':
     elif args.csv:
         df.to_csv(sys.stdout, index=True, sep=",")
     elif args.tsv:
-        df.to_csv(sys.stdout, index=True, sep="\t")
+        df.to_csv(sys.stdout, index=True, sep=r"\t")
     elif args.ssv:
         df.to_csv(sys.stdout, index=True, sep=" ")
     else:
@@ -298,7 +298,7 @@ if __name__ == '__main__':
         for fml in fmls:
             fml = str(fml).strip()
             # if formula(tml) contains "=", run exec, otherwise run eval
-            if re.search('^([^\(]+)=', fml):
+            if re.search(r'^([^\(]+)=', fml):
                 exec(fml)
             else:
                 ans = eval(fml)

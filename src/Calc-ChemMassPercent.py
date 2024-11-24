@@ -1092,7 +1092,7 @@ if __name__ == '__main__':
                 # if fml contains "=", run exec, otherwise run eval
                 print("{} : {}".format(message.ljust(debug_ljust), fml))
                 print("{} : ".format(messager.ljust(debug_ljust)), end="")
-                if re.search('^([^\(]+)=', fml):
+                if re.search(r'^([^\(]+)=', fml):
                     exec(fml)
                     print("")
                 else:
