@@ -240,7 +240,7 @@ def open_file(mode = 'r'):
     if args.inputfile:
         filename = re.sub(r'\\', '/', args.inputfile)
         try:
-            readfile = open(filename, mode)
+            readfile = open(filename, mode, encoding="utf-8")
         except:
             raise_error("Could not open file: %s", filename)
     else:

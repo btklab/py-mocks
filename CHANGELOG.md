@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - NA
 
+## [1.5.3] - 2025-01-01
+
+- Fixed [Calc-LPpulp.py] Specify utf-8 encoding when opening a file
+- Fixed [pymatcalc.py] Specify utf-8 encoding when opening a file
+
 ## [1.5.2] - 2024-11-24
 
 - Fixed Explicit raw symbol in regular expression strings
@@ -118,7 +123,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 [Calc-LPpulp.py]: src/Calc-LPpulp.py
 
-[unreleased]: https://github.com/btklab/py-mocks/compare/1.5.2..HEAD
+[unreleased]: https://github.com/btklab/py-mocks/compare/1.5.3..HEAD
+[1.5.3]: https://github.com/btklab/py-mocks/compare/1.5.3..HEAD
 [1.5.2]: https://github.com/btklab/py-mocks/compare/1.5.2..HEAD
 [1.5.1]: https://github.com/btklab/py-mocks/releases/tag/1.5.1
 [1.5.0]: https://github.com/btklab/py-mocks/releases/tag/1.5.0
