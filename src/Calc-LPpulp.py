@@ -335,7 +335,7 @@ def open_file(mode = 'r'):
         if os.name == 'nt':
             readfile = re.sub(r'\\', '/', args.file)
         try:
-            readfile = open(readfile, mode)
+            readfile = open(readfile, mode, encoding="utf-8")
         except:
             raise_error("{}: {}".format("Could not open file"), readfile)
     else:
@@ -346,10 +346,10 @@ def out_file(olist, ofile, mode = 'w'):
     try:
         if os.name == 'nt':
             ofile = re.sub(r'\\', '/', ofile)
-            with open(ofile, mode) as outfile:
+            with open(ofile, mode, encoding="utf-8") as outfile:
                 outfile.write('\n'.join(str(i) for i in olist))
         else:
-            with open(ofile, mode) as outfile:
+            with open(ofile, mode, encoding="utf-8") as outfile:
                 outfile.write('\n'.join(str(i) for i in olist))
     except:
         raise_error("{}: {}".format("Could not output file"), ofile)
