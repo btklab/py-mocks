@@ -1,5 +1,9 @@
 # py-mocks
 
+**This repository has been archived**. Future script updates will be posted in the following repository:
+
+- [GitHub - btklab/python-sketches](https://github.com/btklab/python-sketches)
+
 ```markdown
 >  ____  _  _        _    _   ___    ___  _  _  ____ 
 > |  _ \( \/ ) ____ | \  / | / _ \  / __)| |/ )/  __)
